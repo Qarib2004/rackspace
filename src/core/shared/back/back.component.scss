@@ -1,0 +1,28 @@
+@import "../../../assets/styles/abstracts/index";
+
+.back{
+  display: flex;
+  align-items: center;
+  gap: rem(14);
+  position: absolute;
+  top: rem(50);
+  left: rem(40);
+
+  &--button{
+    width: rem(40);
+    height: rem(39.31);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $txtBlue;
+    border-radius: $borderRadiusSm;
+  }
+
+  &--text{
+    font-family: 'Euclid Circular B Regular';
+    font-weight: 500;
+    font-size: $fontSizeSecondary;
+    line-height: rem(22.82);
+    text-align: center;
+  }
+}

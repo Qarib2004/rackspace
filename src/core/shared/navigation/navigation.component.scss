@@ -1,0 +1,28 @@
+@import "../../../assets/styles/abstracts/index";
+
+.navigation {
+  padding: rem(20) rem(40);
+  display: flex;
+  align-items: center;
+  gap: rem(20);
+
+  &--button {
+    background-color: $lightWhite;
+    width: rem(40);
+    height: rem(39.31);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  &--text{
+    font-family: 'Euclid Circular B Regular';
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 30.43px;
+    letter-spacing: 0;
+
+  }
+}
+

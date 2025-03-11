@@ -1,0 +1,42 @@
+@import "../../../../assets/styles/abstracts/index";
+
+.storage-buttonlist {
+  display: flex;
+  gap: rem(13);
+  align-items: center;
+
+
+  &--move{
+    background-color: rgba($blueButtonColor, 0.20);
+    padding: rem(8) rem(12);
+    height: auto;
+    border-radius: $borderRadiusBtn !important;
+    &_wrapper{
+      display: flex;
+      align-items: center;
+      gap: rem(2);
+      color: $blueButtonColor;
+
+    }
+  }
+
+  &--edit{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba($table-edit-button, 0.20);
+    height: auto;
+    padding: rem(8);
+    border-radius: $borderRadiusBtn !important;
+  }
+
+  &--delete{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba($table-delete-button, 0.20);
+    height: auto;
+    padding: rem(8);
+    border-radius: $borderRadiusBtn !important;
+  }
+}

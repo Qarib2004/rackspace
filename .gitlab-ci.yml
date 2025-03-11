@@ -1,0 +1,32 @@
+############################################################################
+include:
+  - project: 'iac/cd-scripts'
+    ref: main
+    file: 'sonar.yml'
+  - project: 'iac/cd-scripts'
+    ref: main
+    file: 'release.yml'
+  - project: 'iac/cd-scripts'
+    ref: main
+    file: 'build-and-deploy-ui.yml'
+############################################################################
+stages:
+  - sonar
+  - release
+  - env
+  - build
+  - deploy
+############################################################################
+variables:
+  GIT_STRATEGY: clone
+  SONAR_PLATFORM: other
+  FQDN: "rackspace.azintelecom.az"
+  EXTERNAL_SECRETS: "true"
+  STARTUP_PATH: ""
+  LIVENESS_PATH: ""
+  MEMORY_REQUEST: "256Mi"
+  CPU_REQUEST: "50m"
+  CONTAINER_PORT: "80"
+  BACKGROUND_WORKER: "false"
+  HOSTS: ""
+############################################################################

@@ -1,0 +1,16 @@
+@import "../../../assets/styles/abstracts/index";
+
+.title {
+
+  display: flex;
+  align-items: center;
+  gap: rem(12);
+
+  &--text{
+    font-family: $fontMedium;
+    font-size: rem(31);
+    font-weight: 600;
+    line-height: rem(39.31);
+    color: $txtBlue;
+  }
+}

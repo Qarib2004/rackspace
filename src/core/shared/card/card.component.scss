@@ -1,0 +1,12 @@
+@import "../../../assets/styles/abstracts/index";
+
+.card {
+    box-shadow: 0 0 10px $box-shadow-color;
+    border-radius: $border-radius;
+    padding: rem(24);
+    background-color: $white;
+    &--grey {
+        box-shadow: $grey-box-shadow;
+        border-radius: rem(27); // Or use rem if needed
+    }
+}

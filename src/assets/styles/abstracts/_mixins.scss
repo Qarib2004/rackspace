@@ -1,0 +1,11 @@
+@mixin transition($property: all, $time: 0.2s, $func: ease) {
+    transition: $property $time $func;
+}
+
+@mixin breakpoint($breakpoint, $direction: "max") {
+    @media screen and (#{$direction}-width: $breakpoint) {
+        @content;
+    }
+}
+
+

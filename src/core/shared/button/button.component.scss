@@ -1,0 +1,61 @@
+@import "../../../assets/styles/abstracts/index";
+
+.button {
+    font-weight: 600;
+    font-size: 16px;
+    height: 54px;
+    border-radius: 6px;
+
+    &:focus-visible {
+        outline: none !important;
+    }
+    &--blue {
+        border: 1px solid $blue-button-color !important;
+        color: $white !important;
+        font-family: $font;
+        background-color: $blue-button-color;
+    }
+    &--light-blue {
+        border: 1px solid $blue-button-color !important;
+        color: $blue-button-color !important;
+        font-family: $font;
+        background-color: $white;
+    }
+
+    &--light-blue {
+        border: 1px solid $blue-button-color !important;
+        color: $blue-button-color !important;
+        font-family: $font;
+        background-color: $white;
+    }
+    &--gray {
+        border: 1px solid $gray-button-color !important;
+        color: $txt-blue !important;
+        font-family: $font;
+        background-color: $gray-button-color;
+    }
+    &--transparent {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        background-color: transparent;
+
+        &:hover {
+            // Add hover styles if needed
+        }
+
+        &:focus {
+            // Add focus styles if needed
+        }
+
+        &:active {
+            // Add active styles if needed
+        }
+    }
+}
+
+
+
+
+
+

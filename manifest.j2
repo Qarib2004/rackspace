@@ -1,0 +1,227 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ${CI_PROJECT_NAME}
+  namespace: ${NAMESPACE}
+  labels:
+    app: ${CI_PROJECT_NAME}
+    gitlab-id: "${CI_PROJECT_ID}"
+    organization: AzInTelecom
+    owner: Devops
+    managed-by: GitLab-CI
+    last-modified-by: ${GITLAB_USER_LOGIN}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    reloader.stakater.com/auto: "true"
+  namespace: ${NAMESPACE}
+  name: ${CI_PROJECT_NAME}
+spec:
+  selector:
+    matchLabels:
+      app: ${CI_PROJECT_NAME}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 3
+  template:
+    metadata:
+      labels:
+        app: ${CI_PROJECT_NAME}
+        version: ${CI_COMMIT_TAG}
+        gitlab-id: "${CI_PROJECT_ID}"
+        organization: AzInTelecom
+        owner: Devops
+        managed-by: GitLab-CI
+        last-modified: ${DEPLOYMENT_DATE}
+        last-modified-by: ${GITLAB_USER_LOGIN}
+    spec:
+      automountServiceAccountToken: false
+      serviceAccountName: ${CI_PROJECT_NAME}
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: topology.kubernetes.io/zone
+                operator: In
+                values:
+                - az1
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: ${CI_PROJECT_NAME}
+                topologyKey: kubernetes.io/hostname
+      topologySpreadConstraints:
+      - labelSelector:
+          matchLabels:
+            app: ${CI_PROJECT_NAME}
+        maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+{% set hosts = lookup('env', 'HOSTS') | default('') %}
+{% if hosts != '' %}
+      hostAliases:
+{% for host_entry in hosts.split(',') %}
+{# First split each entry into the hostname and IP #}
+{% set parts = host_entry.split(':') %}
+{# Trim any whitespace that might be around the parts #}
+{% set host = parts[0] | trim %}
+{% set ip = parts[1] | trim %}
+      - hostnames:
+          - "{{ host }}"
+        ip: "{{ ip }}"
+{% endfor %}
+{% endif %}
+      imagePullSecrets:
+      - name: docker-config-harbor
+      containers:
+      - name: ${CI_PROJECT_NAME}
+        image: ${CI_BUILD_IMAGE}:${CI_COMMIT_TAG}
+        imagePullPolicy: IfNotPresent
+{% set startup_path = lookup('env', 'STARTUP_PATH') | default('') %}
+{% set liveness_path = lookup('env', 'LIVENESS_PATH') | default('') %}
+{% if CI_ENVIRONMENT_SLUG == 'prod' and startup_path != '' and liveness_path != '' %}
+        startupProbe:
+          httpGet:
+           path: ${STARTUP_PATH}
+           port: http
+          failureThreshold: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: ${LIVENESS_PATH}
+            port: http
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+{% endif %}
+
+{% set memory_request = lookup('env', 'MEMORY_REQUEST') | default('') %}
+{% set cpu_request = lookup('env', 'CPU_REQUEST') | default('') %}
+{% if CI_ENVIRONMENT_SLUG == 'prod' and memory_request != '' and cpu_request != '' %}
+        resources:
+          requests:
+            memory: ${MEMORY_REQUEST}
+            cpu: ${CPU_REQUEST}
+{% endif %}
+        ports:
+        - name: http
+          containerPort: ${CONTAINER_PORT}
+          protocol: TCP
+
+{% set external_secrets = lookup('env', 'EXTERNAL_SECRETS') | default('') %}
+{% if external_secrets == 'true' %}
+        envFrom:
+        - secretRef:
+            name: ${CI_PROJECT_NAME}-env
+{% endif %}
+---
+{% set background_worker = lookup('env', 'BACKGROUND_WORKER') | default('') %}
+{% if background_worker == 'false' %}
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${CI_PROJECT_NAME}
+  namespace: ${NAMESPACE}
+  labels:
+    app: ${CI_PROJECT_NAME}
+    gitlab-id: "${CI_PROJECT_ID}"
+    organization: AzInTelecom
+    owner: Devops
+    managed-by: GitLab-CI
+    last-modified-by: ${GITLAB_USER_LOGIN}
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+    protocol: TCP
+  selector:
+    app: ${CI_PROJECT_NAME}
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: ${CI_PROJECT_NAME}-igw
+  namespace: ${NAMESPACE}
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - ${URL}
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: ${CI_PROJECT_NAME}-vs
+  namespace: ${NAMESPACE}
+spec:
+  hosts:
+    - ${URL}
+  gateways:
+    - ${CI_PROJECT_NAME}-igw
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: ${CI_PROJECT_NAME}
+            port:
+              number: 80
+---
+{% endif %}
+
+{% set background_worker = lookup('env', 'BACKGROUND_WORKER') | default('') %}
+{% if CI_ENVIRONMENT_SLUG == 'prod' and background_worker == 'false' %}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ${CI_PROJECT_NAME}
+  namespace: ${NAMESPACE}
+  labels:
+    app: ${CI_PROJECT_NAME}
+    gitlab-id: "${CI_PROJECT_ID}"
+    organization: AzInTelecom
+    owner: Devops
+    managed-by: GitLab-CI
+    last-modified-by: ${GITLAB_USER_LOGIN}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ${CI_PROJECT_NAME}
+  minReplicas: ${REPLICAS}
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 65
+---
+
+{% endif %}
