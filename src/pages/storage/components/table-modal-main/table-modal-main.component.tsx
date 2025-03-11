@@ -121,7 +121,7 @@ function TableModalMainComponent({closeFn} : { closeFn?: () => void }) {
                     </div>
 
                 </div>
-                <div className='table-modal-footer'>
+                <div className="table-modal-footer">
 
                     <ButtonComponent click={closeFn} classNamesComponent={'table-modal-footer--button table-modal-footer--button_left'}>İmtina
                         edin</ButtonComponent>

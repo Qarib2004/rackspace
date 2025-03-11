@@ -23,11 +23,11 @@ function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <ConfigProvider theme={themeConfig}>
-                <div className='App'>
+                <div className="App">
                     <RouterProvider router={router}/>
                 </div>
                 <ToastContainer
-                    position='bottom-right'
+                    position="bottom-right"
                     autoClose={5000}
                     hideProgressBar={false}
                     newestOnTop={false}
@@ -37,7 +37,7 @@ function App() {
                     pauseOnFocusLoss
                     draggable={false}
                     pauseOnHover
-                    theme='light'
+                    theme="light"
                     style={
                         {
                             minHeight: 'auto',

@@ -41,7 +41,7 @@ function TableModalCustomDropdownComponent({options, onChange}: any) {
     return (
         <>
             <Select
-                mode='multiple'
+                mode="multiple"
                 style={{width: '100%'}}
                 placeholder={'Seçin'}
                 value={valuesList}
