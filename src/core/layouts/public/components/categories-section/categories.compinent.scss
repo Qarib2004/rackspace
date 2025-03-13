@@ -40,6 +40,9 @@
       justify-content: center;
       gap: 0.5rem;
       cursor: pointer;
+      position: relative;
+
+      
       
       &:hover {
         .icon-background {
@@ -49,6 +52,11 @@
         .category-icon {
           transform: scale(1.1);
         }
+
+        .category-label {
+            color: #10B981;
+            
+          }
       }
     }
     
@@ -80,6 +88,7 @@
       opacity: 0;
       transition: opacity 0.3s ease;
       border-radius: 1rem 0 1rem 0;
+      padding: 4rem;
     }
     
     .icon-wrapper {
@@ -160,14 +169,21 @@
       font-size: 0.75rem;
       color: #4b5563;
       text-align: center;
-      
+      z-index: 10;
       @media (min-width: 576px) {
         font-size: 0.85rem;
       }
       
       @media (min-width: 992px) {
-        font-size: 0.7rem;
+        font-size: 1rem;
       }
+
+      &:hover {
+        color: #10B981;
+        transition: color 0.3s ease;
+      }
+
+      
     }
   }
   
