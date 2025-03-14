@@ -1,6 +1,9 @@
 import React from 'react';
 import './categories.compinent.scss';
 
+
+
+
 const iconPath = 'src/assets/images/categories/6wNfUPvIoLpNWXHmuqmeRa5nUvGw14EPfMkDQcti.svg';
 const iconPath2 = 'src/assets/images/categories/8xXVbe14xepA6ZPuguAJc823EcqkTeJSp28R88Z8.svg';
 const iconPath3 = 'src/assets/images/categories/dkR35eUlXHHiagLjqSrvjXry0RhAF7EzRfZeoOne.svg';
@@ -29,6 +32,7 @@ const categories = [
 const CategoriesSection = () => {
   return (
     <section className="categories-section">
+      <div className="container">
       <h2 className="section-title">Categorias</h2>
       <div className="categories-container">
         <div className="categories-grid">
@@ -55,6 +59,7 @@ const CategoriesSection = () => {
             </div>
           ))}
         </div>
+      </div>
       </div>
     </section>
   );
