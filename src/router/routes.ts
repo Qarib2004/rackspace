@@ -1,5 +1,6 @@
 export enum Routes {
     auth = '/auth',
+    register = '/register',
     home = '/',
     datacenters = '/data-centers',
     storage = '/data-centers/:id/storage',
