@@ -8,7 +8,7 @@ import {useNavigate} from 'react-router-dom';
 
 
 function StorageSearchbarComponent() {
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     return (
         <div className={'storage-searchbar'}>

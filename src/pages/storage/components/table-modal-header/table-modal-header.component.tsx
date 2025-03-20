@@ -8,7 +8,7 @@ function TableModalHeaderComponent() {
 
     return (
 
-        <div className='table-modal-header'>
+        <div className="table-modal-header">
             <TitleComponent
                 text={'Rack-a yerləşdirmə'}
                 icon={<RackIcon/>}/>

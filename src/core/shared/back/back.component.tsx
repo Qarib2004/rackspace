@@ -6,7 +6,7 @@ import {useNavigate} from 'react-router-dom';
 
 const BackComponent = () => {
 
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     return (
         <>

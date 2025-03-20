@@ -8,10 +8,10 @@ import {DeleteIcon, EditIcon} from '../../../../assets/images/icons/edit';
 function StorageButtonListComponent({buttonsFunction}: any) {
 
     return (
-        <div className='storage-buttonlist'>
+        <div className="storage-buttonlist">
             <ButtonComponent classNamesComponent={'storage-buttonlist--move'}
                              click={() => buttonsFunction('move')}>
-                <div className='storage-buttonlist--move_wrapper'>
+                <div className="storage-buttonlist--move_wrapper">
                     <ArrowMove/>
                     <p>Yerləşdir</p>
                 </div>

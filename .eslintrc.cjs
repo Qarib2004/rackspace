@@ -10,8 +10,8 @@ module.exports = {
   plugins: ['react-refresh'],
   rules: {
     'react-refresh/only-export-components': 'warn',
-    'quotes': ['warn', 'single'],
-    'jsx-quotes': ['warn', 'prefer-single'],
+    'quotes': ['warn', 'single', { 'avoidEscape': true }],
+    "jsx-quotes": ["error", "prefer-double"],
     'no-unreachable': 'error',
     'camelcase': ['error', {properties: 'never'}],
     'eqeqeq': 'error',

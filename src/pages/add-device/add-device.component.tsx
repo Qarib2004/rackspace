@@ -9,11 +9,11 @@ function AddDeviceComponent() {
 
 
     return (
-        <div className='add-device'>
+        <div className="add-device">
             <BackComponent/>
             <CardComponent
                 classNamesComponent={'add-device--card'}>
-                <div className='add-device--card__content'>
+                <div className="add-device--card__content">
                     <TitleComponent icon={<LibraryIcon/>} text={'Cihazın əlavə edilməsi'}/>
                     <AddDeviceFormComponent/>
                 </div>

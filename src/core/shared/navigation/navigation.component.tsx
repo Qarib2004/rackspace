@@ -5,7 +5,7 @@ import {INavigationTypes} from './navigation';
 
 const NavigationComponent = ({text = ''} : INavigationTypes) => {
     return (
-        <div className='navigation'>
+        <div className="navigation">
             <ButtonComponent classNamesComponent={'navigation--button'}><ShevronLeft/></ButtonComponent>
             <p className={'navigation--text'}>{text}</p>
         </div>
