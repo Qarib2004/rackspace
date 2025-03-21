@@ -7,6 +7,9 @@ import AddDeviceComponent from '../pages/add-device/add-device.component';
 import StorageComponent from '../pages/storage/storage.component';
 import RoomsComponent from '../pages/rooms/rooms.component';
 import HomeComponent from 'pages/home/home.component';
+import Prodducts from 'pages/products/store';
+import Products from 'pages/products/store';
+import Store from 'pages/products/store';
 
 const router = createBrowserRouter([
     {
@@ -16,6 +19,11 @@ const router = createBrowserRouter([
             {
                 path: Routes.home,
                 element: <HomeComponent/>,
+            },
+
+            {
+                path: Routes.store,
+                element: <Store/>,
             },
 
             {
