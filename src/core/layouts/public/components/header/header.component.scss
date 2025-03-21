@@ -32,22 +32,22 @@
     border: none;
     cursor: pointer;
     font-weight: 600;
-    
+
     &:hover {
       color: rgb(210, 139, 6);
     }
-    
+
     @media (max-width: 768px) {
-      display: none; 
+      display: none;
     }
   }
-  
+
   &__search {
     display: flex;
     align-items: center;
     gap: 0.2rem;
     padding: 0.5rem 0.5rem;
-    cursor: pointer; 
+    cursor: pointer;
 
     &:hover {
       color: orange;
@@ -60,26 +60,26 @@
     cursor: pointer;
     padding: 0.5rem;
     border-radius: 50%;
-    
+
     &:hover {
       background: #f5f5f5;
     }
-    
+
     svg {
       &:hover {
-        color: orange; 
-        transition: fill 0.3s ease; 
+        color: orange;
+        transition: fill 0.3s ease;
       }
     }
-   
+
   }
 
   &__logo {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    
-    
+
+
 
     span {
       font-size: 1.2rem;
@@ -89,9 +89,9 @@
 
     @media (max-width: 768px) {
       width: 100px;
-    height: auto; 
-    object-fit: contain; 
-    max-height: 50px; 
+      height: auto;
+      object-fit: contain;
+      max-height: 50px;
     }
   }
 
@@ -99,6 +99,10 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+
+    a {
+      color: black;
+    }
   }
 
   &__auth-btn {
@@ -106,11 +110,11 @@
     border: none;
     font-weight: 600;
     cursor: pointer;
-    
+
     &:hover {
       color: orange;
     }
-    
+
     @media (max-width: 768px) {
       display: none;
     }
@@ -123,7 +127,7 @@
     cursor: pointer;
     padding: 0.5rem;
     border-radius: 50%;
-    
+
     &:hover {
       color: orange;
     }
@@ -151,7 +155,7 @@
     align-items: center;
     padding: 0.75rem 1rem;
     border-bottom: 1px solid #f0f0f0;
-    
+
     h3 {
       margin: 0;
       font-size: 1rem;
@@ -167,7 +171,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
     &:hover {
       color: orange;
     }
@@ -180,10 +184,10 @@
       list-style: none;
       padding: 0;
       margin: 0;
-      
+
       li {
         margin: 0;
-        
+
         a {
           display: block;
           padding: 0.75rem 1rem;
@@ -191,7 +195,7 @@
           color: #333;
           font-size: 0.95rem;
           transition: background-color 0.2s;
-          
+
           &:hover {
             background-color: #f5f5f5;
             color: orange;
@@ -208,24 +212,25 @@
       justify-content: space-between;
       align-items: center;
     }
-  
+
     .header__left {
-      order: 1; 
+      order: 1;
     }
-  
+
     .header__right {
-      order: 2; 
+      order: 2;
       display: flex;
       align-items: center;
       gap: 0.1rem;
     }
-  
+
     .header__menu-btn,
-    .header__auth-btn,.header__lang-btn {
-      display: none; 
+    .header__auth-btn,
+    .header__lang-btn {
+      display: none;
     }
   }
-  
+
 }
 
 .mobile-nav {
@@ -237,18 +242,18 @@
   background: #fff;
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
   z-index: 999;
-  
+
   @media (max-width: 768px) {
     display: block;
   }
-  
+
   &__container {
     display: flex;
     justify-content: space-around;
     align-items: center;
     height: 64px;
   }
-  
+
   &__item {
     display: flex;
     flex-direction: column;
@@ -263,76 +268,76 @@
     cursor: pointer;
     font-size: 0.75rem;
     width: 25%;
-    
+
     &--active {
       color: #4CAF50;
     }
-    
+
     span {
       font-size: 0.7rem;
     }
   }
-  
+
   &__menu-panel {
     position: fixed;
-    bottom: 64px; 
+    bottom: 64px;
     left: 0;
     right: 0;
-    width: 100%; 
-    height: 0; 
+    width: 100%;
+    height: 0;
     background: #fff;
     box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
     z-index: 998;
     overflow: hidden;
     transition: height 0.3s ease-out;
-    
+
     &--open {
-      height: 50vh; 
+      height: 50vh;
     }
   }
-  
+
   &__menu-content {
     padding: 1rem;
     height: 100%;
     overflow-y: auto;
   }
-  
+
   &__menu-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding-bottom: 1rem;
     border-bottom: 1px solid #f0f0f0;
-    
+
     h3 {
       margin: 0;
       font-size: 1.1rem;
       font-weight: 600;
     }
   }
-  
+
   &__menu-close {
     background: none;
     border: none;
     cursor: pointer;
     padding: 0.5rem;
-    
+
     &:hover {
       color: orange;
     }
   }
-  
+
   &__menu-list {
     padding: 1rem 0;
-    
+
     ul {
       list-style: none;
       padding: 0;
       margin: 0;
-      
+
       li {
         margin: 0.75rem 0;
-        
+
         a {
           display: block;
           padding: 0.75rem 0;
@@ -341,7 +346,7 @@
           font-size: 1rem;
           transition: color 0.2s;
           border-bottom: 1px solid #f5f5f5;
-          
+
           &:hover {
             color: orange;
           }
@@ -349,12 +354,12 @@
       }
     }
   }
-  
+
   &__auth-section {
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px solid #f0f0f0;
-    
+
     button {
       width: 100%;
       padding: 0.75rem;
@@ -362,22 +367,22 @@
       border-radius: 4px;
       font-weight: 600;
       cursor: pointer;
-      
+
       &.primary {
         background: #4CAF50;
         color: white;
         border: none;
-        
+
         &:hover {
           background: #43a047;
         }
       }
-      
+
       &.secondary {
         background: white;
         color: #333;
         border: 1px solid #ddd;
-        
+
         &:hover {
           background: #f5f5f5;
         }
@@ -397,6 +402,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

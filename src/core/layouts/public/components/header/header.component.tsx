@@ -73,7 +73,7 @@ useEffect(() => {
         </div>
 
         <div className="header__right">
-          <button className="header__auth-btn">ENTRAR/REGISTAR</button>
+          <Link to="/login" className="header__auth-btn">ENTRAR/REGISTAR</Link>
           <button className="header__cart-btn">
             <ShoppingBag size={24} />
           </button>

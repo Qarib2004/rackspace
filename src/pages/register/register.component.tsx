@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowLeft, HelpCircle, Camera } from 'lucide-react';
 import './register.component.scss';
+import { Link } from 'react-router-dom';
 
 const images = [
     'https://agromarket.pt/static/media/slide_3.ec520ee601d256b83969.png',
@@ -27,9 +28,9 @@ function RegisterComponent() {
         <div className="register">
             <div className="register__content">
                 <div className="register__left">
-                    <button className="register__back">
+                    <Link to="/" className="register__back">
                         <ArrowLeft size={20} /> Back
-                    </button>
+                    </Link>
 
                     <div className="register__header">
                         <h1>Create an account</h1>
@@ -97,6 +98,7 @@ function RegisterComponent() {
                             Create Account
                         </button>
                     </form>
+                    
                 </div>
 
                 <div className="register__right">
@@ -112,7 +114,6 @@ function RegisterComponent() {
                             ))}
                         </div>
                         <div className="register__footer">
-                            jkdsadsadsadsadknasdnsadklsankdsankdksnaldnklsadsa
                         </div>
                     </div>
                 </div>
