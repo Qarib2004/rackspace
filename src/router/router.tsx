@@ -8,6 +8,7 @@ import RoomsComponent from '../pages/rooms/rooms.component';
 import HomeComponent from 'pages/home/home.component';
 import RegisterComponent from 'pages/register/register.component';
 import AuthComponent from 'core/layouts/auth/auth.component';
+import LoginComponent from 'pages/login/login.component';
 
 const router = createBrowserRouter([
     {
@@ -41,11 +42,15 @@ const router = createBrowserRouter([
                 path: Routes.register,
                 element: <RegisterComponent />,
             },
+            {
+                path: Routes.login,
+                element: <LoginComponent />,
+            },
 
         ],
     },
 
 
-], { basename: '/auth', });
+], { basename: '/', });
 
 export default router;
