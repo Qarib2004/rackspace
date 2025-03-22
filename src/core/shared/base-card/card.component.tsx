@@ -9,6 +9,8 @@ interface CardProps<T> {
   subtitleKey?: keyof T;
   additionalKeys?: (keyof T)[];
   itemsPerPage?: number;
+  showPagination?:boolean
+  pageTitle?:string
 }
 
 const Card = <T, >({
@@ -18,14 +20,15 @@ const Card = <T, >({
   subtitleKey,
   additionalKeys = [],
   itemsPerPage = 4,
+  showPagination = true,
+  pageTitle
 }: CardProps<T>) => {
   const totalPages = Math.ceil(data.length / itemsPerPage);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const currentItems = data.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const currentItems = showPagination 
+  ? data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+  : data;
 
   const goToNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -39,28 +42,30 @@ const Card = <T, >({
     <div className="product-page">
       <div className="container">
         <div className="page-header">
-          <h1 className="page-title">Data</h1>
-          <div className="pagination">
-            <span className="pagination-info">
-              Page {currentPage} of {totalPages}
-            </span>
-            <div className="pagination-buttons">
-              <button 
-                className="pagination-button" 
-                onClick={goToPreviousPage} 
-                disabled={currentPage === 1}
-              >
-                ←
-              </button>
-              <button 
-                className="pagination-button" 
-                onClick={goToNextPage} 
-                disabled={currentPage === totalPages}
-              >
-                →
-              </button>
+        {pageTitle && <h1 className="page-title">{pageTitle}</h1>}
+                  {showPagination && totalPages > 1 && (
+            <div className="pagination">
+              <span className="pagination-info">
+                Page {currentPage} of {totalPages}
+              </span>
+              <div className="pagination-buttons">
+                <button 
+                  className="pagination-button" 
+                  onClick={goToPreviousPage} 
+                  disabled={currentPage === 1}
+                >
+                  ←
+                </button>
+                <button 
+                  className="pagination-button" 
+                  onClick={goToNextPage} 
+                  disabled={currentPage === totalPages}
+                >
+                  →
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <div className="products-grid">
