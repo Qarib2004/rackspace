@@ -9,6 +9,8 @@ import Store from 'pages/products/store';
 import RegisterComponent from 'pages/register/register.component';
 import AuthComponent from 'core/layouts/auth/auth.component';
 import LoginComponent from 'pages/login/login.component';
+import ProfileComponent from 'pages/profile/profile.component';
+import PersonalData from 'pages/profile/Profile/PersonalData';
 
 const router = createBrowserRouter([
     {
@@ -18,15 +20,25 @@ const router = createBrowserRouter([
                 path: Routes.home,
                 element: <HomeComponent />,
             },
+            {
+                path: Routes.profile,
+                element: <ProfileComponent />,
+                children: [
+                    {
+                        path: Routes.general,
+                        element: <PersonalData />,
+                    },
+                ],
+            },
+            {
+                path: Routes.store,
+                element: <Store />,
+            },
         ],
     },
     {
         element: <AuthProtectedComponent layout="auth"><AuthComponent /></AuthProtectedComponent>,
         children: [
-            {
-                path: Routes.store,
-                element: <Store/>,
-            },
             {
                 path: Routes.register,
                 element: <RegisterComponent />,

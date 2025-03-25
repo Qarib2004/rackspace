@@ -1,0 +1,38 @@
+.profile-layout {
+  min-height: 100vh;
+  background: #f5f5f5;
+
+  .profile-sidebar {
+    padding-top: 10rem;
+    padding-left: 7rem;
+    text-align: center;
+    background: #f5f5f5;
+
+    .ant-layout-sider-children {
+      width: 100%;
+    }
+  }
+
+  .profile-content {
+    background: #f5f5f5;
+    padding: 12rem 5rem;
+    max-width: 60%;
+    min-height: 100vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-layout {
+    .profile-content {
+      margin-left: 0;
+      padding: 1rem;
+    }
+
+    .profile-sidebar {
+      .ant-layout-sider-children {
+        position: static;
+        width: auto;
+      }
+    }
+  }
+}
