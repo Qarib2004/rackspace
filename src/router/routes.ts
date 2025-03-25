@@ -6,6 +6,9 @@ export enum Routes {
   home = '/',
   profile = '/profile',
   general = 'general',
+  messages = 'messages',
+  orders = 'orders',
+  addresses = 'addresses',
 }
 
 export const goTo = (route: string, param: string | number) => {

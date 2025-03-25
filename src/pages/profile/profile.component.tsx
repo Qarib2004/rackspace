@@ -1,24 +1,51 @@
 import React from 'react';
-import { Layout } from 'antd';
-import { Outlet } from 'react-router-dom';
+import { Layout, Menu } from 'antd';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import './profile.component.scss';
 import ProfileSidebar from './Sidebar/ProfileSidebar';
 
-const { Sider, Content } = Layout;
+const { Content, Sider } = Layout;
 
 const ProfileComponent: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname.split('/').pop() || 'general';
+
+  const menuItems = [
+    { key: 'general', label: 'General' },
+    { key: 'messages', label: 'Messages' },
+    { key: 'orders', label: 'Orders' },
+    { key: 'addresses', label: 'Addresses' },
+  ];
+
   return (
     <Layout className="profile-layout">
-      <Sider 
-        width={350} 
-        theme="light"
-        className="profile-sidebar"
+      <Menu
+        mode="horizontal"
+        selectedKeys={[currentPath]}
+        className="mobile-top-nav visible-mobile"
+        onClick={({ key }) => navigate(key)}
       >
-        <ProfileSidebar />
-      </Sider>
-      <Content className="profile-content">
-        <Outlet />
-      </Content>
+        {menuItems.map(item => (
+          <Menu.Item key={item.key}>
+            {item.label}
+          </Menu.Item>
+        ))}
+      </Menu>
+
+      <Layout>
+        <Sider 
+          width={250}
+          className="profile-sidebar hidden-mobile"
+          theme="light"
+        >
+          <ProfileSidebar />
+        </Sider>
+
+        <Content className="profile-content">
+          <Outlet />
+        </Content>
+      </Layout>
     </Layout>
   );
 };
