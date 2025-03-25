@@ -7,9 +7,8 @@ export enum Routes {
     general = '/general',
 }
 
-
 export const goTo = (route: string, param: string | number) => {
-    return route + '/' + param;
+  return route + '/' + param;
 };
 //
 // export const goToWithQuery = (route: string, param: any) => {

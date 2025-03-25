@@ -19,7 +19,7 @@ function HomeComponent() {
           <ClienteSection/>
           <ProfilCard/>
           <AppPromotion/>
-          <Footer/>
+          {/* <Footer/> */}
         </div>
     );
 }
