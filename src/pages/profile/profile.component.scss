@@ -1,38 +1,68 @@
 .profile-layout {
   min-height: 100vh;
   background: #f5f5f5;
+  position: relative;
 
   .profile-sidebar {
-    padding-top: 10rem;
-    padding-left: 7rem;
-    text-align: center;
+    width: 300px;
+    min-height: 100vh;
     background: #f5f5f5;
-
-    .ant-layout-sider-children {
-      width: 100%;
-    }
+    padding: 10rem 5rem;
+    text-align: center;
+    left: 0;
+    top: 0;
+    z-index: 1;
   }
 
   .profile-content {
     background: #f5f5f5;
-    padding: 12rem 5rem;
-    max-width: 60%;
+    padding: 12rem 2rem;
     min-height: 100vh;
+    max-width: 60%;
+    margin-left: 150px;
   }
-}
 
-@media (max-width: 768px) {
-  .profile-layout {
-    .profile-content {
-      margin-left: 0;
-      padding: 1rem;
+  .mobile-top-nav {
+    position: fixed;
+    top: 10%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: #fff;
+    line-height: 46px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-around;
+    padding: 0 16px;
+
+    .ant-menu-item {
+      padding: 0 8px;
+      margin: 0 4px !important;
+      text-align: center;
+      flex: 1;
     }
 
-    .profile-sidebar {
-      .ant-layout-sider-children {
-        position: static;
-        width: auto;
-      }
+    .ant-menu-item-selected {
+      color: #1890ff;
+      border-bottom: 2px solid #1890ff;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .profile-content {
+      margin-left: 0;
+      padding: 6rem 1rem 2rem;
+      margin-top: 46px;
+    }
+
+    .hidden-mobile {
+      display: none;
+    }
+  }
+
+  @media (min-width: 769px) {
+    .visible-mobile {
+      display: none;
     }
   }
 }

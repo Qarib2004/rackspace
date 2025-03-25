@@ -12,6 +12,11 @@
         position: relative;
         transition: background 0.3s ease, transform 0.2s ease;
 
+        &:hover {
+            background-color: #f5f5f5 !important;
+            color: black !important;
+        }
+
         &.ant-menu-item-selected {
             background-color: transparent !important;
 
@@ -19,14 +24,15 @@
                 content: '' !important;
                 position: absolute !important;
                 left: 0 !important;
-                top: 50% !important;
-                height: 70% !important;
-                width: 3px !important;
+                bottom: 0% !important;
+                height: 2px !important;
+                width: 100% !important;
                 background-color: #4CAF50 !important;
                 border-radius: 0 4px 4px 0 !important;
                 transform: translateY(-50%) !important;
                 transition: height 0.3s ease, background 0.3s ease;
             }
+
         }
 
         .anticon {
@@ -34,20 +40,32 @@
         }
     }
 
-    .ant-menu-item-icon {
-        color: #666 !important;
-        transition: color 0.3s ease;
-    }
-
     .ant-menu-title-content {
-        color: #333;
+        color: #a5a5a5;
         font-size: 14px;
         transition: color 0.3s ease, font-weight 0.3s ease;
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0%;
+            height: 1px;
+            width: 100%;
+            background-color: #a5a5a5;
+            border-radius: 0 2px 2px 0;
+            transform: translateY(-50%);
+            transition: height 0.3s ease, background 0.3s ease;
+        }
+
+        &:hover {
+            background-color: #f5f5f5 !important;
+            color: black !important;
+        }
     }
 
     .ant-menu-item-selected {
 
-        .ant-menu-item-icon,
         .ant-menu-title-content {
             color: #2e7d32 !important;
             font-weight: 600;
