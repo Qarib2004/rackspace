@@ -1,17 +1,14 @@
 export enum Routes {
-    auth = '/auth',
-    register = '/register',
-    login = '/login',
-    home = '/',
-    datacenters = '/data-centers',
-    storage = '/data-centers/:id/storage',
-    addDevice = '/data-centers/:id/storage/add-device',
-    rooms = '/data-centers/:id',
+  auth = '/auth',
+  register = '/register',
+  login = '/login',
+  home = '/',
+  store = '/store',
+
 }
 
-
 export const goTo = (route: string, param: string | number) => {
-    return route + '/' + param;
+  return route + '/' + param;
 };
 //
 // export const goToWithQuery = (route: string, param: any) => {
