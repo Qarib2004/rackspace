@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MoreVertical } from 'lucide-react';
 import './card.component.scss';
+import {ICard} from './card';
 
 interface Product {
   id: number;

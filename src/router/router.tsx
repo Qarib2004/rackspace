@@ -1,47 +1,45 @@
-import {createBrowserRouter} from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import PublicComponent from '../core/layouts/public/public.component';
-import {Routes} from './routes';
+import { Routes } from './routes';
 import AuthProtectedComponent from './protected/auth-protected.component';
-import DataCentersComponent from '../pages/data-centers/data-centers.component';
-import AddDeviceComponent from '../pages/add-device/add-device.component';
-import StorageComponent from '../pages/storage/storage.component';
-import RoomsComponent from '../pages/rooms/rooms.component';
 import HomeComponent from 'pages/home/home.component';
 import Prodducts from 'pages/products/store';
 import Products from 'pages/products/store';
 import Store from 'pages/products/store';
+import RegisterComponent from 'pages/register/register.component';
+import AuthComponent from 'core/layouts/auth/auth.component';
+import LoginComponent from 'pages/login/login.component';
 
 const router = createBrowserRouter([
     {
-        element: <AuthProtectedComponent layout="public"><PublicComponent/></AuthProtectedComponent>,
-
+        element: <AuthProtectedComponent layout="public"><PublicComponent /></AuthProtectedComponent>,
         children: [
             {
                 path: Routes.home,
-                element: <HomeComponent/>,
+                element: <HomeComponent />,
             },
-
+        ],
+    },
+    {
+        element: <AuthProtectedComponent layout="auth"><AuthComponent /></AuthProtectedComponent>,
+        children: [
             {
                 path: Routes.store,
                 element: <Store/>,
             },
+            {
+                path: Routes.register,
+                element: <RegisterComponent />,
+            },
+            {
+                path: Routes.login,
+                element: <LoginComponent />,
+            },
 
-            {
-                path: Routes.storage,
-                element: <StorageComponent/>,
-            },
-            {
-                path: Routes.addDevice,
-                element: <AddDeviceComponent/>
-            },
-            {
-                path: Routes.rooms,
-                element: <RoomsComponent/>
-            }
         ],
     },
 
 
-], {basename: '/',});
+], { basename: '/', });
 
 export default router;
