@@ -30,15 +30,15 @@ const router = createBrowserRouter([
                     },
                 ],
             },
+            {
+                path: Routes.store,
+                element: <Store />,
+            },
         ],
     },
     {
         element: <AuthProtectedComponent layout="auth"><AuthComponent /></AuthProtectedComponent>,
         children: [
-            {
-                path: Routes.store,
-                element: <Store/>,
-            },
             {
                 path: Routes.register,
                 element: <RegisterComponent />,

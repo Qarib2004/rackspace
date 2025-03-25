@@ -2,7 +2,7 @@ import React from 'react';
 import { Layout } from 'antd';
 import { Outlet } from 'react-router-dom';
 import './profile.component.scss';
-import Sidebar from './Sidebar/Sidebar';
+import ProfileSidebar from './Sidebar/ProfileSidebar';
 
 const { Sider, Content } = Layout;
 
@@ -10,11 +10,11 @@ const ProfileComponent: React.FC = () => {
   return (
     <Layout className="profile-layout">
       <Sider 
-        width={250} 
+        width={350} 
         theme="light"
         className="profile-sidebar"
       >
-        <Sidebar />
+        <ProfileSidebar />
       </Sider>
       <Content className="profile-content">
         <Outlet />

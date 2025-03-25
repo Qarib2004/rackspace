@@ -61,27 +61,12 @@
     &:hover {
       color: orange;
     }
+
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 
-  &__voice-btn {
-    background: #f5f5f5;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 50%;
-
-    &:hover {
-      background: #f5f5f5;
-    }
-
-    svg {
-      &:hover {
-        color: orange;
-        transition: fill 0.3s ease;
-      }
-    }
-
-  }
 
   &__logo {
     display: flex;
@@ -112,6 +97,10 @@
     a {
       color: black;
     }
+
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 
   &__auth-btn {
@@ -139,6 +128,22 @@
 
     &:hover {
       color: orange;
+    }
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  &__icon-btn {
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  &__profile {
+    @media (max-width: 768px) {
+      display: none;
     }
   }
 
@@ -514,7 +519,8 @@
         &:hover {
           background: #f5f5f5;
           color: black;
-          span{
+
+          span {
             color: #000;
           }
         }
@@ -558,6 +564,7 @@
         cursor: pointer;
         color: #7c7c7c;
         padding: 0;
+
         &:hover {
           color: black;
         }

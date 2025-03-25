@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Typography, Button } from 'antd';
 import { Edit } from 'lucide-react';
-import './profile.styles.scss';
+import './profile.stye.scss';
 
 const { Title, Text } = Typography;
 

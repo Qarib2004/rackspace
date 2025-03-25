@@ -1,10 +1,11 @@
 export enum Routes {
-    auth = '/auth',
-    register = '/register',
-    login = '/login',
-    home = '/',
-    profile = '/profile',
-    general = '/general',
+  auth = '/auth',
+  register = '/register',
+  store = '/store',
+  login = '/login',
+  home = '/',
+  profile = '/profile',
+  general = 'general',
 }
 
 export const goTo = (route: string, param: string | number) => {
