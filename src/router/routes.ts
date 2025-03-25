@@ -6,6 +6,8 @@ export enum Routes {
   home = '/',
   profile = '/profile',
   general = 'general',
+  wihslist = '/wishlist',
+  basket = '/basket'
 }
 
 export const goTo = (route: string, param: string | number) => {
