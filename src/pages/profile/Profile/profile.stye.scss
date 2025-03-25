@@ -1,0 +1,94 @@
+.profile-section {
+    &__card {
+      margin-bottom: 1.5rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  
+      .ant-card-body {
+        padding: 1.5rem;
+      }
+  
+      &-title {
+        margin-bottom: 0.5rem;
+        color: #1a1a1a;
+      }
+  
+      &-description {
+        margin-bottom: 1.5rem;
+        display: block;
+        color: #666;
+      }
+    }
+  
+    &__personal-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+  
+      &-avatar {
+        flex-shrink: 0;
+  
+        .ant-avatar {
+          background-color: #3b82f6;
+          font-size: 1.5rem;
+        }
+      }
+  
+      &-content {
+        flex-grow: 1;
+      }
+  
+      &-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+      }
+  
+      &-details {
+        h5 {
+          font-size: 1.125rem;
+          font-weight: 600;
+          margin: 0;
+        }
+  
+        .contact-info {
+          margin-top: 0.25rem;
+          color: #4b5563;
+        }
+      }
+    }
+  
+    &__tin-section {
+      margin-top: 1rem;
+  
+      .tin-label {
+        color: #4b5563;
+        font-size: 0.875rem;
+      }
+  
+      .tin-value {
+        font-size: 1rem;
+        font-weight: 500;
+      }
+    }
+  
+    &__password {
+      &-dots {
+        font-size: 1.125rem;
+        letter-spacing: 0.2em;
+      }
+    }
+  
+    &__edit-button {
+      transition: background-color 0.2s;
+  
+      &:hover {
+        background-color: #f9fafb;
+  
+        .anticon {
+          color: #3b82f6;
+        }
+      }
+    }
+  }

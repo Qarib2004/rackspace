@@ -1,50 +1,38 @@
 import './header.component.scss';
-import { LogoIcon } from '../../../../../assets/images/icons/logo';
-import HeaderRightComponent from '../header-right/header-right.component';
-import { Link } from 'react-router-dom';
-import React from 'react';
-import { Menu, Search, ShoppingBag, Globe, X, Home, User} from 'lucide-react';
-import { Logo } from 'assets/images/icons/agro-logo';
 import { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Menu, Search, ShoppingBag, Globe, X, Home, User, ChevronDown, MessageCircle } from 'lucide-react';
+import { Logo } from 'assets/images/icons/agro-logo';
 
 const HeaderComponent = () => {
-  const [isOpen, setIsOpen] = useState(false);
-const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-const menuPanelRef = useRef<HTMLDivElement | null>(null);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const profileDropdownRef = useRef<HTMLDivElement | null>(null);
 
-useEffect(() => {
-  const handleClickOutside = (event: MouseEvent) => {
-    const target = event.target as HTMLElement;
-    
-    if (
-      menuPanelRef.current &&
-      !menuPanelRef.current.contains(target) &&
-      !target.closest('.mobile-nav__item')
-    ) {
-      setIsMobileMenuOpen(false);
-    }
-  };
+  // Handle clicks outside the dropdown to close it
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        profileDropdownRef.current &&
+        !profileDropdownRef.current.contains(event.target as Node) &&
+        !(event.target as HTMLElement).closest('.header__profile-btn')
+      ) {
+        setIsProfileDropdownOpen(false);
+      }
+    };
 
-  if (isMobileMenuOpen) {
     document.addEventListener('mousedown', handleClickOutside);
-  }
-
-  return () => {
-    document.removeEventListener('mousedown', handleClickOutside);
-  };
-}, [isMobileMenuOpen]);
-
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
-    <>
     <header className="header">
       <div className="header__container">
+        {/* Left Section */}
         <div className="header__left">
-          <button className="header__menu-btn" onClick={() => setIsOpen(!isOpen)}>
+          <button className="header__menu-btn">
             <Menu size={24} />
             <span>MENU</span>
           </button>
-
           <div className="header__search">
             <Search size={20} />
           </div>
@@ -68,96 +56,88 @@ useEffect(() => {
           </button>
         </div>
 
+        {/* Logo Section */}
         <div className="header__logo">
           <Logo />
         </div>
 
+        {/* Right Section */}
         <div className="header__right">
-          <Link to="/login" className="header__auth-btn">ENTRAR/REGISTAR</Link>
+          <Link to="/login" className="header__auth-btn">
+            Giriş/Qeydiyyat
+          </Link>
           <button className="header__cart-btn">
             <ShoppingBag size={24} />
           </button>
           <button className="header__lang-btn">
             <Globe size={24} />
           </button>
-        </div>
-      </div>
-
-      {isOpen && (
-        <div className="header__small-modal">
-          <div className="header__small-modal-content">
-            <div className="header__small-modal-header">
-              <h3>Menu</h3>
-              <button className="header__small-modal-close" onClick={() => setIsOpen(false)}>
-                <X size={18} />
-              </button>
-            </div>
-            <nav className="header__small-modal-menu">
-              <ul>
-              <li><a href="#">Página Inicial</a></li>
-              <li><a href="#">Categorias</a></li>
-              <li><a href="#">Promoções</a></li>
-              <li><a href="#">Novidades</a></li>
-              <li><a href="#">Sobre Nós</a></li>
-              <li><a href="#">Contactos</a></li>
-              <li><a href="#">Ajuda</a></li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      )}
-    </header>
-
-    <nav className="mobile-nav">
-      <div className="mobile-nav__container">
-        <a href="#" className="mobile-nav__item mobile-nav__item--active">
-          <Home size={24} />
-          <span>Inicio</span>
-        </a>
-        <button className="mobile-nav__item" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-          <Menu size={24} />
-          <span>Menu</span>
-        </button>
-        <a href="#" className="mobile-nav__item">
-          <ShoppingBag size={24} />
-          <span>Loja</span>
-        </a>
-        <a href="#" className="mobile-nav__item">
-          <User size={24} />
-          <span>Perfil</span>
-        </a>
-      </div>
-      
-      <div 
-        ref={menuPanelRef}
-        className={`mobile-nav__menu-panel ${isMobileMenuOpen ? 'mobile-nav__menu-panel--open' : ''}`}
-      >
-        <div className="mobile-nav__menu-content">
-          <div className="mobile-nav__menu-header">
-            <h3>Menu</h3>
-            <button className="mobile-nav__menu-close" onClick={() => setIsMobileMenuOpen(false)}>
-              <X size={18} />
+          <div className="header__profile">
+            <button
+              className="header__profile-btn"
+              onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+            >
+              <img
+                className="header__img"
+                src="https://agromarketing.com/wp-content/uploads/2016/12/default-avatar.png"
+                alt="Profile"
+              />
             </button>
-          </div>
-          <div className="mobile-nav__menu-list">
-            <ul>
-              <li><a href="#">Página Inicial</a></li>
-              <li><a href="#">Categorias</a></li>
-              <li><a href="#">Promoções</a></li>
-              <li><a href="#">Novidades</a></li>
-              <li><a href="#">Sobre Nós</a></li>
-              <li><a href="#">Contactos</a></li>
-              <li><a href="#">Ajuda</a></li>
-            </ul>
-          </div>
-          <div className="mobile-nav__auth-section">
-            <button className="primary">Entrar</button>
-            <button className="secondary">Criar Conta</button>
+            {isProfileDropdownOpen && (
+              <div ref={profileDropdownRef} className="header__profile-dropdown">
+                <div className="header__profile-dropdown-header">
+                  <img
+                    className="header__profile-dropdown-img"
+                    src="https://agromarketing.com/wp-content/uploads/2016/12/default-avatar.png"
+                    alt="Profile"
+                  />
+                  <div className="header__profile-dropdown-info">
+                    <span className="header__profile-dropdown-name">John Doe</span>
+                    <span className="header__profile-dropdown-user">Customer</span>
+                  </div>
+                </div>
+                <ul className="header__profile-dropdown-menu">
+                  <li>
+                    <Link to="/profile" className="header__profile-dropdown-item">
+                      <User size={16} />
+                      <span>Profil</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/profile" className="header__profile-dropdown-item">
+                      <MessageCircle size={16} />
+                      <span>Messages</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/orders" className="header__profile-dropdown-item">
+                      <ShoppingBag size={16} />
+                      <span>Sifarişlərim</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/addresses" className="header__profile-dropdown-item">
+                      <Home size={16} />
+                      <span>Ünvanlar</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <div className="header__profile-dropdown-item-btn">
+                      <Link to="/help" className="header__profile-dropdown-help">
+                        Kömək Lazımdır?
+                      </Link>
+                    </div>
+                    <div className="header__profile-dropdown-item-btn2">
+                      <button className="header__profile-dropdown-button">Çıxış</button>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>
-    </nav>
-    </>
+    </header>
   );
 };
 

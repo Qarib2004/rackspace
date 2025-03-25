@@ -3,10 +3,8 @@ export enum Routes {
     register = '/register',
     login = '/login',
     home = '/',
-    datacenters = '/data-centers',
-    storage = '/data-centers/:id/storage',
-    addDevice = '/data-centers/:id/storage/add-device',
-    rooms = '/data-centers/:id',
+    profile = '/profile',
+    general = '/general',
 }
 
 
