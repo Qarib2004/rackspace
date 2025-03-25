@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 import { Menu, Search, ShoppingBag, Globe, X, Home, User, ChevronDown, MessageCircle, Heart, Bell } from 'lucide-react';
 import { Logo } from 'assets/images/icons/agro-logo';
 import { getToken } from 'core/helpers/get-token';
+import SidebarBasket from 'pages/basket-sidebar/basketSidebar.component';
 
 const HeaderComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isBasketOpen, setIsBasketOpen] = useState(false);
 
   const menuPanelRef = useRef<HTMLDivElement | null>(null);
   const profileDropdownRef = useRef<HTMLDivElement | null>(null);
@@ -60,6 +62,11 @@ const HeaderComponent = () => {
     setIsProfileDropdownOpen(false);
   };
 
+  const toggleBasket = (e: React.MouseEvent) => {
+    e.preventDefault(); 
+    setIsBasketOpen(!isBasketOpen);
+  };
+
   return (
     <>
       <header className="header">
@@ -95,9 +102,9 @@ const HeaderComponent = () => {
               </>
             )}
 
-            <Link to="/cart" className="header__cart-btn">
+<button onClick={toggleBasket} className="header__cart-btn">
               <ShoppingBag size={24} />
-            </Link>
+            </button>
 
             {!isAuthenticated ? (
               <button className="header__lang-btn">
@@ -274,6 +281,8 @@ const HeaderComponent = () => {
           </div>
         </div>
       </nav>
+
+      <SidebarBasket isOpen={isBasketOpen} onClose={() => setIsBasketOpen(false)} />
     </>
   );
 };

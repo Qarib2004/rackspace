@@ -9,6 +9,9 @@ import AuthComponent from 'core/layouts/auth/auth.component';
 import LoginComponent from 'pages/login/login.component';
 import ProfileComponent from 'pages/profile/profile.component';
 import PersonalData from 'pages/profile/Profile/PersonalData';
+import FavoritesPage from 'pages/wishlist/wishlist.component';
+import SidebarBasket from 'pages/basket-sidebar/basketSidebar.component';
+
 import Messages from 'pages/profile/Profile/Messages';
 import Addresses from 'pages/profile/Profile/Adresses';
 import Orders from 'pages/profile/Profile/Orders';
@@ -47,6 +50,15 @@ const router = createBrowserRouter([
                 path: Routes.store,
                 element: <Store />,
             },
+            {
+                path: Routes.wihslist,
+                element: <FavoritesPage />,
+            },
+            {
+                path: Routes.basket,
+                element: <SidebarBasket isOpen={true} onClose={() => console.log('Sidebar closed')} />
+              }
+              
         ],
     },
     {

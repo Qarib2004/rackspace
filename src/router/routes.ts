@@ -6,6 +6,8 @@ export enum Routes {
   home = '/',
   profile = '/profile',
   general = 'general',
+  wihslist = '/wishlist',
+  basket = '/basket',
   messages = 'messages',
   orders = 'orders',
   addresses = 'addresses',
