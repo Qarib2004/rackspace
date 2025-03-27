@@ -63,7 +63,7 @@
     }
 
     @media (max-width: 768px) {
-      display: none;
+      margin-left: 9rem;;
     }
   }
 
@@ -82,10 +82,12 @@
     }
 
     @media (max-width: 768px) {
-      width: 100px;
-      height: auto;
-      object-fit: contain;
-      max-height: 50px;
+      img, svg {
+        width: 100px;
+        height: auto;
+        object-fit: contain;
+        max-height: 50px;
+      }
     }
   }
 
@@ -99,7 +101,8 @@
     }
 
     @media (max-width: 768px) {
-      display: none;
+      display: flex;
+      gap: 1rem;
     }
   }
 
@@ -130,22 +133,23 @@
       color: orange;
     }
 
-    @media (max-width: 768px) {
-      display: none;
-    }
+    // @media (max-width: 768px) {
+    //   display: none;
+    // }
   }
 
   &__icon-btn {
     @media (max-width: 768px) {
       display: none;
+   
     }
   }
 
-  &__profile {
-    @media (max-width: 768px) {
-      display: none;
-    }
-  }
+  // &__profile {
+  //   @media (max-width: 768px) {
+  //     display: none;
+  //   }
+  // }
 
   &__small-modal {
     position: absolute;

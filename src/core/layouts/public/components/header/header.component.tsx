@@ -5,6 +5,7 @@ import { Menu, Search, ShoppingBag, Globe, X, Home, User, ChevronDown, MessageCi
 import { Logo } from 'assets/images/icons/agro-logo';
 import { getToken } from 'core/helpers/get-token';
 import SidebarBasket from 'pages/basket-sidebar/basketSidebar.component';
+import SearchComponent from '../search/search.component';
 
 const HeaderComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,7 @@ const HeaderComponent = () => {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isBasketOpen, setIsBasketOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const menuPanelRef = useRef<HTMLDivElement | null>(null);
   const profileDropdownRef = useRef<HTMLDivElement | null>(null);
@@ -67,6 +69,11 @@ const HeaderComponent = () => {
     setIsBasketOpen(!isBasketOpen);
   };
 
+  const toggleSearch = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsSearchOpen(!isSearchOpen);
+  };
+
   return (
     <>
       <header className="header">
@@ -77,7 +84,7 @@ const HeaderComponent = () => {
               <span>MENU</span>
             </button>
 
-            <div className="header__search">
+            <div className="header__search"  onClick={toggleSearch}>
               <Search size={20} />
             </div>
           </div>
@@ -112,6 +119,7 @@ const HeaderComponent = () => {
               </button>
             ) : (
               <>
+              
               </>
             )}
 
@@ -200,13 +208,14 @@ const HeaderComponent = () => {
               </div>
               <nav className="header__small-modal-menu">
                 <ul>
-                  <li><Link to="/">Página Inicial</Link></li>
-                  <li><Link to="/categories">Categorias</Link></li>
-                  <li><Link to="/promotions">Promoções</Link></li>
-                  <li><Link to="/new">Novidades</Link></li>
-                  <li><Link to="/about">Sobre Nós</Link></li>
-                  <li><Link to="/contact">Contactos</Link></li>
-                  <li><Link to="/help">Ajuda</Link></li>
+                <li><Link to="/">Ana səhifə</Link></li>
+<li><Link to="/categories">Kateqoriyalar</Link></li>
+<li><Link to="/promotions">Təkliflər</Link></li>
+<li><Link to="/new">Xəbərlər</Link></li>
+<li><Link to="/about">Haqqımızda</Link></li>
+<li><Link to="/contact">Əlaqə</Link></li>
+<li><Link to="/help">Kömək</Link></li>
+
                 </ul>
               </nav>
             </div>
@@ -218,15 +227,15 @@ const HeaderComponent = () => {
         <div className="mobile-nav__container">
           <Link to="/" className="mobile-nav__item mobile-nav__item--active">
             <Home size={24} />
-            <span>Inicio</span>
+            <span>Ana səhifə</span>
           </Link>
           <button className="mobile-nav__item" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
             <Menu size={24} />
             <span>Menu</span>
           </button>
-          <Link to="/cart" className="mobile-nav__item">
+          <Link to="/store" className="mobile-nav__item">
             <ShoppingBag size={24} />
-            <span>Loja</span>
+            <span>Mağaza</span>
           </Link>
           {isAuthenticated ? (
             <Link to="/profile/general" className="mobile-nav__item">
@@ -254,13 +263,14 @@ const HeaderComponent = () => {
             </div>
             <div className="mobile-nav__menu-list">
               <ul>
-                <li><Link to="/">Página Inicial</Link></li>
-                <li><Link to="/categories">Categorias</Link></li>
-                <li><Link to="/promotions">Promoções</Link></li>
-                <li><Link to="/new">Novidades</Link></li>
-                <li><Link to="/about">Sobre Nós</Link></li>
-                <li><Link to="/contact">Contactos</Link></li>
-                <li><Link to="/help">Ajuda</Link></li>
+              <li><Link to="/">Ana səhifə</Link></li>
+<li><Link to="/categories">Kateqoriyalar</Link></li>
+<li><Link to="/wishlist">Favoriler</Link></li>
+<li><Link to="/new">Xəbərlər</Link></li>
+<li><Link to="/about">Haqqımızda</Link></li>
+<li><Link to="/contact">Əlaqə</Link></li>
+<li><Link to="/help">Kömək</Link></li>
+
               </ul>
             </div>
             <div className="mobile-nav__auth-section">
@@ -283,6 +293,7 @@ const HeaderComponent = () => {
       </nav>
 
       <SidebarBasket isOpen={isBasketOpen} onClose={() => setIsBasketOpen(false)} />
+      <SearchComponent isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>
   );
 };

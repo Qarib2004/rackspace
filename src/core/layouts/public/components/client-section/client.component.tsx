@@ -13,11 +13,11 @@ const ClienteSection = () => {
               className="cliente-card__image"
             />
             <div className="cliente-card__overlay" />
-            <h2 className="cliente-card__title">Cliente</h2>
+            <h2 className="cliente-card__title">Müştəri</h2>
             <div className="cliente-card__content">
               <p className="cliente-card__text">
-                Está no sítio certo. Valorize a produção regional e o consumo
-                consciente. Compre diretamente aos produtores locais!
+                Siz doğru yerdəsiniz. Regional istehsala və şüurlu istehlaka
+                dəyər verin. Birbaşa yerli istehsalçılardan alın!
               </p>
             </div>
           </div>
@@ -32,13 +32,12 @@ const ClienteSection = () => {
             />
             <div className="cliente-card__overlay" />
             <h2 className="cliente-card__title cliente-card__title--white">
-              Produtor
+              İstehsalçı
             </h2>
             <div className="cliente-card__content">
               <p className="cliente-card__text">
-                Temos à sua disposição uma plataforma prática e simples que
-                permite levar os seus produtos até aos clientes sem
-                intermediários.
+                Məhsullarınızı vasitəçi olmadan müştərilərə çatdırmağa imkan
+                verən praktik və sadə platformamız var.
               </p>
             </div>
           </div>

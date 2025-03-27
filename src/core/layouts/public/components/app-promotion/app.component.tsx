@@ -7,16 +7,16 @@ const googlePlayIcon = 'src/assets/images/app-promotion/download (2).jpeg';
 const AppPromotion: React.FC = () => {
   return (
     <div className="app-promotion-container">
-      <h1 className="app-promotion-title">Aplicação móvel</h1>
+      <h1 className="app-promotion-title">Mobil proqraml</h1>
       
       <div className="app-promotion-content">
         <div className="app-promotion-text-container">
           <h2 className="app-promotion-slogan">
-            Da nossa aplicação<br />
-            para a sua mesa
+          Proqramımızdan<br />
+          masanıza
           </h2>
           
-          <button className="app-promotion-button">Saiba mais</button>
+          <button className="app-promotion-button">Ətraflı məlumat əldə edin</button>
         </div>
         
         
