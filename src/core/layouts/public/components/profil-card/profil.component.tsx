@@ -25,105 +25,105 @@ const cardImg5 =
 const products: Product[] = [
   {
     id: 1,
-    name: 'Francisco Daniel Gonçalves Freitas',
+    name: 'Əli',
     email: 'freitas.helder84@gmail.com',
     tlm: '966692723',
     image: `${cardImg}`,
   },
   {
     id: 2,
-    name: 'Eugénio Câmara',
+    name: 'Murad',
     email: 'freitas.helder84@gmail.com',
     tlm: '966692723',
     image: `${cardImg2}`,
   },
   {
     id: 3,
-    name: 'Sem informação',
+    name: 'Orxan',
     email: 'freitas.helder84@gmail.com',
     tlm: '966692723',
     image: `${cardImg3}`,
   },
   {
     id: 4,
-    name: 'Sem informação',
+    name: 'Ramil',
     email: 'freitas.helder84@gmail.com',
     tlm: '966692723',
     image: `${cardImg4}`,
   },
   {
     id: 5,
-    name: 'Sem informação',
+    name: 'Qarib',
     email: 'freitas.helder84@gmail.com',
     tlm: '966692723',
     image: `${cardImg5}`,
   },
   {
     id: 6,
-    name: 'Francisco Daniel Gonçalves Freitas',
+    name: 'Nurlan',
     email: 'freitas.helder84@gmail.com',
     tlm: '966692723',
     image: `${cardImg}`,
   },
   {
     id: 7,
-    name: 'Eugénio Câmara',
+    name: 'Tural',
     email: 'freitas.helder84@gmail.com',
     tlm: '966692723',
     image: `${cardImg2}`,
   },
   {
     id: 8,
-    name: 'Ricardo Ventura',
+    name: 'Cavid',
     email: 'freitas.helder84@gmail.com',
     tlm: '966692723',
     image: `${cardImg3}`,
   },
   {
     id: 9,
-    name: 'Sem informação',
+    name: 'Samir',
     email: 'freitas.helder84@gmail.com',
     tlm: '966692723',
     image: `${cardImg4}`,
   },
   {
     id: 10,
-    name: 'Sem informação',
+    name: 'Emil',
     email: 'freitas.helder84@gmail.com',
     tlm: '966692723',
     image: `${cardImg5}`,
   },
   {
     id: 11,
-    name: 'Francisco Daniel Gonçalves Freitas',
+    name: 'Emin',
     email: 'freitas.helder84@gmail.com',
     tlm: '966692723',
     image: `${cardImg}`,
   },
   {
     id: 12,
-    name: 'Eugénio Câmara',
+    name: 'Zaur',
     email: 'freitas.helder84@gmail.com',
     tlm: '966692723',
     image: `${cardImg2}`,
   },
   {
     id: 13,
-    name: 'Ricardo Ventura',
+    name: 'Radmir',
     email: 'freitas.helder84@gmail.com',
     tlm: '966692723',
     image: `${cardImg3}`,
   },
   {
     id: 14,
-    name: 'Sem informação',
+    name: 'Ziyad',
     email: 'freitas.helder84@gmail.com',
     tlm: '966692723',
     image: `${cardImg4}`,
   },
   {
     id: 15,
-    name: 'Sem informação',
+    name: 'Ferid',
     email: 'freitas.helder84@gmail.com',
     tlm: '966692723',
     image: `${cardImg5}`,
@@ -159,10 +159,10 @@ const ProfilCard = () => {
     <div className="product-page">
       <div className="container">
         <div className="page-header">
-          <h1 className="page-title">Perfil produtor</h1>
+          <h1 className="page-title">İstehsalçı profili</h1>
           <div className="pagination">
             <span className="pagination-info">
-              Página {currentPage} de {totalPages}
+            Səhifə {currentPage} / {totalPages}
             </span>
             <div className="pagination-buttons">
               <button
@@ -223,7 +223,7 @@ const ProfilCard = () => {
                 </div>
 
                 <div className="product-actions">
-                  <button className="buy-button">Saiba Mais</button>
+                  <button className="buy-button">Ətraflı məlumat əldə edin</button>
                   <button className="add-button">
                     <span className="plus-icon">
                       <svg
@@ -241,7 +241,7 @@ const ProfilCard = () => {
                         <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                       </svg>
                     </span>{' '}
-                    Enivar Mensagem
+                    Mesaj göndər
                   </button>
                 </div>
               </div>

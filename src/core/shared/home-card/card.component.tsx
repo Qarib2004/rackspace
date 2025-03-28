@@ -18,120 +18,120 @@ const cardImg =
 const products: Product[] = [
   {
     id: 1,
-    name: 'Sem informação',
-    producer: "Profetas d'Êxito Ida",
+    name: 'Məlumat yoxdur',
+    producer: 'Hüseynağa',
     weight: '10 gr',
     price: 1.6,
     image: `${cardImg}`,
   },
   {
     id: 2,
-    name: 'Sem informação',
-    producer: "Profetas d'Êxito Ida",
+    name: 'Məlumat yoxdur',
+    producer: 'Hüseynağa',
     weight: '50 gr',
     price: 1.5,
     image: `${cardImg}`,
   },
   {
     id: 3,
-    name: 'Sem informação',
-    producer: "Profetas d'Êxito Ida",
+    name: 'Məlumat yoxdur',
+    producer: 'Hüseynağa',
     weight: '60 gr',
     price: 1.5,
     image: `${cardImg}`,
   },
   {
     id: 4,
-    name: 'Sem informação',
-    producer: "Profetas d'Êxito Ida",
+    name: 'Məlumat yoxdur',
+    producer: 'Hüseynağa',
     weight: '300 gr',
     price: 1.69,
     image: `${cardImg}`,
   },
   {
     id: 5,
-    name: 'Sem informação',
-    producer: "Profetas d'Êxito Ida",
+    name: 'Məlumat yoxdur',
+    producer: 'Hüseynağa',
     weight: '300 gr',
     price: 1.69,
     image: `${cardImg}`,
   },
   {
     id: 6,
-    name: 'Sem informação',
-    producer: "Profetas d'Êxito Ida",
+    name: 'Məlumat yoxdur',
+    producer: 'Hüseynağa',
     weight: '300 gr',
     price: 1.69,
     image: `${cardImg}`,
   },
   {
     id: 7,
-    name: 'Sem informação',
-    producer: "Profetas d'Êxito Ida",
+    name: 'Məlumat yoxdur',
+    producer: 'Hüseynağa',
     weight: '300 gr',
     price: 1.69,
     image: `${cardImg}`,
   },
   {
     id: 8,
-    name: 'Sem informação',
-    producer: "Profetas d'Êxito Ida",
+    name: 'Məlumat yoxdur',
+    producer: 'Hüseynağa',
     weight: '200 gr',
     price: 1.79,
     image: `${cardImg}`,
   },
   {
     id: 9,
-    name: 'Sem informação',
-    producer: "Profetas d'Êxito Ida",
+    name: 'Məlumat yoxdur',
+    producer: 'Hüseynağa',
     weight: '250 gr',
     price: 1.89,
     image: `${cardImg}`,
   },
   {
     id: 10,
-    name: 'Sem informação',
-    producer: "Profetas d'Êxito Ida",
+    name: 'Məlumat yoxdur',
+    producer: 'Hüseynağa',
     weight: '100 gr',
     price: 1.59,
     image: `${cardImg}`,
   },
   {
     id: 11,
-    name: 'Sem informação',
-    producer: "Profetas d'Êxito Ida",
+    name: 'Məlumat yoxdur',
+    producer: 'Hüseynağa',
     weight: '150 gr',
     price: 1.65,
     image: `${cardImg}`,
   },
   {
     id: 12,
-    name: 'Sem informação',
-    producer: "Profetas d'Êxito Ida",
+    name: 'Məlumat yoxdur',
+    producer: 'Hüseynağa',
     weight: '175 gr',
     price: 1.75,
     image: `${cardImg}`,
   },
   {
     id: 13,
-    name: 'Sem informação',
-    producer: "Profetas d'Êxito Ida",
+    name: 'Məlumat yoxdur',
+    producer: 'Hüseynağa',
     weight: '225 gr',
     price: 1.85,
     image: `${cardImg}`,
   },
   {
     id: 14,
-    name: 'Sem informação',
-    producer: "Profetas d'Êxito Ida",
+    name: 'Məlumat yoxdur',
+    producer: 'Hüseynağa',
     weight: '350 gr',
     price: 1.95,
     image: `${cardImg}`,
   },
   {
     id: 15,
-    name: 'Sem informação',
-    producer: "Profetas d'Êxito Ida",
+    name: 'Məlumat yoxdur',
+    producer: 'Hüseynağa',
     weight: '400 gr',
     price: 2.05,
     image: `${cardImg}`,
@@ -164,9 +164,9 @@ const Card = () => {
     <div className="product-page">
       <div className="container">
         <div className="page-header">
-          <h1 className="page-title">Adicionados recentemente</h1>
+          <h1 className="page-title">Bu yaxınlarda əlavə edildi</h1>
           <div className="pagination">
-            <span className="pagination-info">Página {currentPage} de {totalPages}</span>
+            <span className="pagination-info">Səhifə {currentPage}/{totalPages}</span>
             <div className="pagination-buttons">
               <button 
                 className="pagination-button" 
@@ -218,7 +218,7 @@ const Card = () => {
                 </div>
 
                 <p className="product-producer">
-                  Produtor:{' '}
+                İstehsalçı:{' '}
                   <span className="producer-name">{product.producer}</span>
                 </p>
 
@@ -238,9 +238,9 @@ const Card = () => {
                 </div>
 
                 <div className="product-actions">
-                  <button className="buy-button">Comprar Já</button>
+                  <button className="buy-button">Indi al</button>
                   <button className="add-button">
-                    <span className="plus-icon">+</span> Adicionar
+                    <span className="plus-icon">+</span> Əlavə etmək üçün
                   </button>
                 </div>
               </div>
