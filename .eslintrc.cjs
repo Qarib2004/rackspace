@@ -28,6 +28,8 @@ module.exports = {
     'prefer-const': 'warn',
     'semi': 'error',
     'comma-spacing': 'error',
+    "no-unused-expressions": "off"
     // 'comma-dangle': ['error',{"objects": "always"}],
   },
+  
 }

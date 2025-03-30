@@ -6,6 +6,8 @@ export interface IState {
     languages: ILanguages[];
     locale: any;
     user: any | null;
+    isAuthenticated: boolean;
+    registerError: string | null;
 }
 
 
