@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { RegisterService } from './register.service';
-import { setLoader, setUser } from 'store/store.reducer';
+import { setLoader } from 'store/store.reducer';
+import { setUser } from 'store/store.reducer'; 
 import { setToken } from 'core/helpers/get-token';
 import { IRegisterRequest, IRegisterResponse } from './register';
 import { AppDispatch } from 'store/store.config';
