@@ -1,13 +1,18 @@
 import {environment} from '../configs/app.config';
 
 export const getToken = (): string | null => {
-    // return localStorage.getItem(`${environment.applicationName}-token`);
-    return localStorage.getItem('token');
+    const token = localStorage.getItem('token') || localStorage.getItem(`${environment.applicationName}-token`);
+    console.log('Retrieved token:', token); 
+    return token;
 };
 
+
 export const setToken = (token: string) => {
-    localStorage.setItem(`${environment.applicationName}-token`, token);
+    const tokenKey = localStorage.getItem('token') ? 'token' : `${environment.applicationName}-token`;
+    localStorage.setItem(tokenKey, token);
+    console.log('Token set:', token, 'using key:', tokenKey);
 };
+
 
 export const getPosition = (): string | null => {
     return sessionStorage.getItem('info');

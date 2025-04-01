@@ -1,4 +1,3 @@
-// SearchComponent.tsx
 import './search.component.scss';
 import { useState, useRef, useEffect } from 'react';
 import { Search, X, ArrowLeft } from 'lucide-react';
