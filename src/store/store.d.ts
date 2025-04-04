@@ -1,3 +1,4 @@
+import { User } from 'core/utils/IUser';
 import {ILang} from '../assets/lang/lang';
 
 export interface IState {
@@ -5,9 +6,11 @@ export interface IState {
     leftMenu: boolean;
     languages: ILanguages[];
     locale: any;
-    user: any | null;
+    user: User| any | null;
     isAuthenticated: boolean;
     registerError: string | null;
+    isLoggingIn: boolean, 
+    loginError: string | null, 
 }
 
 
@@ -16,3 +19,4 @@ export interface ILanguages {
     key: ILang;
     value: string;
 }
+

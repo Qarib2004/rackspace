@@ -6,6 +6,8 @@ import { Logo } from 'assets/images/icons/agro-logo';
 import { getToken } from 'core/helpers/get-token';
 import SidebarBasket from 'pages/basket-sidebar/basketSidebar.component';
 import SearchComponent from '../search/search.component';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store.reducer';
 
 const HeaderComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +16,7 @@ const HeaderComponent = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isBasketOpen, setIsBasketOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const user = useSelector((state: RootState) => state.auth.user || state.root.user);
 
   const menuPanelRef = useRef<HTMLDivElement | null>(null);
   const profileDropdownRef = useRef<HTMLDivElement | null>(null);
@@ -145,8 +148,10 @@ const HeaderComponent = () => {
                         alt="Profile"
                       />
                       <div className="header__profile-dropdown-info">
-                        <span className="header__profile-dropdown-name">John Doe</span>
-                        <span className="header__profile-dropdown-user">Customer</span>
+                        <span className="header__profile-dropdown-name"><span className="header__profile-dropdown-name">
+  {user?.firstname ? `${user.firstname} ${user.lastname || ''}` : 'John'}
+</span></span>
+                        <span className="header__profile-dropdown-user">{user?.lastname}</span>
                       </div>
                     </div>
                     <ul className="header__profile-dropdown-menu">
