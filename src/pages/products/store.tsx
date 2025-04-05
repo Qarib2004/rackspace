@@ -4,8 +4,7 @@ import Sidebar from './sidebar/sidebar';
 import Card from 'core/shared/base-card/card.component';
 import { SlidersHorizontal, ChevronDown, X, ArrowUp } from 'lucide-react';
 import './store.component.scss';
-import tomatoImg from '../../../../../assets/images/store/pomidor.jpeg';
-
+import tomatoImg from '../../assets/images/store/pomidor.jpeg';
 
 const products = [
   {
