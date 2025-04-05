@@ -1,17 +1,15 @@
 import React from 'react';
 import './categories.compinent.scss';
 import iconPath from '../../../../../assets/images/categories/6wNfUPvIoLpNWXHmuqmeRa5nUvGw14EPfMkDQcti.svg';
-
-const iconPath2 = '/assets/images/categories/8xXVbe14xepA6ZPuguAJc823EcqkTeJSp28R88Z8.svg';
-const iconPath3 = '/assets/images/categories/dkR35eUlXHHiagLjqSrvjXry0RhAF7EzRfZeoOne.svg';
-const iconPath4 = '/assets/images/categories/FgeFXvjnO5eV7G6UShtS2v4OsRdsaag8re7vqaLy.svg';
-const iconPath5 = '/assets/images/categories/NVRcywro3PdiVYHhMhsyf7yMkICzi7BOMPevofRr.svg';
-const iconPath6 = '/assets/images/categories/UcMFgzAJT18PBXZg4atWpblYEKpc9B2R97VwmAxh.svg';
-const iconPath7 = '/assets/images/categories/vlg4oW5Mer92yvZJnTTdd8HVdxki8oKM94RQ6Nkj.svg';
-const iconPath8 = '/assets/images/categories/WLZEU9UisqTjbSraMy5IGOIQUOsOgoi1FHljo0EX.svg';
-const iconPath9 = '/assets/images/categories/X4tme9oett1sQ2YyGCp6JF8L5q9N5oLNg4xaP3bk.svg';
-const iconPath10 = '/assets/images/categories/ykX4ezOTRvxC3J41Wa9z2UB7spSd4eNBynxMPFOV.svg';
-
+import iconPath2 from '../../../../../assets/images/categories/8xXVbe14xepA6ZPuguAJc823EcqkTeJSp28R88Z8.svg';
+import iconPath3 from '../../../../../assets/images/categories/dkR35eUlXHHiagLjqSrvjXry0RhAF7EzRfZeoOne.svg';
+import iconPath4 from '../../../../../assets/images/categories/FgeFXvjnO5eV7G6UShtS2v4OsRdsaag8re7vqaLy.svg';
+import iconPath5 from '../../../../../assets/images/categories/NVRcywro3PdiVYHhMhsyf7yMkICzi7BOMPevofRr.svg';
+import iconPath6 from '../../../../../assets/images/categories/UcMFgzAJT18PBXZg4atWpblYEKpc9B2R97VwmAxh.svg';
+import iconPath7 from '../../../../../assets/images/categories/vlg4oW5Mer92yvZJnTTdd8HVdxki8oKM94RQ6Nkj.svg';
+import iconPath8 from '../../../../../assets/images/categories/WLZEU9UisqTjbSraMy5IGOIQUOsOgoi1FHljo0EX.svg';
+import iconPath9 from '../../../../../assets/images/categories/X4tme9oett1sQ2YyGCp6JF8L5q9N5oLNg4xaP3bk.svg';
+import iconPath10 from '../../../../../assets/images/categories/ykX4ezOTRvxC3J41Wa9z2UB7spSd4eNBynxMPFOV.svg';
 
 const categories = [
   { icon: `${iconPath3}`, label: 'Vegetables', color: 'green' },
