@@ -1,12 +1,15 @@
 import router from './router/router';
 import './App.scss';
-import {RouterProvider} from 'react-router-dom';
-import {QueryClient, QueryClientProvider} from 'react-query';
-import {ReactQueryDevtools} from 'react-query/devtools';
-import {ToastContainer} from 'react-toastify';
-import {ConfigProvider} from 'antd';
-import {themeConfig} from './core/configs/theme.config';
+import { RouterProvider } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+import { ToastContainer } from 'react-toastify';
+import { ConfigProvider } from 'antd';
+import { themeConfig } from './core/configs/theme.config';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setAuthUser } from './store/auth.slice'; 
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -16,18 +19,33 @@ const queryClient = new QueryClient({
     },
 });
 
-
-
 function App() {
-    // const loader = useStore('loader');
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const userString = localStorage.getItem('user');
+        
+        if (token && userString) {
+            try {
+                const user = JSON.parse(userString);
+                dispatch(setAuthUser({ user, token }));
+            } catch (error) {
+                console.error('Failed to parse user data:', error);
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+            }
+        }
+    }, [dispatch]);
+
     return (
         <QueryClientProvider client={queryClient}>
             <ConfigProvider theme={themeConfig}>
-                <div className='App'>
-                    <RouterProvider router={router}/>
+                <div className="App">
+                    <RouterProvider router={router} />
                 </div>
                 <ToastContainer
-                    position='bottom-right'
+                    position="bottom-right"
                     autoClose={5000}
                     hideProgressBar={false}
                     newestOnTop={false}
@@ -37,16 +55,14 @@ function App() {
                     pauseOnFocusLoss
                     draggable={false}
                     pauseOnHover
-                    theme='light'
-                    style={
-                        {
-                            minHeight: 'auto',
-                            maxHeight: '80vh',
-                        }
-                    }
+                    theme="light"
+                    style={{
+                        minHeight: 'auto',
+                        maxHeight: '80vh',
+                    }}
                 />
             </ConfigProvider>
-            <ReactQueryDevtools initialIsOpen={false}/>
+            <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
     );
 }

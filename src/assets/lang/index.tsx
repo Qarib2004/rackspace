@@ -1,23 +1,27 @@
-import {renderToStaticMarkup} from 'react-dom/server';
-import {az} from './az';
-import {en} from './en';
-import {ru} from './ru';
-import {useStore} from '../../store/store.config';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { az } from './az';
+import { en } from './en';
+import { ru } from './ru';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store.reducer';
+
+type LangDict = Record<string, string>;
 
 const useLocalization = () => {
-    const languages = useStore('locale');
+    const languages = useSelector((state: RootState) => state.root.locale) as LangDict | undefined;
 
-    return (key: keyof typeof az | keyof typeof en | keyof typeof ru, dynamicValues: any = {}) => {
-        let formattedText = languages[key] || '';
+    return (
+        key: keyof typeof az | keyof typeof en | keyof typeof ru,
+        dynamicValues: Record<string, any> = {}
+    ): string => {
+        let formattedText = languages?.[key] || key;
+
         Object.keys(dynamicValues).forEach((dynamicKey: string) => {
             const dynamicValue = dynamicValues[dynamicKey];
-            if (typeof dynamicValue === 'string') {
-                formattedText = formattedText.replace(`{${dynamicKey}}`, dynamicValue);
-            } else {
-                const jsxString = renderToStaticMarkup(dynamicValue);
-                formattedText =
-                    <div dangerouslySetInnerHTML={{__html: formattedText.replace(`{${dynamicKey}}`, jsxString),}}></div>;
-            }
+            const value = typeof dynamicValue === 'string'
+                ? dynamicValue
+                : renderToStaticMarkup(dynamicValue);
+            formattedText = formattedText.replace(`{${dynamicKey}}`, value);
         });
 
         return formattedText;

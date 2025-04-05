@@ -10,6 +10,7 @@ export default defineConfig({
         eslintPlugin({
             cache: false,
             include: ['./src/**/*.ts', './src/**/*.tsx'],
+            fix: true,
         })
     ],
     server: {
