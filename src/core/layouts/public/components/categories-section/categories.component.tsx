@@ -1,10 +1,7 @@
 import React from 'react';
 import './categories.compinent.scss';
+import iconPath from '../../../../../assets/images/categories/6wNfUPvIoLpNWXHmuqmeRa5nUvGw14EPfMkDQcti.svg';
 
-
-
-
-const iconPath = '/assets/images/categories/6wNfUPvIoLpNWXHmuqmeRa5nUvGw14EPfMkDQcti.svg';
 const iconPath2 = '/assets/images/categories/8xXVbe14xepA6ZPuguAJc823EcqkTeJSp28R88Z8.svg';
 const iconPath3 = '/assets/images/categories/dkR35eUlXHHiagLjqSrvjXry0RhAF7EzRfZeoOne.svg';
 const iconPath4 = '/assets/images/categories/FgeFXvjnO5eV7G6UShtS2v4OsRdsaag8re7vqaLy.svg';
@@ -33,33 +30,33 @@ const CategoriesSection = () => {
   return (
     <section className="categories-section">
       <div className="container">
-      <h2 className="section-title">Kategoriyalar</h2>
-      <div className="categories-container">
-        <div className="categories-grid">
-          {categories.map((category, index) => (
-            <div
-              key={index}
-              className="category-item"
-            >
-                                <div className="icon-background"></div>
+        <h2 className="section-title">Kategoriyalar</h2>
+        <div className="categories-container">
+          <div className="categories-grid">
+            {categories.map((category, index) => (
+              <div
+                key={index}
+                className="category-item"
+              >
+                <div className="icon-background"></div>
 
-              <div className="icon-container">
-                <div className={`icon-wrapper ${category.color}`} >
-                  <img 
-                    src={category.icon} 
-                    alt={category.label} 
-                    className="category-icon"
-                    
-                  />
+                <div className="icon-container">
+                  <div className={`icon-wrapper ${category.color}`} >
+                    <img
+                      src={category.icon}
+                      alt={category.label}
+                      className="category-icon"
+
+                    />
+                  </div>
                 </div>
+                <span className="category-label">
+                  {category.label}
+                </span>
               </div>
-              <span className="category-label">
-                {category.label}
-              </span>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
       </div>
     </section>
   );
