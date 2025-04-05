@@ -6,11 +6,6 @@ export interface IState {
     leftMenu: boolean;
     languages: ILanguages[];
     locale: any;
-    user: User| any | null;
-    isAuthenticated: boolean;
-    registerError: string | null;
-    isLoggingIn: boolean, 
-    loginError: string | null, 
 }
 
 
@@ -20,3 +15,15 @@ export interface ILanguages {
     value: string;
 }
 
+export interface RootAppState {
+    root: IState;
+    auth: {
+      isAuthenticated: boolean;
+      isRegistering: boolean;
+      isLoggingIn: boolean;
+      registerError: string | null;
+      loginError: string | null;
+      user: User | null;
+      token: string | null;
+    };
+  }

@@ -36,8 +36,8 @@ function RegisterComponent() {
       confirmPassword: '',
     });
 
-  const state = useSelector((state: RootState) => state);
-  const { loader, user, registerError } = useSelector((state: RootState) => state.root || { loader: false, user: null, registerError: null });
+    const { isRegistering, user, registerError } = useSelector((state: RootState) => state.auth);
+    const { loader } = useSelector((state: RootState) => state.root);
 
 useEffect(() => {
   if (user) {
@@ -47,7 +47,6 @@ useEffect(() => {
     console.log('Registration error:', registerError);
   }
 }, [user, registerError]);
-console.log('Redux state:', state);
 
 
   const dispatch = useDispatch<AppDispatch>();
