@@ -7,11 +7,12 @@ export const getToken = (): string | null => {
 };
 
 
-export const setToken = (token: string) => {
-    const tokenKey = localStorage.getItem('token') ? 'token' : `${environment.applicationName}-token`;
-    localStorage.setItem(tokenKey, token);
-    console.log('Token set:', token, 'using key:', tokenKey);
-};
+export const setToken = (token: string, role: string) => {
+    localStorage.setItem('token', token);
+    localStorage.setItem('role', role); 
+  };
+  
+
 
 
 export const getPosition = (): string | null => {

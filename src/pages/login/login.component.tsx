@@ -51,12 +51,15 @@ function LoginComponent() {
   const hasNavigated = useRef(false);
 
   useEffect(() => {
-    if (auth.isAuthenticated) {
+    if (auth.isAuthenticated && !hasNavigated.current) {
       console.log('User authenticated, redirecting...');
       const from = location.state?.from?.pathname || '/';
       navigate(from, { replace: true });
+      hasNavigated.current = true;
     }
   }, [auth.isAuthenticated, navigate, location.state]);
+  
+
   if (auth.isAuthenticated) {
     return null;
   }

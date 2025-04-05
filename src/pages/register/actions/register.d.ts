@@ -19,6 +19,7 @@ export interface IRegisterResponse {
         firstname: string;
         lastname: string;
         _id: string;
+        role:string
       }
     };
     token: string;

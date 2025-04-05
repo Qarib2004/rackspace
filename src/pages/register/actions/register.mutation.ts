@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { RegisterService } from './register.service';
 import { setLoader } from 'store/store.reducer';
-import { setUser } from 'store/store.reducer'; 
+import { setAuthUser } from 'store/auth.slice'; 
 import { setToken } from 'core/helpers/get-token';
 import { IRegisterRequest, IRegisterResponse } from './register';
 import { AppDispatch } from 'store/store.config';
@@ -16,9 +16,8 @@ export const registerUser = createAsyncThunk<
     const response = await RegisterService.register(registerData);
 
     if (response && response.token) {
-      setToken(response.token);
-      dispatch(setUser(response));
-    }
+      setToken(response.token, response.data.user.role);
+      dispatch(setAuthUser({ user: response.data.user, token: response.token }));    }
 
     return response;
   } catch (error) {
