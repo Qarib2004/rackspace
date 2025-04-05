@@ -1,9 +1,11 @@
 import { createUseStyles } from 'react-jss';
 
-const useStyles = createUseStyles({
+const styles = {
     home: {
         backgroundColor: '#F4F7F6',
     },
-});
+};
 
-export default useStyles;
+const useHomeStyles = createUseStyles(styles);
+
+export default useHomeStyles;
