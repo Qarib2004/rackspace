@@ -1,7 +1,7 @@
 import './header.component.scss';
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, Search, ShoppingBag, Globe, X, Home, User, ChevronDown, MessageCircle, Heart, Bell } from 'lucide-react';
+import { Menu, Search, ShoppingBag, Globe, X, Home, User, MessageCircle, Heart, Bell } from 'lucide-react';
 import { Logo } from 'assets/images/icons/agro-logo';
 import { getToken } from 'core/helpers/get-token';
 import SidebarBasket from 'pages/basket-sidebar/basketSidebar.component';
@@ -16,7 +16,8 @@ const HeaderComponent = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isBasketOpen, setIsBasketOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const user = useSelector((state: RootState) => state.auth.user || state.root.user);
+
+  const user = useSelector((state: RootState) => state.auth?.user || null);
 
   const menuPanelRef = useRef<HTMLDivElement | null>(null);
   const profileDropdownRef = useRef<HTMLDivElement | null>(null);
@@ -63,12 +64,14 @@ const HeaderComponent = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('role');
     setIsAuthenticated(false);
     setIsProfileDropdownOpen(false);
   };
 
   const toggleBasket = (e: React.MouseEvent) => {
-    e.preventDefault(); 
+    e.preventDefault();
     setIsBasketOpen(!isBasketOpen);
   };
 
@@ -87,7 +90,7 @@ const HeaderComponent = () => {
               <span>MENU</span>
             </button>
 
-            <div className="header__search"  onClick={toggleSearch}>
+            <div className="header__search" onClick={toggleSearch}>
               <Search size={20} />
             </div>
           </div>
@@ -112,7 +115,7 @@ const HeaderComponent = () => {
               </>
             )}
 
-<button onClick={toggleBasket} className="header__cart-btn">
+            <button onClick={toggleBasket} className="header__cart-btn">
               <ShoppingBag size={24} />
             </button>
 
@@ -122,7 +125,7 @@ const HeaderComponent = () => {
               </button>
             ) : (
               <>
-              
+
               </>
             )}
 
@@ -149,9 +152,9 @@ const HeaderComponent = () => {
                       />
                       <div className="header__profile-dropdown-info">
                         <span className="header__profile-dropdown-name"><span className="header__profile-dropdown-name">
-  {user?.firstname ? `${user.firstname} ${user.lastname || ''}` : 'John'}
-</span></span>
-                        <span className="header__profile-dropdown-user">{user?.lastname}</span>
+                          {user?.firstname ? `${user.firstname}` : ''}
+                        </span></span>
+                        <span className="header__profile-dropdown-user">Müştəri</span>
                       </div>
                     </div>
                     <ul className="header__profile-dropdown-menu">
@@ -162,19 +165,19 @@ const HeaderComponent = () => {
                         </Link>
                       </li>
                       <li>
-                        <Link to="/profile/message" className="header__profile-dropdown-item">
+                        <Link to="/profile/messages" className="header__profile-dropdown-item">
                           <MessageCircle size={16} />
                           <span>Messages</span>
                         </Link>
                       </li>
                       <li>
-                        <Link to="/orders" className="header__profile-dropdown-item">
+                        <Link to="/profile/orders" className="header__profile-dropdown-item">
                           <ShoppingBag size={16} />
                           <span>Sifarişlərim</span>
                         </Link>
                       </li>
                       <li>
-                        <Link to="/addresses" className="header__profile-dropdown-item">
+                        <Link to="/profile/addresses" className="header__profile-dropdown-item">
                           <Home size={16} />
                           <span>Ünvanlar</span>
                         </Link>
@@ -213,13 +216,13 @@ const HeaderComponent = () => {
               </div>
               <nav className="header__small-modal-menu">
                 <ul>
-                <li><Link to="/">Ana səhifə</Link></li>
-<li><Link to="/categories">Kateqoriyalar</Link></li>
-<li><Link to="/promotions">Təkliflər</Link></li>
-<li><Link to="/new">Xəbərlər</Link></li>
-<li><Link to="/about">Haqqımızda</Link></li>
-<li><Link to="/contact">Əlaqə</Link></li>
-<li><Link to="/help">Kömək</Link></li>
+                  <li><Link to="/">Ana səhifə</Link></li>
+                  <li><Link to="/store">Kateqoriyalar</Link></li>
+                  <li><Link to="/promotions">Təkliflər</Link></li>
+                  <li><Link to="/new">Xəbərlər</Link></li>
+                  <li><Link to="/about">Haqqımızda</Link></li>
+                  <li><Link to="/contact">Əlaqə</Link></li>
+                  <li><Link to="/help">Kömək</Link></li>
 
                 </ul>
               </nav>
@@ -268,13 +271,13 @@ const HeaderComponent = () => {
             </div>
             <div className="mobile-nav__menu-list">
               <ul>
-              <li><Link to="/">Ana səhifə</Link></li>
-<li><Link to="/categories">Kateqoriyalar</Link></li>
-<li><Link to="/wishlist">Favoriler</Link></li>
-<li><Link to="/new">Xəbərlər</Link></li>
-<li><Link to="/about">Haqqımızda</Link></li>
-<li><Link to="/contact">Əlaqə</Link></li>
-<li><Link to="/help">Kömək</Link></li>
+                <li><Link to="/">Ana səhifə</Link></li>
+                <li><Link to="/store">Kateqoriyalar</Link></li>
+                <li><Link to="/wishlist">Favoriler</Link></li>
+                <li><Link to="/new">Xəbərlər</Link></li>
+                <li><Link to="/about">Haqqımızda</Link></li>
+                <li><Link to="/contact">Əlaqə</Link></li>
+                <li><Link to="/help">Kömək</Link></li>
 
               </ul>
             </div>
