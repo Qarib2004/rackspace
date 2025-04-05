@@ -1,10 +1,6 @@
 import { createUseStyles } from 'react-jss';
 
-interface StyleProps {
-    isDarkMode?: boolean;
-  }
-
-const useHomeStyles = createUseStyles<string, StyleProps>({
+const useHomeStyles = createUseStyles({
     home: {
         backgroundColor: '#F4F7F6',
     },

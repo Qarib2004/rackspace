@@ -8,20 +8,20 @@ import AppPromotion from 'core/layouts/public/components/app-promotion/app.compo
 import Footer from 'core/layouts/public/components/footer/footer.component';
 
 function HomeComponent() {
-    const classes = useHomeStyles();
+  const classes = useHomeStyles();
 
 
-    return (
-        <div className={classes.home}>
-          <OneSection/>
-          <CategoriesSection/>
-          <Card/>
-          <ClienteSection/>
-          <ProfilCard/>
-          <AppPromotion/>
-          {/* <Footer/> */}
-        </div>
-    );
+  return (
+    <div className={classes.home}>
+      <OneSection />
+      <CategoriesSection />
+      <Card />
+      <ClienteSection />
+      <ProfilCard />
+      <AppPromotion />
+      {/* <Footer/> */}
+    </div>
+  );
 }
 
 export default HomeComponent;
