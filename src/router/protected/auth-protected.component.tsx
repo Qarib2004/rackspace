@@ -10,7 +10,7 @@ interface AuthProtectedProps {
     layout?: 'public' | 'auth';
 }
 
-const AuthProtectedComponent = ({ children, layout = 'public' }: AuthProtectedProps): JSX.Element => {
+const AuthProtectedComponent = ({ children, layout = 'public' }: AuthProtectedProps): React.ReactElement => {
     const dispatch = useDispatch();
     const { isAuthenticated, user } = useSelector((state: RootAppState) => state.auth);
     const [isLoading, setIsLoading] = useState(true);
@@ -19,8 +19,7 @@ const AuthProtectedComponent = ({ children, layout = 'public' }: AuthProtectedPr
         const checkAuth = async () => {
             const storedToken = getToken();
             if (storedToken) {
-                // Предположительно, здесь нужно выполнить проверку токена
-                // Например, запросить с сервера информацию о пользователе
+                
                 // dispatch(fetchUserDetails(storedToken)); // Если у вас есть такая логика
             }
             setIsLoading(false);
@@ -30,7 +29,7 @@ const AuthProtectedComponent = ({ children, layout = 'public' }: AuthProtectedPr
     }, [dispatch]);
 
     if (isLoading) {
-        return <div>Загрузка...</div>;
+        return <div>Loading...</div>;
     }
 
     if (layout === 'auth' && isAuthenticated) {
@@ -41,10 +40,11 @@ const AuthProtectedComponent = ({ children, layout = 'public' }: AuthProtectedPr
         return <Navigate to={Routes.login} replace />;
     }
 
-    return <>{children}</>;  
+    return <>{children || null}</>;
 };
 
 export default AuthProtectedComponent;
+
 
 
 
