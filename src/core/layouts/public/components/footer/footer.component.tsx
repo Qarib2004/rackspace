@@ -1,7 +1,6 @@
 import { Facebook, Youtube, Instagram, Linkedin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './footer.component.scss';
-webp;
 import portugal2020 from '../../../../../assets/images/footer/portugal2020.a482200275b3965bb42c72a0c9e6c791.webp';
 import proderam from '../../../../../assets/images/footer/proderam.169ff67748fdaa2aee74b16ff8274452.webp';
 import ram from '../../../../../assets/images/footer/ram.377737a8b98a774e321f5bcd7183840e.webp';
