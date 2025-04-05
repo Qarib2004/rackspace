@@ -1,38 +1,43 @@
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Routes } from '../routes';
-import { IAuthProtectedRouteProps } from './auth-protected';
-import { getToken } from '../../core/helpers/get-token';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux'; 
-import { setUser } from 'store/store.reducer';
+import { useDispatch } from 'react-redux';
+import { getToken } from '../../core/helpers/get-token';
+import { RootAppState } from 'store/store.d';
 
-const AuthProtectedComponent = ({ children, layout = 'public' }: IAuthProtectedRouteProps) => {
+interface AuthProtectedProps {
+    children: React.ReactNode;
+    layout?: 'public' | 'auth';
+  }
+
+const AuthProtectedComponent = ({ children, layout = 'public' }:AuthProtectedProps) => {
     const dispatch = useDispatch();
-    const user = useSelector((state: any) => state.root.user); 
+    const { isAuthenticated, user } = useSelector((state: RootAppState) => state.auth);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const checkAuth = async () => {
             const storedToken = getToken();
-            if (storedToken && !user?.token) {
-                dispatch(setUser({ token: storedToken }));
+            if (storedToken && !user) {
+                //bilmirem
+                
             }
             setIsLoading(false);
         };
 
         checkAuth();
-    }, [dispatch, user?.token]); 
+    }, [dispatch, user]);
 
     if (isLoading) {
         return <div>Loading...</div>;
     }
 
-    if (layout === 'auth' && user?.token) {
+    if (layout === 'auth' && isAuthenticated) {
         return <Navigate to={Routes.home} replace />;
     }
 
-    if (layout !== 'auth' && !user?.token) {
+    if (layout !== 'auth' && !isAuthenticated) {
         return <Navigate to={Routes.login} replace />;
     }
 
@@ -40,3 +45,4 @@ const AuthProtectedComponent = ({ children, layout = 'public' }: IAuthProtectedR
 };
 
 export default AuthProtectedComponent;
+
