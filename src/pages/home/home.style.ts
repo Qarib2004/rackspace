@@ -1,7 +1,7 @@
 import { createUseStyles } from 'react-jss';
 
 interface StyleProps {
-    
+    isDarkMode?: boolean;
   }
 
 const useHomeStyles = createUseStyles<string, StyleProps>({
