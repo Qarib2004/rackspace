@@ -8,6 +8,14 @@ export interface LoginCredentials {
   password: string;
 }
 
+export interface LoginResponse {
+  status: string;
+  token: string;
+  data: {
+    user: User | any;
+  };
+}
+
 export const loginUser = createAsyncThunk<
   { token: string; user: User },
   LoginCredentials,
