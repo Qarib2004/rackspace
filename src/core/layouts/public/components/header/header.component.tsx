@@ -66,6 +66,7 @@ const HeaderComponent = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('role');
+    window.location.reload();
     setIsAuthenticated(false);
     setIsProfileDropdownOpen(false);
   };
