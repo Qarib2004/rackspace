@@ -4,6 +4,8 @@ import Sidebar from './sidebar/sidebar';
 import Card from 'core/shared/base-card/card.component';
 import { SlidersHorizontal, ChevronDown, X, ArrowUp } from 'lucide-react';
 import './store.component.scss';
+import tomatoImg from '../../../../../assets/images/store/pomidor.jpeg';
+
 
 const products = [
   {
@@ -12,7 +14,7 @@ const products = [
     producer: 'Farm',
     weight: '1 L',
     price: 1.2,
-    image: 'src/assets/images/store/pomidor.jpeg',
+    image: tomatoImg,
     date: '2025-03-15',
     title: 'Fresh Farm Tomatoes',
     assessment: 4.5,
@@ -23,7 +25,7 @@ const products = [
     producer: 'Bakery',
     weight: '500 g',
     price: 0.8,
-    image: 'src/assets/images/store/pomidor.jpeg',
+    image: tomatoImg,
     date: '2025-03-10',
     title: 'Bakery Selection Tomatoes',
     assessment: 3.8,
@@ -34,7 +36,7 @@ const products = [
     producer: 'Farm',
     weight: '200 g',
     price: 3.5,
-    image: 'src/assets/images/store/pomidor.jpeg',
+    image: tomatoImg,
     date: '2025-03-18',
     title: 'Premium Cherry Tomatoes',
     assessment: 4.9,
@@ -45,7 +47,7 @@ const products = [
     producer: 'Farm',
     weight: '200 g',
     price: 3.5,
-    image: 'src/assets/images/store/pomidor.jpeg',
+    image: tomatoImg,
     date: '2025-03-18',
     title: 'Premium Cherry Tomatoes',
     assessment: 4.9,
@@ -56,7 +58,7 @@ const products = [
     producer: 'Farm',
     weight: '200 g',
     price: 3.5,
-    image: 'src/assets/images/store/pomidor.jpeg',
+    image: tomatoImg,
     date: '2025-03-18',
     title: 'Premium Cherry Tomatoes',
     assessment: 4.9,
@@ -67,7 +69,7 @@ const products = [
     producer: 'Farm',
     weight: '200 g',
     price: 3.5,
-    image: 'src/assets/images/store/pomidor.jpeg',
+    image: tomatoImg,
     date: '2025-03-18',
     title: 'Premium Cherry Tomatoes',
     assessment: 4.9,
@@ -82,7 +84,7 @@ const Store = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sortedProducts, setSortedProducts] = useState([...products]);
   const [showMobileNav, setShowMobileNav] = useState(false);
-  
+
   const oneSectionRef = useRef<HTMLDivElement | null>(null);
   const sortOptions = ['Relevance', 'Price', 'Publication date', 'Ad title', 'Assessment'];
   const sidebarRef = useRef<HTMLDivElement | null>(null);
@@ -95,9 +97,9 @@ const Store = () => {
         setShowMobileNav(oneSectionBottom <= 0);
       }
     };
-    
+
     handleScroll();
-    
+
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -126,9 +128,9 @@ const Store = () => {
   const handleSortChange = (option: string) => {
     setSortOption(option);
     setDropdownOpen(false);
-    
+
     const sortedData = [...products];
-    
+
     switch (option) {
       case 'Price':
         sortedData.sort((a, b) => a.price - b.price);
@@ -145,29 +147,29 @@ const Store = () => {
       default:
         break;
     }
-    
+
     setSortedProducts(sortedData);
     setSortMenuVisible(false);
   };
 
   const handleClickOutside = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
-    
+
     const isClickInDesktopSidebar = sidebarRef.current && sidebarRef.current.contains(target);
     const isClickInDesktopSidebarButton = target.closest('.filter-toggle') !== null;
-    
+
     const isClickInMobileNav = target.closest('.mobile-nav-store') !== null;
     const isClickInMobileSidebar = target.closest('.mobile-sidebar') !== null;
     const isClickInMobileSortMenu = target.closest('.mobile-sort-menu') !== null;
-    
+
     if (dropdownOpen && !target.closest('.sort-controls__dropdown')) {
       setDropdownOpen(false);
     }
-    
+
     if (desktopSidebarVisible && !isClickInDesktopSidebar && !isClickInDesktopSidebarButton) {
       setDesktopSidebarVisible(false);
     }
-        if (!isClickInMobileNav && !isClickInMobileSidebar && !isClickInMobileSortMenu) {
+    if (!isClickInMobileNav && !isClickInMobileSidebar && !isClickInMobileSortMenu) {
       setMobileSidebarVisible(false);
       setSortMenuVisible(false);
     }
@@ -178,14 +180,14 @@ const Store = () => {
       <div ref={oneSectionRef}>
         <OneSection />
       </div>
-      
+
       <div className="store-section-flex" onClick={handleClickOutside}>
         {desktopSidebarVisible && (
           <div className="store-sidebar-container" ref={sidebarRef}>
             <Sidebar onClose={handleToggleDesktopSidebar} />
           </div>
         )}
-        
+
         <div className={`store-content-container ${desktopSidebarVisible || sortMenuVisible || mobileSidebarVisible ? 'blurred' : ''}`}>
           <div className="store-controls desktop-controls">
             {!desktopSidebarVisible && (
@@ -216,9 +218,8 @@ const Store = () => {
                       <div
                         key={option}
                         onClick={() => handleSortChange(option)}
-                        className={`sort-controls__dropdown-menu-item ${
-                          sortOption === option ? 'sort-controls__dropdown-menu-item--active' : ''
-                        }`}
+                        className={`sort-controls__dropdown-menu-item ${sortOption === option ? 'sort-controls__dropdown-menu-item--active' : ''
+                          }`}
                       >
                         {option}
                       </div>
@@ -235,20 +236,20 @@ const Store = () => {
             titleKey="name"
             subtitleKey="producer"
             additionalKeys={['weight', 'price']}
-            showPagination = {false}
-            pageTitle="Products" 
+            showPagination={false}
+            pageTitle="Products"
           />
         </div>
-        
+
         <div className={`mobile-nav-store ${showMobileNav ? 'mobile-nav-store--visible' : ''}`}>
-          <button 
+          <button
             className="mobile-nav-store__button"
             onClick={handleToggleMobileSidebar}
           >
             <SlidersHorizontal size={20} />
             <span>Filters</span>
           </button>
-          <button 
+          <button
             className="mobile-nav-store__button"
             onClick={handleToggleSortMenu}
           >
@@ -256,7 +257,7 @@ const Store = () => {
             <span>Sort: {sortOption}</span>
           </button>
         </div>
-        
+
         <div className={`mobile-sidebar ${mobileSidebarVisible ? 'mobile-sidebar--visible' : ''}`}>
           <div className="mobile-sidebar__header">
             <h2>Filters</h2>
@@ -268,7 +269,7 @@ const Store = () => {
             <Sidebar onClose={handleToggleMobileSidebar} />
           </div>
         </div>
-        
+
         <div className={`mobile-sort-menu ${sortMenuVisible ? 'mobile-sort-menu--visible' : ''}`} ref={sortMenuRef}>
           <div className="mobile-sort-menu__header">
             <h2>Sort by</h2>
@@ -281,9 +282,8 @@ const Store = () => {
               <div
                 key={option}
                 onClick={() => handleSortChange(option)}
-                className={`mobile-sort-menu__item ${
-                  sortOption === option ? 'mobile-sort-menu__item--active' : ''
-                }`}
+                className={`mobile-sort-menu__item ${sortOption === option ? 'mobile-sort-menu__item--active' : ''
+                  }`}
               >
                 {option}
                 {sortOption === option && <ArrowUp size={16} />}

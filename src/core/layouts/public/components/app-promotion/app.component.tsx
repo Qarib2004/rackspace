@@ -6,7 +6,7 @@ import googlePlayIcon from '../../../../../assets/images/app-promotion/download 
 const AppPromotion: React.FC = () => {
   return (
     <div className="app-promotion-container">
-      <h1 className="app-promotion-title">Mobil proqraml</h1>
+      <h1 className="app-promotion-title">Mobil proqramlar</h1>
 
       <div className="app-promotion-content">
         <div className="app-promotion-text-container">
