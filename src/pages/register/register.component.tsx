@@ -84,10 +84,10 @@ useEffect(() => {
 
           <div className="register__header">
             <h1>Create an account</h1>
-            <h2>Agromarket</h2>
+            <h2>LankMark</h2>
           </div>
 
-          <div className="register__type">
+          {/* <div className="register__type">
             <label
               className={`register__type-option ${
                 accountType === 'customer' ? 'active' : ''
@@ -115,7 +115,7 @@ useEffect(() => {
               <span>Customer and Producer</span>
             </label>
             <HelpCircle size={20} className="register__help" />
-          </div>
+          </div> */}
 
           <div className="register__profile">
             <p>Add profile picture</p>
