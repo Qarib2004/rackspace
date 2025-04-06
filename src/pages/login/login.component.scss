@@ -242,3 +242,31 @@
       }
     }
   }
+
+
+
+
+.Toastify__toast-container {
+  z-index: 9999 !important;
+}
+
+.Toastify__toast {
+  font-family: inherit !important;
+  border-radius: 4px !important;
+  padding: 12px 16px !important;
+  min-height: auto !important;
+}
+
+.error-toast {
+  background: #ff4d4f !important;
+  color: white !important;
+  
+  .Toastify__close-button {
+    color: white !important;
+    opacity: 0.8;
+    
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

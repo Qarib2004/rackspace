@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 // import { registerUser } from 'pages/register/actions/register.mutation';
 // import { loginUser } from '../pages/login/actions/login.mutation';
 import { loginUser, registerUser } from './actions/auth.actions';
-
+import { environment } from 'core/configs/app.config';
 import { logoutService } from '../pages/login/actions/login.service';
 import { User } from 'core/utils/IUser';
 
@@ -16,8 +16,16 @@ interface AuthState {
   token: string | null;
 }
 
-const token = localStorage.getItem('token');
-const user = localStorage.getItem('user');
+// const token = localStorage.getItem('token');
+// const user = localStorage.getItem('user');
+const getStoredToken = (): string | null => {
+  return localStorage.getItem(`${environment.applicationName}-token`) || localStorage.getItem('token');
+};
+
+const getStoredUser = (): User | null => {
+  const user = localStorage.getItem('user');
+  return user ? JSON.parse(user) : null;
+};
 
 const initialState: AuthState = {
   isAuthenticated: false,
@@ -25,8 +33,8 @@ const initialState: AuthState = {
   isLoggingIn: false,
   registerError: null,
   loginError: null,
-  token: token,
-  user: user ? JSON.parse(user) : null
+  token: getStoredToken(),
+  user: getStoredUser()
 };
 
 export const authSlice = createSlice({
@@ -37,6 +45,7 @@ export const authSlice = createSlice({
       state.isAuthenticated = false;
       state.user = null;
       state.token = null;
+      localStorage.removeItem(`${environment.applicationName}-token`);
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       logoutService();

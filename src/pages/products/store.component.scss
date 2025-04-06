@@ -145,7 +145,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    z-index: 100;
+    z-index: 1001;
     transition: top 0.3s ease;
     
     &--visible {
@@ -178,9 +178,9 @@
     bottom: -90%;
     left: 0;
     right: 0;
-    height: 80vh;
+    height: 55vh;
     background-color: #ffffff;
-    z-index: 110;
+    z-index: 1000;
     transition: bottom 0.3s ease;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
@@ -226,7 +226,7 @@
     left: 0;
     right: 0;
     background-color: #ffffff;
-    z-index: 110;
+    z-index: 1001;
     transition: bottom 0.3s ease;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
