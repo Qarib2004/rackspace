@@ -280,6 +280,9 @@ const HeaderComponent = () => {
                   <li>
                     <Link to="/help">Kömək</Link>
                   </li>
+                  <li>
+                  <Link to="/rules">Ümumi qaydalar</Link>
+                </li>
                 </ul>
               </nav>
             </div>
@@ -355,6 +358,9 @@ const HeaderComponent = () => {
                 </li>
                 <li>
                   <Link to="/help">Kömək</Link>
+                </li>
+                <li>
+                  <Link to="/rules">Ümumi qaydalar</Link>
                 </li>
               </ul>
             </div>
