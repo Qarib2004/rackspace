@@ -17,12 +17,14 @@ import { Logo } from 'assets/images/icons/agro-logo';
 import { getToken } from 'core/helpers/get-token';
 import SidebarBasket from 'pages/basket-sidebar/basketSidebar.component';
 import SearchComponent from '../search/search.component';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store/store.reducer';
-// import { logout } from 'store/auth.slice';
+import { logout } from 'store/auth.slice';
+import { AppDispatch } from 'store/store.config';
 
 const HeaderComponent = () => {
-  // const dispatch = useDispatch();
+
+const dispatch = useDispatch<AppDispatch>();
   const [isOpen, setIsOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);

@@ -1,10 +1,12 @@
-import { rootSlice } from 'store/store.reducer'; 
-import { authSlice } from 'store/auth.slice'; 
-import { combineReducers } from '@reduxjs/toolkit';
+// import { combineReducers } from '@reduxjs/toolkit';
+// import { rootSlice } from 'store/store.reducer'; // Выносим rootSlice в отдельный файл
+// import { authSlice } from 'store/auth.slice'; // Импортируем authSlice напрямую
 
-const rootReducer = combineReducers({
-  root: rootSlice.reducer,
-  auth: authSlice.reducer, 
-});
+// // Комбинируем редьюсеры
+// const rootReducer = combineReducers({
+//   root: rootSlice.reducer,
+//   auth: authSlice.reducer,
+// });
 
-export type RootState = ReturnType<typeof rootReducer>;
+// export type RootState = ReturnType<typeof rootReducer>;
+// export default rootReducer;
