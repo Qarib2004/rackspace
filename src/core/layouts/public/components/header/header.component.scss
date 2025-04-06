@@ -7,7 +7,7 @@
   right: 0;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+  z-index: 1004;
 
   &__img {
     width: 100%;
@@ -25,10 +25,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    @media (max-width: 768px) {
-      justify-content: space-around;
-    }
   }
 
   &__left {
@@ -67,7 +63,22 @@
     }
 
     @media (max-width: 768px) {
-      margin-left: 1rem;
+      margin-left: 30rem;
+      ;
+    }
+
+    @media (max-width: 426px) {
+      margin-left: 9rem;
+      ;
+    }
+
+    @media (max-width: 376px) {
+      margin-left: 6rem;
+      ;
+    }
+
+    @media (max-width: 321px) {
+      margin-left: 2.5rem;
       ;
     }
   }
@@ -78,6 +89,8 @@
     align-items: center;
     gap: 0.5rem;
 
+
+
     span {
       font-size: 1.2rem;
       font-weight: 500;
@@ -85,12 +98,13 @@
     }
 
     @media (max-width: 768px) {
+
       img,
       svg {
-        width: 200px;
+        width: 150px;
         height: auto;
         object-fit: contain;
-        max-height: 150px;
+        max-height: 50px;
       }
     }
   }
@@ -104,10 +118,27 @@
       color: black;
     }
 
-    @media (max-width: 768px) {
-      display: none;
+    @media (max-width: 576px) {
+      gap: 0.75rem;
     }
+
+    @media (min-width: 577px) and (max-width: 768px) {
+      gap: 1rem;
+    }
+
+    @media (min-width: 769px) and (max-width: 992px) {
+      gap: 1.25rem;
+    }
+
+    // @media (min-width: 993px) and (max-width: 1200px) {
+    //   gap: 1.5rem;
+    // }
+
+    // @media (min-width: 1201px) {
+    //   gap: 2rem;
+    // }
   }
+
 
   &__auth-btn {
     background: none;
@@ -119,9 +150,9 @@
       color: orange;
     }
 
-    // @media (max-width: 768px) {
-    //   display: none;
-    // }
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 
   &__cart-btn,
@@ -230,7 +261,7 @@
     .header__container {
       display: flex;
       flex-direction: row;
-      justify-content: space-evenly;
+      justify-content: space-between;
       align-items: center;
     }
 
@@ -262,7 +293,7 @@
   right: 0;
   background: #fff;
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
-  z-index: 999;
+  z-index: 1001;
 
   @media (max-width: 768px) {
     display: block;
@@ -270,7 +301,7 @@
 
   &__container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     height: 64px;
   }

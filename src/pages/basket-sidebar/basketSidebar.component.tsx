@@ -33,6 +33,20 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
     setTotalPrice(total);
   }, [basketItems]);
 
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('sidebar-open');
+    } else {
+      document.body.classList.remove('sidebar-open');
+    }
+  
+    return () => {
+      document.body.classList.remove('sidebar-open');
+    };
+  }, [isOpen]);
+  
+
   const handleQuantityChange = (id: number, newQuantity: number) => {
     if (newQuantity >= 0) {
       setBasketItems(prevItems =>

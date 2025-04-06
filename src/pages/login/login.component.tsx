@@ -1,14 +1,14 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import './login.component.scss';
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { loginUser } from './actions/login.mutation'; 
-import { useLoginMutation } from './actions/login.query'; 
-import { AppDispatch } from 'store/store.config'; 
-import { useStore } from 'react-redux'; 
-import { useSelector } from 'react-redux';
-import { RootState } from 'store/store.reducer'; 
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from './actions/login.mutation';
+import { useLoginMutation } from './actions/login.query';
+import { AppDispatch } from 'store/store.config';
+import { RootState } from 'store/store.reducer';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const images = [
   'https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?auto=format&fit=crop&q=80',
@@ -18,21 +18,17 @@ const images = [
 ];
 
 function LoginComponent() {
-  console.log('LoginComponent rendering');
-  
   const [currentImage, setCurrentImage] = useState(0);
   const [stayLoggedIn, setStayLoggedIn] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const location = useLocation();
+  
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  
   const [login, { isLoading }] = useLoginMutation();
   const auth = useSelector((state: RootState) => state.auth ?? {});
-  
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -43,50 +39,59 @@ function LoginComponent() {
   
   useEffect(() => {
     if (auth?.loginError) {
-      console.log('Setting login error:', auth.loginError);
       setError(auth.loginError);
+      toast.error(auth.loginError, {
+        toastId: 'login-error',
+        position: 'bottom-right',
+        theme: 'light'
+      });
     }
   }, [auth?.loginError]);
 
-  const hasNavigated = useRef(false);
-
-  useEffect(() => {
-    if (auth.isAuthenticated && !hasNavigated.current) {
-      console.log('User authenticated, redirecting...');
-      const from = location.state?.from?.pathname || '/';
-      navigate(from, { replace: true });
-      hasNavigated.current = true;
-    }
-  }, [auth.isAuthenticated, navigate, location.state]);
-  
-
-  if (auth.isAuthenticated) {
-    return null;
-  }
+  const getErrorMessage = (error: any): string => {
+    if (typeof error === 'string') return error;
+    if (error?.message) return error.message;
+    return 'An unknown error occurred';
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted with:', { email, password });
     setError('');
-    
+
     if (!email || !password) {
-      setError('Please enter both email and password');
+      const msg = 'Please enter both email and password';
+      setError(msg);
+      toast.error(msg, {
+        toastId: 'validation-error',
+        position: 'bottom-right',
+        theme: 'light'
+      });
       return;
     }
-    
+
     try {
-      console.log('Dispatching loginUser action');
       const result = await dispatch(loginUser({ email, password }));
-      console.log('Login result:', result);
       
       if (result.meta.requestStatus === 'fulfilled') {
-        console.log('Login successful, navigating to home');
-        hasNavigated.current = true;
+        toast.success('Login successful');
         navigate('/');
+      } else {
+        const errorMsg = getErrorMessage(result.payload);
+        toast.error(errorMsg, {
+          toastId: 'api-error',
+          position: 'bottom-right',
+          theme: 'light'
+        });
+        setError(errorMsg);
       }
     } catch (err) {
-      console.error('Login error:', err);
-      setError('Login failed. Please try again.');
+      const msg = getErrorMessage(err);
+      toast.error(msg, {
+        toastId: 'exception-error',
+        position: 'bottom-right',
+        theme: 'light'
+      });
+      setError(msg);
     }
   };
 
@@ -94,8 +99,6 @@ function LoginComponent() {
     e.preventDefault();
     navigate('/forgot-password');
   };
-
-  console.log('LoginComponent render complete');
 
   return (
     <div className="login">
@@ -120,7 +123,6 @@ function LoginComponent() {
               </label>
               <input 
                 type="email" 
-                required 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -133,7 +135,6 @@ function LoginComponent() {
               <div className="login__password">
                 <input 
                   type={showPassword ? 'text' : 'password'} 
-                  required 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />

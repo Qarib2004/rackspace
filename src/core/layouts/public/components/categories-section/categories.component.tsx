@@ -28,15 +28,15 @@ const CategoriesSection = () => {
   return (
     <section className="categories-section">
       <div className="container">
-        <h2 className="section-title">Kategoriyalar</h2>
-        <div className="categories-container">
-          <div className="categories-grid">
-            {categories.map((category, index) => (
-              <div
-                key={index}
-                className="category-item"
-              >
-                <div className="icon-background"></div>
+      <h2 className="section-title">Kategoriyalar</h2>
+      <div className="categories-container">
+        <div className="categories-grid">
+          {categories.map((category, index) => (
+            <div
+              key={index}
+              className="category-item"
+            >
+             <div className="icon-background"></div>
 
                 <div className="icon-container">
                   <div className={`icon-wrapper ${category.color}`} >
