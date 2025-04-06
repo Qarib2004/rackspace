@@ -123,7 +123,6 @@ function LoginComponent() {
               </label>
               <input 
                 type="email" 
-                required 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -136,7 +135,6 @@ function LoginComponent() {
               <div className="login__password">
                 <input 
                   type={showPassword ? 'text' : 'password'} 
-                  required 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />

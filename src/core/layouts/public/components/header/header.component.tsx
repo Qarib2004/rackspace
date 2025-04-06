@@ -24,7 +24,7 @@ import { AppDispatch } from 'store/store.config';
 
 const HeaderComponent = () => {
 
-const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
   const [isOpen, setIsOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -81,7 +81,7 @@ const dispatch = useDispatch<AppDispatch>();
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('role');
-    window.location.reload();
+    // window.location.reload();
     setIsAuthenticated(false);
     // dispatch(logout());
     setIsProfileDropdownOpen(false);
@@ -284,8 +284,8 @@ const dispatch = useDispatch<AppDispatch>();
                     <Link to="/help">Kömək</Link>
                   </li>
                   <li>
-                  <Link to="/rules">Ümumi qaydalar</Link>
-                </li>
+                    <Link to="/rules">Ümumi qaydalar</Link>
+                  </li>
                 </ul>
               </nav>
             </div>
@@ -325,9 +325,8 @@ const dispatch = useDispatch<AppDispatch>();
 
         <div
           ref={menuPanelRef}
-          className={`mobile-nav__menu-panel ${
-            isMobileMenuOpen ? 'mobile-nav__menu-panel--open' : ''
-          }`}
+          className={`mobile-nav__menu-panel ${isMobileMenuOpen ? 'mobile-nav__menu-panel--open' : ''
+            }`}
         >
           <div className="mobile-nav__menu-content">
             <div className="mobile-nav__menu-header">
