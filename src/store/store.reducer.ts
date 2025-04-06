@@ -6,6 +6,7 @@ import { ru } from '../assets/lang/ru';
 import { environment } from '../core/configs/app.config';
 import { ILang } from '../assets/lang/lang';
 import authSlice from './auth.slice';
+// import { authReducer } from './types/auth.reducer';
 import { loginApi } from 'pages/login/actions/login.query';
 
 const initialState: IState = {

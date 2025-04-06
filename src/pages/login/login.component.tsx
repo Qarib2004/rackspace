@@ -30,7 +30,6 @@ function LoginComponent() {
   const [login, { isLoading }] = useLoginMutation();
   const auth = useSelector((state: RootState) => state.auth ?? {});
 
-  // Смена изображений каждые 5 секунд
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentImage((current) => (current + 1) % images.length);
@@ -38,11 +37,9 @@ function LoginComponent() {
     return () => clearInterval(timer);
   }, []);
   
-  // Отображение ошибок авторизации
   useEffect(() => {
     if (auth?.loginError) {
       setError(auth.loginError);
-      // Добавляем дополнительные опции для error toast
       toast.error(auth.loginError, {
         toastId: 'login-error',
         position: 'bottom-right',
@@ -51,14 +48,12 @@ function LoginComponent() {
     }
   }, [auth?.loginError]);
 
-  // Преобразование ошибок в читаемый формат
   const getErrorMessage = (error: any): string => {
     if (typeof error === 'string') return error;
     if (error?.message) return error.message;
     return 'An unknown error occurred';
   };
 
-  // Обработка отправки формы
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -66,7 +61,6 @@ function LoginComponent() {
     if (!email || !password) {
       const msg = 'Please enter both email and password';
       setError(msg);
-      // Использование специфичных опций для toast.error
       toast.error(msg, {
         toastId: 'validation-error',
         position: 'bottom-right',
@@ -83,7 +77,6 @@ function LoginComponent() {
         navigate('/');
       } else {
         const errorMsg = getErrorMessage(result.payload);
-        // Используем явное указание параметров для toast.error
         toast.error(errorMsg, {
           toastId: 'api-error',
           position: 'bottom-right',
@@ -93,7 +86,6 @@ function LoginComponent() {
       }
     } catch (err) {
       const msg = getErrorMessage(err);
-      // Используем явное указание параметров для toast.error
       toast.error(msg, {
         toastId: 'exception-error',
         position: 'bottom-right',
@@ -103,7 +95,6 @@ function LoginComponent() {
     }
   };
 
-  // Переход на страницу восстановления пароля
   const handleForgotPassword = (e: React.MouseEvent) => {
     e.preventDefault();
     navigate('/forgot-password');

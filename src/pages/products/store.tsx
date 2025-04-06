@@ -1,9 +1,10 @@
-import OneSection from 'core/layouts/public/components/section-one/one.component';
+// import OneSection from 'core/layouts/public/components/section-one/one.component';
 import React, { useState, useEffect, useRef } from 'react';
 import Sidebar from './sidebar/sidebar';
 import Card from 'core/shared/base-card/card.component';
 import { SlidersHorizontal, ChevronDown, X, ArrowUp } from 'lucide-react';
 import './store.component.scss';
+import StoreOne from 'core/layouts/public/components/store-one-section/store-one.component';
 
 const products = [
   {
@@ -176,7 +177,7 @@ const Store = () => {
   return (
     <>
       <div ref={oneSectionRef}>
-        <OneSection />
+        <StoreOne/>
       </div>
       
       <div className="store-section-flex" onClick={handleClickOutside}>

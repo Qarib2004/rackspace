@@ -41,7 +41,7 @@ const CategoriesSection = () => {
               key={index}
               className="category-item"
             >
-                                <div className="icon-background"></div>
+             <div className="icon-background"></div>
 
               <div className="icon-container">
                 <div className={`icon-wrapper ${category.color}`} >

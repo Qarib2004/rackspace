@@ -7,7 +7,7 @@
   right: 0;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+  z-index: 1004;
 
   &__img {
     width: 100%;
@@ -259,7 +259,7 @@
   right: 0;
   background: #fff;
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
-  z-index: 999;
+  z-index: 1001;
 
   @media (max-width: 768px) {
     display: block;
