@@ -33,8 +33,8 @@ const dispatch = useDispatch<AppDispatch>();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const user = useSelector((state: RootState) => state.auth?.user || null);
-
-  const menuPanelRef = useRef<HTMLDivElement | null>(null);
+console.log(user);
+const menuPanelRef = useRef<HTMLDivElement | null>(null);
   const profileDropdownRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
