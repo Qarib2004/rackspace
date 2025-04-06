@@ -1,6 +1,6 @@
-
 import React, { useEffect, useState } from 'react';
 import './basketSidebar.component.scss';
+import ot from '../../assets/images/basket/OKdAduzv3SOT6gVBYVfP349DhSyKO3MoRclv3BoP.png';
 
 interface Product {
   id: number;
@@ -22,12 +22,12 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
       name: 'Ot',
       price: 4.00,
       quantity: 4,
-      image: 'src/assets/images/basket/OKdAduzv3SOT6gVBYVfP349DhSyKO3MoRclv3BoP.png'
+      image: ot
     }
   ]);
-  
+
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  
+
   useEffect(() => {
     const total = basketItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     setTotalPrice(total);
@@ -49,8 +49,8 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
 
   const handleQuantityChange = (id: number, newQuantity: number) => {
     if (newQuantity >= 0) {
-      setBasketItems(prevItems => 
-        prevItems.map(item => 
+      setBasketItems(prevItems =>
+        prevItems.map(item =>
           item.id === id ? { ...item, quantity: newQuantity } : item
         )
       );
@@ -68,17 +68,17 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
         <div className="sidebar-basket-header">
           <button className="back-button" onClick={onClose}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M19 12H5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M12 19L5 12L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M19 12H5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M12 19L5 12L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             Geri qayıtmaq üçün
           </button>
         </div>
-        
+
         <div className="sidebar-basket-title">
           <h2>Məhsullar <span>({basketItems.length})</span></h2>
         </div>
-        
+
         <div className="sidebar-basket-content">
           {basketItems.length === 0 ? (
             <div className="empty-basket">
@@ -105,13 +105,13 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
                     </div>
                     <button className="remove-item" onClick={() => handleRemoveItem(item.id)}>
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                        <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                       </svg>
                     </button>
                   </div>
                 ))}
               </div>
-              
+
               <div className="basket-summary">
                 <div className="summary-row">
                   <span>ƏDV</span>
@@ -122,7 +122,7 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
                   <span>€{totalPrice.toFixed(2)}</span>
                 </div>
               </div>
-              
+
               <button className="checkout-button">Yoxlama</button>
             </>
           )}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MoreVertical } from 'lucide-react';
 import './card.component.scss';
-import {ICard} from './card';
+import cardImg from '../../../assets/images/home-card/dGcTPgGHVd93YBZM3BKS2wXFC9tnRf8dLgCdDWa5.jpg';
 
 interface Product {
   id: number;
@@ -11,10 +11,6 @@ interface Product {
   price: number;
   image: string;
 }
-
-const cardImg =
-  'src/assets/images/home-card/dGcTPgGHVd93YBZM3BKS2wXFC9tnRf8dLgCdDWa5.jpg';
-
 const products: Product[] = [
   {
     id: 1,
@@ -141,19 +137,19 @@ const products: Product[] = [
 const Card = () => {
   const productsPerPage = 4;
   const totalPages = Math.ceil(products.length / productsPerPage);
-  
+
   const [currentPage, setCurrentPage] = useState(1);
-  
+
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
-  
+
   const goToNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
   };
-  
+
   const goToPreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -168,14 +164,14 @@ const Card = () => {
           <div className="pagination">
             <span className="pagination-info">Səhifə {currentPage}/{totalPages}</span>
             <div className="pagination-buttons">
-              <button 
-                className="pagination-button" 
+              <button
+                className="pagination-button"
                 disabled={currentPage === 1}
                 onClick={goToPreviousPage}
               >
                 ←
               </button>
-              <button 
+              <button
                 className="pagination-button"
                 disabled={currentPage === totalPages}
                 onClick={goToNextPage}
@@ -189,16 +185,16 @@ const Card = () => {
         <div className="products-grid">
           {currentProducts.map((product) => (
             <div key={product.id} className="product-card">
-                 <button className="options-button">
-                  <MoreVertical className="options-icon" />
-                </button>
+              <button className="options-button">
+                <MoreVertical className="options-icon" />
+              </button>
               <div className="product-image-container">
                 <img
                   src={product.image}
                   alt={product.name}
                   className="product-image"
                 />
-               
+
                 <div className="certification-badge">
                   <img
                     src="src/assets/images/home-card/download.jpeg"
@@ -214,26 +210,26 @@ const Card = () => {
                     <h3 className="product-title">{product.name}</h3>
                     <p className="product-weight">({product.weight})</p>
                   </div>
-                  
+
                 </div>
 
                 <p className="product-producer">
-                İstehsalçı:{' '}
+                  İstehsalçı:{' '}
                   <span className="producer-name">{product.producer}</span>
                 </p>
 
                 <div className="product-rating">
                   <div>
-                      {[...Array(5)].map((_, i) => (
-                        <span key={i} className="rating-star">
-                          ★
-                        </span>
-                      ))}
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className="rating-star">
+                        ★
+                      </span>
+                    ))}
                   </div>
                   <div>
-                      <span className="product-price">
-                        {product.price.toFixed(2)} €
-                      </span>
+                    <span className="product-price">
+                      {product.price.toFixed(2)} €
+                    </span>
                   </div>
                 </div>
 
