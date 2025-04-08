@@ -1,9 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-// import { registerUser } from 'pages/register/actions/register.mutation';
-// import { loginUser } from '../pages/login/actions/login.mutation';
 import { loginUser, registerUser } from './actions/auth.actions';
 import { environment } from 'core/configs/app.config';
-import { logoutService } from '../pages/login/actions/login.service';
 import { User } from 'core/utils/IUser';
 
 interface AuthState {
@@ -16,10 +13,11 @@ interface AuthState {
   token: string | null;
 }
 
-// const token = localStorage.getItem('token');
-// const user = localStorage.getItem('user');
 const getStoredToken = (): string | null => {
-  return localStorage.getItem(`${environment.applicationName}-token`) || localStorage.getItem('token');
+  return (
+    localStorage.getItem(`${environment.applicationName}-token`) ||
+    localStorage.getItem('token')
+  );
 };
 
 const getStoredUser = (): User | null => {
@@ -34,7 +32,7 @@ const initialState: AuthState = {
   registerError: null,
   loginError: null,
   token: getStoredToken(),
-  user: getStoredUser()
+  user: getStoredUser(),
 };
 
 export const authSlice = createSlice({
@@ -48,7 +46,7 @@ export const authSlice = createSlice({
       localStorage.removeItem(`${environment.applicationName}-token`);
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      logoutService();
+      localStorage.removeItem('role');
     },
     clearLoginError: (state) => {
       state.loginError = null;
@@ -75,7 +73,6 @@ export const authSlice = createSlice({
         state.token = action.payload.token;
         localStorage.setItem('token', action.payload.token);
         localStorage.setItem('user', JSON.stringify(action.payload.data.user));
-
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isRegistering = false;
@@ -91,7 +88,7 @@ export const authSlice = createSlice({
         state.user = action.payload.user;
         state.token = action.payload.token;
         localStorage.setItem('token', action.payload.token);
-  localStorage.setItem('user', JSON.stringify(action.payload.user));
+        localStorage.setItem('user', JSON.stringify(action.payload.user));
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoggingIn = false;
@@ -100,5 +97,12 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout, clearLoginError, clearRegisterError, setAuthUser } = authSlice.actions;
-export default authSlice.reducer;
+export const {
+  logout,
+  clearLoginError,
+  clearRegisterError,
+  setAuthUser,
+} = authSlice.actions;
+
+export const authReducer = authSlice.reducer;
+export default authSlice;

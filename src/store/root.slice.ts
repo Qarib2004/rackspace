@@ -35,8 +35,11 @@ export const rootSlice = createSlice({
         action.payload
       );
     },
-   
+
   }
 });
 
 export const { setLoader, toggleLeftMenu, setLocale } = rootSlice.actions;
+
+export const rootReducer = rootSlice.reducer;
+export default rootSlice;

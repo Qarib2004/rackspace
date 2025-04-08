@@ -20,7 +20,7 @@ export const loginService = async (
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw new Error(
-        error.response?.data?.message || 
+        error.response?.data?.error || 
         'Authentication failed. Please check your credentials.'
       );
     }

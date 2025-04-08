@@ -24,7 +24,7 @@ function LoginComponent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  
+
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const [login, { isLoading }] = useLoginMutation();
@@ -36,7 +36,7 @@ function LoginComponent() {
     }, 5000);
     return () => clearInterval(timer);
   }, []);
-  
+
   useEffect(() => {
     if (auth?.loginError) {
       setError(auth.loginError);
@@ -71,18 +71,10 @@ function LoginComponent() {
 
     try {
       const result = await dispatch(loginUser({ email, password }));
-      
+
       if (result.meta.requestStatus === 'fulfilled') {
         toast.success('Login successful');
         navigate('/');
-      } else {
-        const errorMsg = getErrorMessage(result.payload);
-        toast.error(errorMsg, {
-          toastId: 'api-error',
-          position: 'bottom-right',
-          theme: 'light'
-        });
-        setError(errorMsg);
       }
     } catch (err) {
       const msg = getErrorMessage(err);
@@ -116,13 +108,13 @@ function LoginComponent() {
 
           <form className="login__form" onSubmit={handleSubmit}>
             {error && <div className="login__error">{error}</div>}
-            
+
             <div className="login__field">
               <label>
                 Email <span>*</span>
               </label>
-              <input 
-                type="email" 
+              <input
+                type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -133,8 +125,8 @@ function LoginComponent() {
                 Password <span>*</span>
               </label>
               <div className="login__password">
-                <input 
-                  type={showPassword ? 'text' : 'password'} 
+                <input
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -157,8 +149,8 @@ function LoginComponent() {
                 />
                 <span>Stay logged in</span>
               </label>
-              <a 
-                href="#" 
+              <a
+                href="#"
                 className="login__forgot-password"
                 onClick={handleForgotPassword}
               >
@@ -166,8 +158,8 @@ function LoginComponent() {
               </a>
             </div>
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="login__submit"
               disabled={isLoading || auth.isLoggingIn}
             >

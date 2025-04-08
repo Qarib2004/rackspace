@@ -33,8 +33,8 @@ const HeaderComponent = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const user = useSelector((state: RootState) => state.auth?.user || null);
-console.log(user);
-const menuPanelRef = useRef<HTMLDivElement | null>(null);
+  console.log(user);
+  const menuPanelRef = useRef<HTMLDivElement | null>(null);
   const profileDropdownRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -81,9 +81,9 @@ const menuPanelRef = useRef<HTMLDivElement | null>(null);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('role');
-    // window.location.reload();
-    setIsAuthenticated(false);
     // dispatch(logout());
+    window.location.reload();
+    setIsAuthenticated(false);
     setIsProfileDropdownOpen(false);
   };
 
@@ -370,10 +370,10 @@ const menuPanelRef = useRef<HTMLDivElement | null>(null);
               {!isAuthenticated ? (
                 <>
                   <Link to="/login" className="primary">
-                    Entrar
+                    Giriş / 
                   </Link>
                   <Link to="/register" className="secondary">
-                    Criar Conta
+                    Qeydiyyat
                   </Link>
                 </>
               ) : (

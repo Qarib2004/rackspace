@@ -18,8 +18,8 @@ import Orders from 'pages/profile/Profile/Orders';
 
 const router = createBrowserRouter([
     {
-        element: <PublicComponent />,
-        // element: <AuthProtectedComponent layout="public"><PublicComponent /></AuthProtectedComponent>,
+        // element: <PublicComponent />,
+        element: <AuthProtectedComponent layout="public"><PublicComponent /></AuthProtectedComponent>,
         children: [
             {
                 path: Routes.home,
