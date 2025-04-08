@@ -57,5 +57,5 @@ export const rootSlice = createSlice({
     }
   },
 });
-export const {setLoader, toggleLeftMenu, setLocale, setUser,} = rootSlice.actions;
+export const {setLoader, toggleLeftMenu, setLocale, setUser, setLogout} = rootSlice.actions;
 export default rootSlice.reducer;

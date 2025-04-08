@@ -1,7 +1,7 @@
 import axios, {AxiosResponse, InternalAxiosRequestConfig} from 'axios';
 import {environment} from './app.config';
 import {store} from 'store/store.config';
-import {setLoader} from 'store/store.reducer';
+import {setLoader, setLogout} from 'store/store.reducer';
 import {errorToast, successToast} from '../shared/toast/toast';
 import {getToken} from '../helpers/get-token';
 
@@ -52,7 +52,7 @@ axiosInstance.interceptors.response.use(
         switch (status) {
             case 401:
                 errMessage = 'Sessiya müddəti bitmişdir';
-                // store.dispatch(setLogout());
+                store.dispatch(setLogout());
                 break;
             case 404:
                 errMessage = 'Məlumat tapılmadı';
