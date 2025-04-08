@@ -24,16 +24,17 @@
 
   .mobile-top-nav {
     position: fixed;
-    top: 11.5%;
+    top: 8%;
     left: 0;
     right: 0;
     z-index: 1000;
     background: #fff;
     line-height: 55px;
     border-bottom: 1px solid #f0f0f0;
+    border-top: 1px solid #f0f0f0;
     display: flex;
     justify-content: space-around;
-    padding: 0 8px;
+    padding: 10px 10px;
 
     .ant-menu-item {
       padding: 0 8px;
