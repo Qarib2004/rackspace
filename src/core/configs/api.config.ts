@@ -1,5 +1,5 @@
 export const API = {
-    getDataCenters: '/data-centers',
-
+    login: 'users/login',
+    products: 'products',
 };
 
