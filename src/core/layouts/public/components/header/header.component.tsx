@@ -87,6 +87,8 @@ const menuPanelRef = useRef<HTMLDivElement | null>(null);
     setIsProfileDropdownOpen(false);
   };
 
+
+
   const toggleBasket = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsBasketOpen(!isBasketOpen);

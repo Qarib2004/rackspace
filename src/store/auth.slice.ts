@@ -1,6 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-// import { registerUser } from 'pages/register/actions/register.mutation';
-// import { loginUser } from '../pages/login/actions/login.mutation';
 import { loginUser, registerUser } from './actions/auth.actions';
 import { environment } from 'core/configs/app.config';
 import { logoutService } from '../pages/login/actions/login.service';
@@ -16,8 +14,7 @@ interface AuthState {
   token: string | null;
 }
 
-// const token = localStorage.getItem('token');
-// const user = localStorage.getItem('user');
+
 const getStoredToken = (): string | null => {
   return localStorage.getItem(`${environment.applicationName}-token`) || localStorage.getItem('token');
 };

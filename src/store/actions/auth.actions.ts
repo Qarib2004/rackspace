@@ -1,14 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { RegisterService } from 'pages/register/actions/register.service'; 
-import { setLoader } from 'store/store.reducer';
+import { setLoader } from '../store.reducer';
 import { setAuthUser } from 'store/auth.slice'; 
 import { setToken } from 'core/helpers/get-token';
 import { IRegisterRequest, IRegisterResponse } from 'pages/register/actions/register'; 
-import { AppDispatch } from 'store/store.config';
+import { AppDispatch } from '../store.config';
 import { loginService } from 'pages/login/actions/login.service';
-import { User } from 'core/utils/IUser'
+import { User } from 'core/utils/IUser';
 
-;
+
 export interface LoginCredentials {
     email: string;
     password: string;
