@@ -1,11 +1,11 @@
 
-import {useMutation} from 'react-query';
-import {loginService} from './login.service';
-import {errorToast} from '../../../core/shared/toast/toast';
-import {setToken} from '../../../core/helpers/get-token';
-import {store} from '../../../store/store.config';
-import {setUser} from '../../../store/store.reducer';
-import {useNavigate} from 'react-router-dom';
+import { useMutation } from 'react-query';
+import { loginService } from './login.service';
+import { errorToast } from '../../../core/shared/toast/toast';
+import { setToken } from '../../../core/helpers/get-token';
+import { store } from '../../../store/store.config';
+import { setUser } from '../../../store/store.reducer';
+import { useNavigate } from 'react-router-dom';
 
 
 export const useLoginUser = () => {
@@ -15,13 +15,14 @@ export const useLoginUser = () => {
       return loginService(data);
     },
     onSuccess: (data: any) => {
-     // setToken('users/login');
+      // setToken('users/login');
       setToken(data.token);
       store.dispatch(setUser(data.token));
       navigate('/');
     },
     onError: (error: any) => {
-        errorToast(error?.response?.data);
+      // console.log(error);
+      // errorToast(error?.response?.data?.error || 'Server error occurred.');
     }
   });
 };

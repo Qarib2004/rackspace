@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState, useCallback } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { registerUser } from 'pages/register/actions/register.mutation';
+import { Form, Input, Button, Select, DatePicker, message, Card, Row, Col } from 'antd';
 import './register.component.scss';
-import { IRegisterRequest } from './actions/register';
+import { IRegisterRequest } from './register';
+import { useRegisterUser } from './actions/register.mutation';
+
+const { Option } = Select;
+const { Password } = Input;
 
 const images = [
   'https://agromarket.pt/static/media/slide_3.ec520ee601d256b83969.png',
@@ -17,103 +18,93 @@ const images = [
 
 const SLIDE_INTERVAL = 5000;
 
-// Azərbaycan şəhərləri siyahısı
 const AZERBAIJAN_CITIES = [
-  'Bakı', 'Gəncə', 'Sumqayıt', 'Mingəçevir', 'Şirvan', 'Naxçıvan', 
-  'Şəki', 'Yevlax', 'Lənkəran', 'Xankəndi', 'Şuşa', 'Ağdam', 
+  'Bakı', 'Gəncə', 'Sumqayıt', 'Mingəçevir', 'Şirvan', 'Naxçıvan',
+  'Şəki', 'Yevlax', 'Lənkəran', 'Xankəndi', 'Şuşa', 'Ağdam',
   'Bərdə', 'Cəlilabad', 'Şamaxı', 'Quba', 'Qusar', 'İsmayıllı'
 ];
 
+const GENDER_OPTIONS = [
+  { value: 'prefer-not-to-say', label: 'Bildirmək istəmirəm' },
+  { value: 'male', label: 'Kişi' },
+  { value: 'female', label: 'Qadın' },
+  { value: 'other', label: 'Digər' }
+];
+
 function RegisterComponent() {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    gender: 'bildirmək-istəmirəm',
-    phoneNumber: '',
-    birthDate: '',
-    city: '',
-    district: ''
-  });
-
-  const [citySuggestions, setCitySuggestions] = useState<string[]>([]);
-  const [showCitySuggestions, setShowCitySuggestions] = useState(false);
-  const [passwordStrength, setPasswordStrength] = useState(0);
-
+  const [form] = Form.useForm();
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
+  const [citySuggestions, setCitySuggestions] = useState<string[]>([]);
+  const [passwordStrength, setPasswordStrength] = useState(0);
+  const { mutate: registerUser, isLoading } = useRegisterUser();
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentImage((current) => (current + 1) % images.length);
-    }, SLIDE_INTERVAL);
-
-    return () => clearInterval(timer);
+  const changeImage = useCallback(() => {
+    setCurrentImage((current) => (current + 1) % images.length);
   }, []);
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     toast.success(
-  //       <div>
-  //         <h3>Qeydiyyat uğurla tamamlandı!</h3>
-  //         <p>Təsdiq linki {formData.email} ünvanına göndərildi.</p>
-  //       </div>,
-  //       {
-  //         autoClose: 5000,
-  //         closeOnClick: false,
-  //         pauseOnHover: true
-  //       }
-  //     );
-  //     setFormData({
-    //     firstName: '',
-    //     lastName: '',
-    //     email: '',
-    //     password: '',
-    //     confirmPassword: '',
-    //     gender: 'bildirmək-istəmirəm',
-    //     phoneNumber: '',
-    //     birthDate: '',
-    //     city: '',
-    //     district: ''
-    //   });
-    // }
-
-  //   if (registerError) {
-  //     toast.error(registerError, {
-  //       autoClose: 4000
-  //     });
-  //   }
-  // }, [isAuthenticated, registerError, formData.email]);
+  useEffect(() => {
+    const timer = setInterval(changeImage, SLIDE_INTERVAL);
+    return () => clearInterval(timer);
+  }, [changeImage]);
 
   useEffect(() => {
-    let strength = 0;
-    if (formData.password.length >= 8) strength++;
-    if (/[A-Z]/.test(formData.password)) strength++;
-    if (/[0-9]/.test(formData.password)) strength++;
-    if (/[^A-Za-z0-9]/.test(formData.password)) strength++;
-    setPasswordStrength(strength);
-  }, [formData.password]);
+    images.forEach((image) => {
+      const img = new Image();
+      img.src = image;
+    });
+  }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  const onFinish = (values: IRegisterRequest) => {
+    if (values.password !== values.passwordConfirm) {
+      message.warning('Şifrələr eyni deyil!');
+      return;
+    }
 
-    if (name === 'city' && value.length > 1) {
+    if (passwordStrength < 3) {
+      message.warning('Şifrə kifayət qədər güclü deyil!');
+      return;
+    }
+
+    registerUser(values, {
+      onSuccess: () => {
+        message.success(
+          <div>
+            <h3>Qeydiyyat uğurla tamamlandı!</h3>
+            <p>Təsdiq linki {values.email} ünvanına göndərildi.</p>
+          </div>,
+          5000
+        );
+        form.resetFields();
+      },
+      onError: (error) => {
+        message.error(error.message || 'Qeydiyyat zamanı xəta baş verdi');
+      }
+    });
+  };
+
+  const handleCitySearch = (value: string) => {
+    if (value.length > 1) {
       const filteredCities = AZERBAIJAN_CITIES.filter(city =>
         city.toLowerCase().includes(value.toLowerCase())
       );
       setCitySuggestions(filteredCities);
-      setShowCitySuggestions(filteredCities.length > 0);
+    } else {
+      setCitySuggestions([]);
     }
   };
 
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    let strength = 0;
+    if (value.length >= 8) strength++;
+    if (/[A-Z]/.test(value)) strength++;
+    if (/[0-9]/.test(value)) strength++;
+    if (/[^A-Za-z0-9]/.test(value)) strength++;
+    setPasswordStrength(strength);
+  };
+
+  const formatPhoneNumber = (value: string) => {
     const cleaned = value.replace(/\D/g, '');
     let formatted = cleaned;
 
@@ -123,63 +114,11 @@ function RegisterComponent() {
       formatted = `+994 ${cleaned.slice(0, 2)} ${cleaned.slice(2, 5)} ${cleaned.slice(5, 7)} ${cleaned.slice(7, 9)}`;
     }
 
-    setFormData(prev => ({
-      ...prev,
-      phoneNumber: formatted.trim()
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (formData.password !== formData.confirmPassword) {
-      toast.warn('Şifrələr eyni deyil!', {
-        autoClose: 3000
-      });
-      return;
-    }
-
-    // if (passwordStrength < 3) {
-    //   toast.warn('Şifrə kifayət qədər güclü deyil!', {
-    //     autoClose: 3000
-    //   });
-    //   return;
-    // }
-
-    // const userData: IRegisterRequest = {
-    //   firstname: formData.firstName,
-    //   lastname: formData.lastName,
-    //   email: formData.email,
-    //   password: formData.password,
-    //   passwordConfirm: formData.confirmPassword,
-    //   gender: formData.gender,
-    //   phoneNumber: formData.phoneNumber,
-    //   birthDate: formData.birthDate ? new Date(formData.birthDate) : undefined,
-    //   city: formData.city,
-    //   district: formData.district,
-    //   active: true,
-    //   role: 'user'
-    // };
-
-    // dispatch(registerUser(userData));
-  };
-
-  const selectCity = (city: string) => {
-    setFormData(prev => ({ ...prev, city }));
-    setShowCitySuggestions(false);
+    return formatted.trim();
   };
 
   return (
     <div className="register">
-      <ToastContainer
-        position="top-center"
-        newestOnTop
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        rtl={false}
-      />
-
       <div className="register__content">
         <div className="register__left">
           <Link to="/" className="register__back">
@@ -191,187 +130,158 @@ function RegisterComponent() {
             <h2>LankMark</h2>
           </div>
 
-          <form className="register__form" onSubmit={handleSubmit}>
-            <div className="register__row">
-              <div className="register__field">
-                <label>
-                  Ad <span>*</span>
-                </label>
-                <input
-                  type="text"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="register__field">
-                <label>
-                  Soyad <span>*</span>
-                </label>
-                <input
-                  type="text"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
+          <Form
+            form={form}
+            layout="vertical"
+            onFinish={onFinish}
+            className="register__form"
+            initialValues={{ gender: 'prefer-not-to-say' }}
+          >
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="firstname"
+                  label="Ad"
+                  rules={[{ required: true, message: 'Ad daxil edilməlidir' }]}
+                >
+                  <Input placeholder="Adınızı daxil edin" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="lastname"
+                  label="Soyad"
+                  rules={[{ required: true, message: 'Soyad daxil edilməlidir' }]}
+                >
+                  <Input placeholder="Soyadınızı daxil edin" />
+                </Form.Item>
+              </Col>
+            </Row>
 
-            <div className="register__field">
-              <label>
-                Email <span>*</span>
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
+            <Form.Item
+              name="email"
+              label="Email"
+              rules={[
+                { required: true, message: 'Email daxil edilməlidir' },
+                { type: 'email', message: 'Düzgün email daxil edin' }
+              ]}
+            >
+              <Input placeholder="nümunə@mail.com" />
+            </Form.Item>
+
+            <Form.Item name="gender" label="Cinsiyyət">
+              <Select>
+                {GENDER_OPTIONS.map(option => (
+                  <Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+
+            <Form.Item
+              name="phoneNumber"
+              label="Telefon nömrəsi"
+              getValueFromEvent={(e) => formatPhoneNumber(e.target.value)}
+            >
+              <Input placeholder="+994 XX XXX XX XX" maxLength={19} />
+            </Form.Item>
+
+            <Form.Item name="birthDate" label="Doğum tarixi">
+              <DatePicker
+                style={{ width: '100%' }}
               />
+            </Form.Item>
+
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item name="city" label="Şəhər">
+                  <Select
+                    showSearch
+                    placeholder="Şəhər seçin"
+                    onSearch={handleCitySearch}
+                    filterOption={false}
+                    notFoundContent="Nəticə tapılmadı"
+                  >
+                    {citySuggestions.map(city => (
+                      <Option key={city} value={city}>{city}</Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item name="district" label="Rayon">
+                  <Input placeholder="Rayon daxil edin" />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Form.Item
+              name="password"
+              label="Şifrə"
+              rules={[
+                { required: true, message: 'Şifrə daxil edilməlidir' },
+                { min: 8, message: 'Şifrə ən azı 8 simvol olmalıdır' }
+              ]}
+            >
+              <Password
+                placeholder="Şifrə yaradın"
+                onChange={handlePasswordChange}
+              />
+            </Form.Item>
+
+            <div className="register__password-strength">
+              <div className={`register__strength-bar ${passwordStrength > 0 ? 'active' : ''}`}></div>
+              <div className={`register__strength-bar ${passwordStrength > 1 ? 'active' : ''}`}></div>
+              <div className={`register__strength-bar ${passwordStrength > 2 ? 'active' : ''}`}></div>
+              <div className={`register__strength-bar ${passwordStrength > 3 ? 'active' : ''}`}></div>
             </div>
 
-            <div className="register__field">
-              <label>
-                Cinsiyyət
-              </label>
-              <select
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-                className="register__select"
+            <Form.Item
+              name="passwordConfirm"
+              label="Şifrə təkrarı"
+              dependencies={['password']}
+              rules={[
+                { required: true, message: 'Şifrə təkrarı daxil edilməlidir' },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('password') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error('Şifrələr eyni deyil!'));
+                  },
+                }),
+              ]}
+            >
+              <Password placeholder="Şifrəni təkrar edin" />
+            </Form.Item>
+
+            <Form.Item>
+              <Button
+                className="register__submit"
+                htmlType="submit"
+                loading={isLoading}
+
               >
-                <option value="prefer-not-to-say">Bildirmək istəmirəm</option>
-                <option value="male">Kişi</option>
-                <option value="female">Qadın</option>
-                <option value="other">Digər</option>
-              </select>
-            </div>
-
-            <div className="register__field">
-              <label>
-                Telefon nömrəsi
-              </label>
-              <input
-                type="tel"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handlePhoneChange}
-                placeholder="+994 XX XXX XX XX"
-                pattern="^\+994\s?\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$"
-              />
-            </div>
-
-            <div className="register__field">
-              <label>
-                Doğum tarixi
-              </label>
-              <input
-                type="date"
-                name="birthDate"
-                value={formData.birthDate}
-                onChange={handleChange}
-                max={new Date().toISOString().split('T')[0]}
-              />
-            </div>
-
-            <div className="register__row">
-              <div className="register__field">
-                <label>
-                  Şəhər
-                </label>
-                <div className="register__city-input">
-                  <input
-                    type="text"
-                    name="city"
-                    value={formData.city}
-                    onChange={handleChange}
-                    onFocus={() => setShowCitySuggestions(true)}
-                    onBlur={() => setTimeout(() => setShowCitySuggestions(false), 200)}
-                  />
-                  {showCitySuggestions && (
-                    <div className="register__city-suggestions">
-                      {citySuggestions.map((city, index) => (
-                        <div
-                          key={index}
-                          className="register__city-suggestion"
-                          onClick={() => selectCity(city)}
-                        >
-                          {city}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="register__field">
-                <label>
-                  Rayon
-                </label>
-                <input
-                  type="text"
-                  name="district"
-                  value={formData.district}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-
-            <div className="register__field">
-              <label>
-                Şifrə <span>*</span>
-              </label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                minLength={8}
-                required
-              />
-              <div className="register__password-strength">
-                <div className={`register__strength-bar ${passwordStrength > 0 ? 'active' : ''}`}></div>
-                <div className={`register__strength-bar ${passwordStrength > 1 ? 'active' : ''}`}></div>
-                <div className={`register__strength-bar ${passwordStrength > 2 ? 'active' : ''}`}></div>
-                <div className={`register__strength-bar ${passwordStrength > 3 ? 'active' : ''}`}></div>
-              </div>
-            </div>
-
-            <div className="register__field">
-              <label>
-                Şifrə təkrarı <span>*</span>
-              </label>
-              <input
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                minLength={8}
-                required
-              />
-            </div>
-
-            {/*<button*/}
-            {/*  type="submit"*/}
-            {/*  className="register__submit"*/}
-            {/*  disabled={isRegistering}*/}
-            {/*>*/}
-            {/*  {isRegistering ? 'Hesab yaradılır...' : 'Hesab yarat'}*/}
-            {/*</button>*/}
-          </form>
+                {isLoading ? 'Hesab yaradılır...' : 'Hesab yarat'}
+              </Button>
+            </Form.Item>
+          </Form>
         </div>
 
         <div className="register__right">
           <div className="register__slider">
-            <img src={images[currentImage]} alt="Kənd təsərrüfatı" />
+            <img
+              src={images[currentImage]}
+              alt="Kənd təsərrüfatı"
+              key={currentImage}
+            />
             <div className="register__dots">
               {images.map((_, index) => (
                 <button
                   key={index}
-                  className={`register__dot ${
-                    currentImage === index ? 'active' : ''
-                  }`}
+                  className={`register__dot ${currentImage === index ? 'active' : ''
+                    }`}
                   onClick={() => setCurrentImage(index)}
                 />
               ))}

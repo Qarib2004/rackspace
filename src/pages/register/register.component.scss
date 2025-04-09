@@ -15,7 +15,7 @@
         flex: 1;
         padding: 2rem;
         max-width: 400px;
-        height: calc(100vh - 4rem);
+        height: calc(100vh - 0.5rem);
         overflow-y: auto;
         scrollbar-width: thin;
         scrollbar-color: #4a8b3f #f1f1f1;
@@ -276,6 +276,9 @@
     &__submit {
         background: #4a8b3f;
         width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         margin-left: auto;
         color: white;
         border: none;
@@ -290,6 +293,7 @@
 
         &:hover {
             background: darken(#4a8b3f, 5%);
+            color: white !important;
             transform: translateY(-1px);
         }
 
