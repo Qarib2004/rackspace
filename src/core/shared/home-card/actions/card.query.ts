@@ -1,6 +1,19 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { API_URL } from 'core/utils/base-url'; 
-import { Product } from 'store/product.slice';
+
+export interface Product {
+  id: number;
+  name: string;
+  description?: string;
+  image?: string[];
+  price: number;
+  seller:object; 
+  weight: string; 
+  quantity?: number;
+  isAvailable?: boolean;
+  isOrganic?: boolean;
+  rating?: number;
+}
 
 export const cardApi = createApi({
   reducerPath: 'cardApi',
