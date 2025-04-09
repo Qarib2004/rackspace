@@ -31,7 +31,7 @@ const OneSection: React.FC = () => {
             style={{ backgroundImage: `url(${banner})` }}
           >
             <div className="content">
-            <h1>Agromarketdə məhsullarınız öz sözünü deyir</h1>
+            <h1>LankMarkda məhsullarınız öz sözünü deyir</h1>
  <h2>Kənd təsərrüfatı məhsullarının onlayn mağazası</h2>
             </div>
           </div>

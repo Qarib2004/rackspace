@@ -18,6 +18,7 @@ import Orders from 'pages/profile/Profile/Orders';
 
 const router = createBrowserRouter([
     {
+        // element: <PublicComponent />,
         element: <AuthProtectedComponent layout="public"><PublicComponent /></AuthProtectedComponent>,
         children: [
             {
@@ -57,8 +58,8 @@ const router = createBrowserRouter([
             {
                 path: Routes.basket,
                 element: <SidebarBasket isOpen={true} onClose={() => console.log('Sidebar closed')} />
-              }
-              
+            }
+
         ],
     },
     {

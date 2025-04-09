@@ -1,20 +1,17 @@
-import { configureStore } from '@reduxjs/toolkit';
+import {configureStore} from '@reduxjs/toolkit';
 import rootReducer from './store.reducer';
-import { useSelector } from 'react-redux';
-import { RootState } from './store.reducer';
-import { loginApi } from '../pages/login/actions/login.query';
+import {IState} from './store';
+import {useSelector} from 'react-redux';
 
 export const store = configureStore({
-    reducer: rootReducer, 
+    reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: false,
-        }).concat(loginApi.middleware),
+        }),
 });
 
-export const useStore = <T extends keyof RootState>(key: T) => {
-    const data = useSelector((state: RootState) => state[key]);
+export const useStore = (key: keyof IState) => {
+    const data = useSelector((state: IState) => state[key]);
     return data;
 };
-
-export type AppDispatch = typeof store.dispatch;

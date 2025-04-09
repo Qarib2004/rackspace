@@ -1,5 +1,7 @@
-import React from 'react';
 import './client.components.scss';
+import Image1 from '../../../../../assets/images/cliente/Cliente.cf3a43bb762021445442.jpeg';
+import Image2 from '../../../../../assets/images/cliente/Produtor.33537edce15aeceb8842.jpeg';
+
 
 const ClienteSection = () => {
   return (
@@ -8,7 +10,7 @@ const ClienteSection = () => {
         <div className="cliente-card">
           <div className="cliente-card__image-container">
             <img
-              src="src/assets/images/cliente/Cliente.cf3a43bb762021445442.jpeg"
+              src={Image1}
               alt="Cliente"
               className="cliente-card__image"
             />
@@ -26,7 +28,7 @@ const ClienteSection = () => {
         <div className="cliente-card cliente-card--produtor">
           <div className="cliente-card__image-container">
             <img
-              src="src/assets/images/cliente/Produtor.33537edce15aeceb8842.jpeg"
+              src={Image2}
               alt="Produtor"
               className="cliente-card__image"
             />

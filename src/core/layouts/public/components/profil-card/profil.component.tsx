@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { MoreVertical } from 'lucide-react';
 import './profil.component.scss';
+import cardImg from '../../../../../assets/images/profil-card/Grupo 32300.png';
+import cardImg2 from '../../../../../assets/images/profil-card/Grupo 32331.jpeg';
+import cardImg3 from '../../../../../assets/images/profil-card/Grupo 32333.jpeg';
+import cardImg4 from '../../../../../assets/images/profil-card/hFicmWpIh6RnU8cNVzRVY594zGMfbEFQicik4dPr (1).jpg';
+import cardImg5 from '../../../../../assets/images/profil-card/R67wI1AYFwOeFEdNV5R9H6N2juXoz434SQ8jdxdF (1).jpg';
 
 interface Product {
   id: number;
@@ -9,18 +14,6 @@ interface Product {
   tlm: string;
   image: string;
 }
-
-const cardImg = 'src/assets/images/profil-card/Grupo 32300.png';
-
-const cardImg2 = 'src/assets/images/profil-card/Grupo 32331.jpeg';
-
-const cardImg3 = 'src/assets/images/profil-card/Grupo 32333.jpeg';
-
-const cardImg4 =
-  'src/assets/images/profil-card/hFicmWpIh6RnU8cNVzRVY594zGMfbEFQicik4dPr (1).jpg';
-
-const cardImg5 =
-  'src/assets/images/profil-card/R67wI1AYFwOeFEdNV5R9H6N2juXoz434SQ8jdxdF (1).jpg';
 
 const products: Product[] = [
   {
@@ -162,7 +155,7 @@ const ProfilCard = () => {
           <h1 className="page-title">İstehsalçı profili</h1>
           <div className="pagination">
             <span className="pagination-info">
-            Səhifə {currentPage} / {totalPages}
+              Səhifə {currentPage} / {totalPages}
             </span>
             <div className="pagination-buttons">
               <button
