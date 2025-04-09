@@ -86,6 +86,8 @@ const HeaderComponent = () => {
     setIsProfileDropdownOpen(false);
   };
 
+
+
   const toggleBasket = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsBasketOpen(!isBasketOpen);
