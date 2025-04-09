@@ -17,9 +17,9 @@ import { Logo } from 'assets/images/icons/agro-logo';
 import { getToken } from 'core/helpers/get-token';
 import SidebarBasket from 'pages/basket-sidebar/basketSidebar.component';
 import SearchComponent from '../search/search.component';
-import { useSelector, useDispatch } from 'react-redux';
-import {useStore} from '../../../../../store/store.config';
-
+import { useStore } from '../../../../../store/store.config';
+import { Modal } from 'antd';
+import { ExclamationCircleOutlined, LogoutOutlined } from '@ant-design/icons';
 
 const HeaderComponent = () => {
 
@@ -78,12 +78,20 @@ const HeaderComponent = () => {
   }, [isMobileMenuOpen]);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('role');
-    window.location.reload();
-    setIsAuthenticated(false);
-    setIsProfileDropdownOpen(false);
+    Modal.confirm({
+      title: 'Çıxış',
+      icon: <LogoutOutlined />,
+      content: 'Hesabdan çıxmaq istədiyinizə əminsiniz?',
+      okText: 'Bəli, çıx',
+      cancelText: 'Xeyr',
+      centered: true,
+      onOk() {
+        localStorage.removeItem('token');
+        window.location.reload();
+        setIsAuthenticated(false);
+        setIsProfileDropdownOpen(false);
+      },
+    });
   };
 
   const toggleBasket = (e: React.MouseEvent) => {
@@ -104,18 +112,19 @@ const HeaderComponent = () => {
             <button
               className="header__menu-btn"
               onClick={() => setIsOpen(!isOpen)}
+              aria-label="Menu"
             >
               <Menu size={24} />
               <span>MENU</span>
             </button>
 
-            <div className="header__search" onClick={toggleSearch}>
+            <div className="header__search" onClick={toggleSearch} role="button" tabIndex={0}>
               <Search size={20} />
             </div>
           </div>
 
           <div className="header__logo">
-            <Link to="/">
+            <Link to="/" aria-label="Ana səhifə">
               <Logo />
             </Link>
           </div>
@@ -127,57 +136,55 @@ const HeaderComponent = () => {
               </Link>
             ) : (
               <>
-                <Link to="/notifications" className="header__icon-btn">
+                <Link to="/notifications" className="header__icon-btn" aria-label="Bildirişlər">
                   <Bell size={24} />
                 </Link>
-                <Link to="/wishlist" className="header__icon-btn">
+                <Link to="/wishlist" className="header__icon-btn" aria-label="İstək siyahısı">
                   <Heart size={24} />
                 </Link>
               </>
             )}
 
-            <button onClick={toggleBasket} className="header__cart-btn">
+            <button onClick={toggleBasket} className="header__cart-btn" aria-label="Səbət">
               <ShoppingBag size={24} />
             </button>
 
-            {!isAuthenticated ? (
-              <button className="header__lang-btn">
+            {!isAuthenticated && (
+              <button className="header__lang-btn" aria-label="Dil seçimi">
                 <Globe size={24} />
               </button>
-            ) : (
-              <></>
             )}
 
             {isAuthenticated && (
               <div className="header__profile">
                 <button
                   className="header__profile-btn"
-                  onClick={() =>
-                    setIsProfileDropdownOpen(!isProfileDropdownOpen)
-                  }
+                  onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+                  aria-label="Profil"
+                  aria-expanded={isProfileDropdownOpen}
                 >
                   <img
                     className="header__img"
                     src="https://agromarketing.com/wp-content/uploads/2016/12/default-avatar.png"
-                    alt="Profile"
+                    alt="Profil şəkli"
                   />
                 </button>
+
                 {isProfileDropdownOpen && (
                   <div
                     ref={profileDropdownRef}
                     className="header__profile-dropdown"
+                    role="menu"
                   >
                     <div className="header__profile-dropdown-header">
                       <img
                         className="header__profile-dropdown-img"
                         src="https://agromarketing.com/wp-content/uploads/2016/12/default-avatar.png"
-                        alt="Profile"
+                        alt="Profil şəkli"
                       />
                       <div className="header__profile-dropdown-info">
                         <span className="header__profile-dropdown-name">
-                          <span className="header__profile-dropdown-name">
-                            {/*{user?.firstname ? `${user.firstname}` : ''}*/}
-                          </span>
+                          {/* {user?.firstname || 'İstifadəçi'} */}
                         </span>
                         <span className="header__profile-dropdown-user">
                           Müştəri
@@ -185,7 +192,7 @@ const HeaderComponent = () => {
                       </div>
                     </div>
                     <ul className="header__profile-dropdown-menu">
-                      <li>
+                      <li role="menuitem">
                         <Link
                           to="/profile/general"
                           className="header__profile-dropdown-item"
@@ -194,16 +201,16 @@ const HeaderComponent = () => {
                           <span>Profil</span>
                         </Link>
                       </li>
-                      <li>
+                      <li role="menuitem">
                         <Link
                           to="/profile/messages"
                           className="header__profile-dropdown-item"
                         >
                           <MessageCircle size={16} />
-                          <span>Messages</span>
+                          <span>Mesajlar</span>
                         </Link>
                       </li>
-                      <li>
+                      <li role="menuitem">
                         <Link
                           to="/profile/orders"
                           className="header__profile-dropdown-item"
@@ -212,7 +219,7 @@ const HeaderComponent = () => {
                           <span>Sifarişlərim</span>
                         </Link>
                       </li>
-                      <li>
+                      <li role="menuitem">
                         <Link
                           to="/profile/addresses"
                           className="header__profile-dropdown-item"
@@ -221,7 +228,7 @@ const HeaderComponent = () => {
                           <span>Ünvanlar</span>
                         </Link>
                       </li>
-                      <li>
+                      <li role="menuitem">
                         <div className="header__profile-dropdown-item-btn">
                           <Link
                             to="/help"
@@ -230,10 +237,13 @@ const HeaderComponent = () => {
                             Kömək Lazımdır?
                           </Link>
                         </div>
-                        <div className="header__profile-dropdown-item-btn2">
+                        <div className="header__profile-dropdown-item-btn2"
+                          onClick={handleLogout}
+                          role="button"
+                          tabIndex={0}>
                           <button
                             className="header__profile-dropdown-button"
-                            onClick={handleLogout}
+                            aria-label="Çıxış"
                           >
                             Çıxış
                           </button>
@@ -255,36 +265,27 @@ const HeaderComponent = () => {
                 <button
                   className="header__small-modal-close"
                   onClick={() => setIsOpen(false)}
+                  aria-label="Bağla"
                 >
                   <X size={18} />
                 </button>
               </div>
               <nav className="header__small-modal-menu">
                 <ul>
-                  <li>
-                    <Link to="/">Ana səhifə</Link>
-                  </li>
-                  <li>
-                    <Link to="/store">Kateqoriyalar</Link>
-                  </li>
-                  <li>
-                    <Link to="/promotions">Təkliflər</Link>
-                  </li>
-                  <li>
-                    <Link to="/new">Xəbərlər</Link>
-                  </li>
-                  <li>
-                    <Link to="/about">Haqqımızda</Link>
-                  </li>
-                  <li>
-                    <Link to="/contact">Əlaqə</Link>
-                  </li>
-                  <li>
-                    <Link to="/help">Kömək</Link>
-                  </li>
-                  <li>
-                    <Link to="/rules">Ümumi qaydalar</Link>
-                  </li>
+                  {[
+                    { path: '/', text: 'Ana səhifə' },
+                    { path: '/store', text: 'Kateqoriyalar' },
+                    { path: '/promotions', text: 'Təkliflər' },
+                    { path: '/new', text: 'Xəbərlər' },
+                    { path: '/about', text: 'Haqqımızda' },
+                    { path: '/contact', text: 'Əlaqə' },
+                    { path: '/help', text: 'Kömək' },
+                    { path: '/rules', text: 'Ümumi qaydalar' }
+                  ].map((item) => (
+                    <li key={item.path}>
+                      <Link to={item.path}>{item.text}</Link>
+                    </li>
+                  ))}
                 </ul>
               </nav>
             </div>
@@ -301,6 +302,7 @@ const HeaderComponent = () => {
           <button
             className="mobile-nav__item"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Menu"
           >
             <Menu size={24} />
             <span>Menu</span>
@@ -333,43 +335,34 @@ const HeaderComponent = () => {
               <button
                 className="mobile-nav__menu-close"
                 onClick={() => setIsMobileMenuOpen(false)}
+                aria-label="Bağla"
               >
                 <X size={18} />
               </button>
             </div>
             <div className="mobile-nav__menu-list">
               <ul>
-                <li>
-                  <Link to="/">Ana səhifə</Link>
-                </li>
-                <li>
-                  <Link to="/store">Kateqoriyalar</Link>
-                </li>
-                <li>
-                  <Link to="/wishlist">Favoriler</Link>
-                </li>
-                <li>
-                  <Link to="/new">Xəbərlər</Link>
-                </li>
-                <li>
-                  <Link to="/about">Haqqımızda</Link>
-                </li>
-                <li>
-                  <Link to="/contact">Əlaqə</Link>
-                </li>
-                <li>
-                  <Link to="/help">Kömək</Link>
-                </li>
-                <li>
-                  <Link to="/rules">Ümumi qaydalar</Link>
-                </li>
+                {[
+                  { path: '/', text: 'Ana səhifə' },
+                  { path: '/store', text: 'Kateqoriyalar' },
+                  { path: '/wishlist', text: 'Favorilər' },
+                  { path: '/new', text: 'Xəbərlər' },
+                  { path: '/about', text: 'Haqqımızda' },
+                  { path: '/contact', text: 'Əlaqə' },
+                  { path: '/help', text: 'Kömək' },
+                  { path: '/rules', text: 'Ümumi qaydalar' }
+                ].map((item) => (
+                  <li key={item.path}>
+                    <Link to={item.path}>{item.text}</Link>
+                  </li>
+                ))}
               </ul>
             </div>
             <div className="mobile-nav__auth-section">
               {!isAuthenticated ? (
                 <>
                   <Link to="/login" className="primary">
-                    Giriş / 
+                    Giriş
                   </Link>
                   <Link to="/register" className="secondary">
                     Qeydiyyat

@@ -2,10 +2,11 @@ import { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import './login.component.scss';
 import { Link, useNavigate } from 'react-router-dom';
-import { Form, FormProps, Input, message } from 'antd';
-import 'react-toastify/dist/ReactToastify.css';
+import { Form, FormProps, Input, notification } from 'antd';
 import { ILoginCredentials } from './login';
 import { useLoginUser } from './actions/login.mutation';
+
+const { useNotification } = notification;
 
 const images = [
     'https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?auto=format&fit=crop&q=80',
@@ -19,6 +20,7 @@ function LoginComponent() {
     const [stayLoggedIn, setStayLoggedIn] = useState(false);
     const [form] = Form.useForm();
     const navigate = useNavigate();
+    const [api, contextHolder] = useNotification();
 
     const { mutate: loginFn, isLoading, error } = useLoginUser();
 
@@ -33,19 +35,29 @@ function LoginComponent() {
 
     useEffect(() => {
         if (error) {
-            message.error(error.message || 'Login failed. Please try again.');
+            api.error({
+                message: 'Xəta baş verdi',
+                description: error.message || 'Daxil etdiyiniz məlumatlar yanlışdır. Zəhmət olmasa yenidən cəhd edin.',
+                placement: 'topRight',
+                duration: 4.5
+            });
         }
-    }, [error]);
+    }, [error, api]);
 
     const handleForgotPassword = (e: React.MouseEvent) => {
         e.preventDefault();
         navigate('/forgot-password');
     };
 
-    const onFinish: FormProps<ILoginCredentials>['onFinish'] = (values) => {
+    const onFinish: FormProps<ILoginCredentials>['onFinish'] = (values: any) => {
         loginFn(values, {
             onSuccess: () => {
-                message.success('Login successful!');
+                api.success({
+                    message: 'Daxil oldunuz',
+                    description: 'Uğurla hesabınıza daxil oldunuz!',
+                    placement: 'topRight',
+                    duration: 3
+                });
             },
         });
     };
@@ -57,8 +69,10 @@ function LoginComponent() {
         });
     }, []);
 
+
     return (
         <div className="login">
+            {contextHolder}
             <div className="login__content">
                 <div className="login__left">
                     <Link to="/" className="login__back">
@@ -75,7 +89,14 @@ function LoginComponent() {
                         className="login__form"
                         form={form}
                         onFinish={onFinish}
-                        onError={() => message.error('Please fix the form errors')}
+                        onError={() => {
+                            api.error({
+                                message: 'Form xətası',
+                                description: 'Zəhmət olmasa bütün məlumatları düzgün daxil edin.',
+                                placement: 'topRight',
+                                duration: 4
+                            });
+                        }}
                     >
                         <div className="login__field">
                             <label>
@@ -142,7 +163,7 @@ function LoginComponent() {
                             className="login__submit"
                             disabled={isLoading}
                         >
-                            {isLoading ? 'Loading...' : 'Log in'}
+                            {isLoading ? 'Yüklənir...' : 'Daxil ol'}
                         </button>
 
                         <p className="login__signup">

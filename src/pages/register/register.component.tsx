@@ -1,13 +1,13 @@
 import { useEffect, useState, useCallback } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Form, Input, Button, Select, DatePicker, message, Card, Row, Col } from 'antd';
+import { Form, Input, Button, Select, DatePicker, message, Card, Row, Col, notification } from 'antd';
 import './register.component.scss';
 import { IRegisterRequest } from './register';
 import { useRegisterUser } from './actions/register.mutation';
-
 const { Option } = Select;
 const { Password } = Input;
+const { useNotification } = notification;
 
 const images = [
   'https://agromarket.pt/static/media/slide_3.ec520ee601d256b83969.png',
@@ -34,10 +34,11 @@ const GENDER_OPTIONS = [
 function RegisterComponent() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [api, contextHolder] = useNotification();
   const [currentImage, setCurrentImage] = useState(0);
   const [citySuggestions, setCitySuggestions] = useState<string[]>([]);
   const [passwordStrength, setPasswordStrength] = useState(0);
-  const { mutate: registerUser, isLoading } = useRegisterUser();
+  const { mutate: registerUser, isLoading, error, isSuccess } = useRegisterUser();
 
   const changeImage = useCallback(() => {
     setCurrentImage((current) => (current + 1) % images.length);
@@ -49,38 +50,47 @@ function RegisterComponent() {
   }, [changeImage]);
 
   useEffect(() => {
-    images.forEach((image) => {
-      const img = new Image();
-      img.src = image;
-    });
-  }, []);
+    if (isSuccess) {
+      api.success({
+        message: 'Qeydiyyat uğurla tamamlandı!',
+        description: 'Təsdiq linki email ünvanınıza göndərildi.',
+        duration: 5,
+      });
+      form.resetFields();
+    }
+  }, [isSuccess, api, form]);
+
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+      api.error({
+        message: 'Qeydiyyat xətası',
+        description: error.message || 'Qeydiyyat zamanı xəta baş verdi',
+        duration: 5,
+      });
+    }
+  }, [error, api]);
 
   const onFinish = (values: IRegisterRequest) => {
     if (values.password !== values.passwordConfirm) {
-      message.warning('Şifrələr eyni deyil!');
+      api.warning({
+        message: 'Xəta',
+        description: 'Şifrələr eyni deyil!',
+        duration: 3,
+      });
       return;
     }
 
     if (passwordStrength < 3) {
-      message.warning('Şifrə kifayət qədər güclü deyil!');
+      api.warning({
+        message: 'Xəta',
+        description: 'Şifrə kifayət qədər güclü deyil!',
+        duration: 3,
+      });
       return;
     }
 
-    registerUser(values, {
-      onSuccess: () => {
-        message.success(
-          <div>
-            <h3>Qeydiyyat uğurla tamamlandı!</h3>
-            <p>Təsdiq linki {values.email} ünvanına göndərildi.</p>
-          </div>,
-          5000
-        );
-        form.resetFields();
-      },
-      onError: (error) => {
-        message.error(error.message || 'Qeydiyyat zamanı xəta baş verdi');
-      }
-    });
+    registerUser(values);
   };
 
   const handleCitySearch = (value: string) => {
@@ -119,6 +129,7 @@ function RegisterComponent() {
 
   return (
     <div className="register">
+      {contextHolder}
       <div className="register__content">
         <div className="register__left">
           <Link to="/" className="register__back">
@@ -190,6 +201,11 @@ function RegisterComponent() {
             <Form.Item name="birthDate" label="Doğum tarixi">
               <DatePicker
                 style={{ width: '100%' }}
+                disabledDate={(current) => {
+                  const today = new Date();
+                  const selectedDate = current?.toDate();
+                  return selectedDate > today;
+                }}
               />
             </Form.Item>
 
