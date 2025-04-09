@@ -1,78 +1,27 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { loginService } from './login.service';
-import { setToken } from 'core/helpers/get-token';
-import { User } from 'core/utils/IUser';
 
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
+import {useMutation} from 'react-query';
+import {loginService} from './login.service';
+import {errorToast} from '../../../core/shared/toast/toast';
+import {setToken} from '../../../core/helpers/get-token';
+import {store} from '../../../store/store.config';
+import {setUser} from '../../../store/store.reducer';
+import {useNavigate} from 'react-router-dom';
 
-export interface LoginResponse {
-  status: string;
-  token: string;
-  data: {
-    user: User | any;
-  };
-}
 
-export const loginUser = createAsyncThunk<
-  { token: string; user: User },
-  LoginCredentials,
-  { rejectValue: string }
->('auth/loginUser', async (credentials, { rejectWithValue }) => {
-  try {
-    const response = await loginService(credentials);
-    setToken(response.token, response.user.role);
-    return { token: response.token, user: response.user };
-  } catch (error) {
-    if (error instanceof Error) {
-      return rejectWithValue(error.message);
+export const useLoginUser = () => {
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: (data: any) => {
+      return loginService(data);
+    },
+    onSuccess: (data: any) => {
+     // setToken('users/login');
+      setToken(data.token);
+      store.dispatch(setUser(data.token));
+      navigate('/');
+    },
+    onError: (error: any) => {
+        errorToast(error?.response?.data);
     }
-    return rejectWithValue('An unknown error occurred during login');
-  }
-});
-
-
-
-// import { createAsyncThunk } from '@reduxjs/toolkit';
-// import { loginService } from './login.service';
-// import { setToken } from 'core/helpers/get-token';
-// import { setUser } from 'store/store.reducer';
-// import { User } from 'core/utils/IUser';
-// export interface LoginCredentials {
-//   email: string;
-//   password: string;
-// }
-
-// export interface LoginResponse {
-//   status: string;
-//   token: string;
-//   data: {
-//     user: User | any;
-//   };
-// }
-
-// export const loginUser = createAsyncThunk<
-//   { token: string; user: User },
-//   LoginCredentials,
-//   { rejectValue: string }
-// >('users/login', async (credentials, { rejectWithValue, dispatch }) => {
-//   try {
-//     const response = await loginService(credentials);
-//     console.log('Login response:', response);
-
-//     const token = response.token;
-//     const user = response.user;
-
-//     setToken(token, user.role);
-//     dispatch(setUser(user));
-
-//     return { token, user };
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       return rejectWithValue(error.message);
-//     }
-//     return rejectWithValue('An unknown error occurred during login');
-//   }
-// });
+  });
+};

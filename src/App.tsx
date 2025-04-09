@@ -9,7 +9,7 @@ import { themeConfig } from './core/configs/theme.config';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setAuthUser } from './store/auth.slice'; 
+
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -20,23 +20,6 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        const userString = localStorage.getItem('user');
-        
-        if (token && userString) {
-            try {
-                const user = JSON.parse(userString);
-                dispatch(setAuthUser({ user, token }));
-            } catch (error) {
-                console.error('Failed to parse user data:', error);
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-            }
-        }
-    }, [dispatch]);
 
     return (
         <QueryClientProvider client={queryClient}>

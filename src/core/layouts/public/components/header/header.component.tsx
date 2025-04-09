@@ -18,13 +18,11 @@ import { getToken } from 'core/helpers/get-token';
 import SidebarBasket from 'pages/basket-sidebar/basketSidebar.component';
 import SearchComponent from '../search/search.component';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from 'store/store.reducer';
-import { logout } from 'store/auth.slice';
-import { AppDispatch } from 'store/store.config';
+import {useStore} from '../../../../../store/store.config';
+
 
 const HeaderComponent = () => {
 
-  const dispatch = useDispatch<AppDispatch>();
   const [isOpen, setIsOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -32,8 +30,6 @@ const HeaderComponent = () => {
   const [isBasketOpen, setIsBasketOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-  const user = useSelector((state: RootState) => state.auth?.user || null);
-  console.log(user);
   const menuPanelRef = useRef<HTMLDivElement | null>(null);
   const profileDropdownRef = useRef<HTMLDivElement | null>(null);
 
@@ -41,6 +37,10 @@ const HeaderComponent = () => {
     const token = getToken();
     setIsAuthenticated(!!token);
   }, []);
+
+  const userCredential = useStore('user');
+
+  console.log(userCredential);
 
   useEffect(() => {
     const handleMenuClickOutside = (event: MouseEvent) => {
@@ -81,7 +81,6 @@ const HeaderComponent = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('role');
-    // dispatch(logout());
     window.location.reload();
     setIsAuthenticated(false);
     setIsProfileDropdownOpen(false);
@@ -177,7 +176,7 @@ const HeaderComponent = () => {
                       <div className="header__profile-dropdown-info">
                         <span className="header__profile-dropdown-name">
                           <span className="header__profile-dropdown-name">
-                            {user?.firstname ? `${user.firstname}` : ''}
+                            {/*{user?.firstname ? `${user.firstname}` : ''}*/}
                           </span>
                         </span>
                         <span className="header__profile-dropdown-user">

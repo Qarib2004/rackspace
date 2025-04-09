@@ -5,8 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { registerUser } from 'pages/register/actions/register.mutation';
-import { RootState } from 'store/store.reducer';
-import { AppDispatch } from 'store/store.config';
 import './register.component.scss';
 import { IRegisterRequest } from './actions/register';
 
@@ -44,8 +42,6 @@ function RegisterComponent() {
   const [showCitySuggestions, setShowCitySuggestions] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
 
-  const { isRegistering, registerError, isAuthenticated } = useSelector((state: RootState) => state.auth);
-  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
 
@@ -57,39 +53,39 @@ function RegisterComponent() {
     return () => clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      toast.success(
-        <div>
-          <h3>Qeydiyyat uğurla tamamlandı!</h3>
-          <p>Təsdiq linki {formData.email} ünvanına göndərildi.</p>
-        </div>,
-        {
-          autoClose: 5000,
-          closeOnClick: false,
-          pauseOnHover: true
-        }
-      );
-      setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        gender: 'bildirmək-istəmirəm',
-        phoneNumber: '',
-        birthDate: '',
-        city: '',
-        district: ''
-      });
-    }
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     toast.success(
+  //       <div>
+  //         <h3>Qeydiyyat uğurla tamamlandı!</h3>
+  //         <p>Təsdiq linki {formData.email} ünvanına göndərildi.</p>
+  //       </div>,
+  //       {
+  //         autoClose: 5000,
+  //         closeOnClick: false,
+  //         pauseOnHover: true
+  //       }
+  //     );
+  //     setFormData({
+    //     firstName: '',
+    //     lastName: '',
+    //     email: '',
+    //     password: '',
+    //     confirmPassword: '',
+    //     gender: 'bildirmək-istəmirəm',
+    //     phoneNumber: '',
+    //     birthDate: '',
+    //     city: '',
+    //     district: ''
+    //   });
+    // }
 
-    if (registerError) {
-      toast.error(registerError, {
-        autoClose: 4000
-      });
-    }
-  }, [isAuthenticated, registerError, formData.email]);
+  //   if (registerError) {
+  //     toast.error(registerError, {
+  //       autoClose: 4000
+  //     });
+  //   }
+  // }, [isAuthenticated, registerError, formData.email]);
 
   useEffect(() => {
     let strength = 0;
@@ -120,13 +116,13 @@ function RegisterComponent() {
     const value = e.target.value;
     const cleaned = value.replace(/\D/g, '');
     let formatted = cleaned;
-    
+
     if (cleaned.startsWith('994')) {
       formatted = `+${cleaned.slice(0, 3)} ${cleaned.slice(3, 5)} ${cleaned.slice(5, 8)} ${cleaned.slice(8, 10)} ${cleaned.slice(10, 12)}`;
     } else if (cleaned.length > 0) {
       formatted = `+994 ${cleaned.slice(0, 2)} ${cleaned.slice(2, 5)} ${cleaned.slice(5, 7)} ${cleaned.slice(7, 9)}`;
     }
-    
+
     setFormData(prev => ({
       ...prev,
       phoneNumber: formatted.trim()
@@ -135,7 +131,7 @@ function RegisterComponent() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (formData.password !== formData.confirmPassword) {
       toast.warn('Şifrələr eyni deyil!', {
         autoClose: 3000
@@ -143,29 +139,29 @@ function RegisterComponent() {
       return;
     }
 
-    if (passwordStrength < 3) {
-      toast.warn('Şifrə kifayət qədər güclü deyil!', {
-        autoClose: 3000
-      });
-      return;
-    }
+    // if (passwordStrength < 3) {
+    //   toast.warn('Şifrə kifayət qədər güclü deyil!', {
+    //     autoClose: 3000
+    //   });
+    //   return;
+    // }
 
-    const userData: IRegisterRequest = {
-      firstname: formData.firstName,
-      lastname: formData.lastName,
-      email: formData.email,
-      password: formData.password,
-      passwordConfirm: formData.confirmPassword,
-      gender: formData.gender,
-      phoneNumber: formData.phoneNumber,
-      birthDate: formData.birthDate ? new Date(formData.birthDate) : undefined,
-      city: formData.city,
-      district: formData.district,
-      active: true,
-      role: 'user'
-    };
+    // const userData: IRegisterRequest = {
+    //   firstname: formData.firstName,
+    //   lastname: formData.lastName,
+    //   email: formData.email,
+    //   password: formData.password,
+    //   passwordConfirm: formData.confirmPassword,
+    //   gender: formData.gender,
+    //   phoneNumber: formData.phoneNumber,
+    //   birthDate: formData.birthDate ? new Date(formData.birthDate) : undefined,
+    //   city: formData.city,
+    //   district: formData.district,
+    //   active: true,
+    //   role: 'user'
+    // };
 
-    dispatch(registerUser(userData));
+    // dispatch(registerUser(userData));
   };
 
   const selectCity = (city: string) => {
@@ -175,7 +171,7 @@ function RegisterComponent() {
 
   return (
     <div className="register">
-      <ToastContainer 
+      <ToastContainer
         position="top-center"
         newestOnTop
         pauseOnFocusLoss
@@ -183,7 +179,7 @@ function RegisterComponent() {
         pauseOnHover
         rtl={false}
       />
-      
+
       <div className="register__content">
         <div className="register__left">
           <Link to="/" className="register__back">
@@ -297,7 +293,7 @@ function RegisterComponent() {
                   {showCitySuggestions && (
                     <div className="register__city-suggestions">
                       {citySuggestions.map((city, index) => (
-                        <div 
+                        <div
                           key={index}
                           className="register__city-suggestion"
                           onClick={() => selectCity(city)}
@@ -356,13 +352,13 @@ function RegisterComponent() {
               />
             </div>
 
-            <button
-              type="submit"
-              className="register__submit"
-              disabled={isRegistering}
-            >
-              {isRegistering ? 'Hesab yaradılır...' : 'Hesab yarat'}
-            </button>
+            {/*<button*/}
+            {/*  type="submit"*/}
+            {/*  className="register__submit"*/}
+            {/*  disabled={isRegistering}*/}
+            {/*>*/}
+            {/*  {isRegistering ? 'Hesab yaradılır...' : 'Hesab yarat'}*/}
+            {/*</button>*/}
           </form>
         </div>
 
