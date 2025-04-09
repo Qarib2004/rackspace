@@ -214,12 +214,12 @@ const Store = () => {
             </div>
           </div>
 
-          <Card
+         <Card
   data={sortedProducts}
   imageKey="image"
   titleKey="name"
   subtitleKey="seller"
-  additionalKeys={['weight']}
+  additionalKeys={['weight', 'price']}
   showPagination={false}
   pageTitle="Products"
   priceKey="price"
