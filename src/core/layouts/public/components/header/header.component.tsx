@@ -94,6 +94,8 @@ const HeaderComponent = () => {
     });
   };
 
+
+
   const toggleBasket = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsBasketOpen(!isBasketOpen);

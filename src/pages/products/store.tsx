@@ -1,100 +1,235 @@
-// import OneSection from 'core/layouts/public/components/section-one/one.component';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Sidebar from './sidebar/sidebar';
 import Card from 'core/shared/base-card/card.component';
 import { SlidersHorizontal, ChevronDown, X, ArrowUp } from 'lucide-react';
 import './store.component.scss';
 import StoreOne from 'core/layouts/public/components/store-one-section/store-one.component';
-import tomatoImg from '../../assets/images/store/pomidor.jpeg';
+import { Product } from 'core/shared/home-card/card';
+import { useGetProducts } from 'core/shared/home-card/actions/card.query';
+import { debounce} from 'lodash';
 
-const products = [
-  {
-    id: 1,
-    name: 'Tomato',
-    producer: 'Farm',
-    weight: '1 L',
-    price: 1.2,
-    image: tomatoImg,
-    date: '2025-03-15',
-    title: 'Fresh Farm Tomatoes',
-    assessment: 4.5,
-  },
-  {
-    id: 2,
-    name: 'Tomato',
-    producer: 'Bakery',
-    weight: '500 g',
-    price: 0.8,
-    image: tomatoImg,
-    date: '2025-03-10',
-    title: 'Bakery Selection Tomatoes',
-    assessment: 3.8,
-  },
-  {
-    id: 3,
-    name: 'Tomato',
-    producer: 'Farm',
-    weight: '200 g',
-    price: 3.5,
-    image: tomatoImg,
-    date: '2025-03-18',
-    title: 'Premium Cherry Tomatoes',
-    assessment: 4.9,
-  },
-  {
-    id: 4,
-    name: 'Tomato',
-    producer: 'Farm',
-    weight: '200 g',
-    price: 3.5,
-    image: tomatoImg,
-    date: '2025-03-18',
-    title: 'Premium Cherry Tomatoes',
-    assessment: 4.9,
-  },
-  {
-    id: 5,
-    name: 'Tomato',
-    producer: 'Farm',
-    weight: '200 g',
-    price: 3.5,
-    image: tomatoImg,
-    date: '2025-03-18',
-    title: 'Premium Cherry Tomatoes',
-    assessment: 4.9,
-  },
-  {
-    id: 6,
-    name: 'Tomato',
-    producer: 'Farm',
-    weight: '200 g',
-    price: 3.5,
-    image: tomatoImg,
-    date: '2025-03-18',
-    title: 'Premium Cherry Tomatoes',
-    assessment: 4.9,
-  },
-];
 
+interface FilterState {
+  searchTerm: string;
+  priceRange: [number, number];
+  categories: string[];
+  sellers: string[];
+  ratings: number[];
+  salesMethods: string[];
+  productTypes: string[];
+  isAvailable: boolean | null;
+  minQuantity: number;
+  weightRanges: string[];
+  organic: 'all' | 'organic' | 'non-organic';
+  minRating: number | null;
+}
 
 const Store = () => {
+  const { data: products } = useGetProducts();
+  const allProducts = products?.data ?? [];
   const [desktopSidebarVisible, setDesktopSidebarVisible] = useState(false);
   const [mobileSidebarVisible, setMobileSidebarVisible] = useState(false);
   const [sortMenuVisible, setSortMenuVisible] = useState(false);
   const [sortOption, setSortOption] = useState('Relevance');
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [sortedProducts, setSortedProducts] = useState([...products]);
+  const [displayedProducts, setDisplayedProducts] = useState<Product[]>([]);
+  const [activeFilters, setActiveFilters] = useState<FilterState>({
+    searchTerm: '',
+    priceRange: [0, 1000], 
+    categories: [],
+    sellers: [],
+    ratings: [],
+    salesMethods: [],
+    productTypes: [],
+    isAvailable: null,
+    minQuantity: 0,
+    weightRanges: [],
+    organic: 'all',
+    minRating: null,
+  });
   const [showMobileNav, setShowMobileNav] = useState(false);
 
   const oneSectionRef = useRef<HTMLDivElement | null>(null);
-  const sortOptions = ['Relevance', 'Price', 'Publication date', 'Ad title', 'Assessment'];
+  const sortOptions = [
+    'Price',
+    'Publication date',
+    'Weight',      
+    'Rating',      
+  ];
+  
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const sortMenuRef = useRef<HTMLDivElement | null>(null);
+
+  const parseWeight = (weight: string) => {
+    if (!weight) return 0;
+    const match = weight.match(/^(\d+)(g|kg)$/);
+    if (!match) return 0;
+    const value = parseInt(match[1], 10);
+    const unit = match[2];
+    return unit === 'kg' ? value * 1000 : value;
+  };
+
+  const getWeightRange = (weight: string): string => {
+    if (!weight) return '0-1kg';
+    const weightInKg = parseWeight(weight) / 1000; 
+    
+    if (weightInKg <= 1) return '0-1kg';
+    if (weightInKg <= 5) return '1-5kg';
+    return '5+kg';
+  };
+
+  const applyFiltersAndSort = useCallback(() => {
+    if (!allProducts || allProducts.length === 0) {
+      return;
+    }
+
+    let result = [...allProducts];
+
+    if (activeFilters) {
+      if (activeFilters.searchTerm) {
+        const searchLower = activeFilters.searchTerm.toLowerCase();
+        result = result.filter(product => 
+          product.name.toLowerCase().includes(searchLower) ||
+          (product.description && product.description.toLowerCase().includes(searchLower))
+        );
+      }
+
+      result = result.filter(product => 
+        product.price >= activeFilters.priceRange[0] && product.price <= activeFilters.priceRange[1]
+      );
+
+      if (activeFilters.categories.length > 0) {
+        result = result.filter(product => {
+          const category = product.name.split(' ')[0];
+          return activeFilters.categories.includes(category);
+        });
+      }
+
+      if (activeFilters.sellers.length > 0) {
+        result = result.filter(product => 
+          product.seller && product.seller.firstname && 
+          activeFilters.sellers.includes(product.seller.firstname)
+        );
+      }
+
+      if (activeFilters.ratings.length > 0) {
+        result = result.filter(product => {
+          if (!product.rating) return false;
+          const rating = Math.floor(product.rating);
+          return activeFilters.ratings.includes(rating);
+        });
+      }
+
+      if (activeFilters.minRating !== null) {
+        result = result.filter(product => 
+          product.rating !== undefined && product.rating >= activeFilters.minRating!
+        );
+      }
+
+      if (activeFilters.salesMethods.length > 0) {
+        result = result.filter(product => {
+          const method = (product.quantity && product.quantity > 10) ? 'Online sales' : 'Local Sale';
+          return activeFilters.salesMethods.includes(method);
+        });
+      }
+
+      if (activeFilters.productTypes.length > 0) {
+        result = result.filter(product => {
+          const type = product.isOrganic ? 'Singular' : 'Basket';
+          return activeFilters.productTypes.includes(type);
+        });
+      }
+
+      if (activeFilters.isAvailable !== null) {
+        result = result.filter(product => product.isAvailable === activeFilters.isAvailable);
+      }
+
+      if (activeFilters.minQuantity > 0) {
+        result = result.filter(product => 
+          (product.quantity || 0) >= activeFilters.minQuantity
+        );
+      }
+
+      if (activeFilters.weightRanges.length > 0) {
+        result = result.filter(product => {
+          if (!product.weight) return false;
+          const weightRange = getWeightRange(product.weight);
+          return activeFilters.weightRanges.includes(weightRange);
+        });
+      }
+
+      if (activeFilters.organic !== 'all') {
+        result = result.filter(product => {
+          if (activeFilters.organic === 'organic') return product.isOrganic === true;
+          return product.isOrganic === false;
+        });
+      }
+    }
+
+    if (sortOption !== 'Relevance') {
+      switch (sortOption) {
+        case 'Price':
+          result.sort((a, b) => a.price - b.price);
+          break;
+        case 'Publication date':
+          result.sort(
+            (a, b) => new Date(b.date || '').getTime() - new Date(a.date || '').getTime()
+          );
+          break;
+        case 'Weight':
+          result.sort(
+            (a, b) => parseWeight(a.weight || '') - parseWeight(b.weight || '')
+          );
+          break;
+        case 'Rating':
+          result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+          break;
+        default:
+          break;
+      }
+    }
+
+    setDisplayedProducts(result);
+  }, [allProducts, activeFilters, sortOption]);
+
+  useEffect(() => {
+    if (allProducts && allProducts.length > 0) {
+      setDisplayedProducts([...allProducts]);
+    }
+  }, [allProducts]);
+
+  useEffect(() => {
+    applyFiltersAndSort();
+  }, [applyFiltersAndSort]);
+
+  const handleFilterChange = useCallback(
+    debounce((newFilters: FilterState) => {
+      setActiveFilters(newFilters);
+    }, 500), 
+    []
+  );
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        setDesktopSidebarVisible(false); 
+      }
+    };
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
 
   useEffect(() => {
     const handleScroll = () => {
       if (oneSectionRef.current) {
-        const oneSectionBottom = oneSectionRef.current.getBoundingClientRect().bottom;
+        const oneSectionBottom =
+          oneSectionRef.current.getBoundingClientRect().bottom;
         setShowMobileNav(oneSectionBottom <= 0);
       }
     };
@@ -129,51 +264,7 @@ const Store = () => {
   const handleSortChange = (option: string) => {
     setSortOption(option);
     setDropdownOpen(false);
-
-    const sortedData = [...products];
-
-    switch (option) {
-      case 'Price':
-        sortedData.sort((a, b) => a.price - b.price);
-        break;
-      case 'Publication date':
-        sortedData.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-        break;
-      case 'Ad title':
-        sortedData.sort((a, b) => a.title.localeCompare(b.title));
-        break;
-      case 'Assessment':
-        sortedData.sort((a, b) => b.assessment - a.assessment);
-        break;
-      default:
-        break;
-    }
-
-    setSortedProducts(sortedData);
     setSortMenuVisible(false);
-  };
-
-  const handleClickOutside = (e: React.MouseEvent) => {
-    const target = e.target as HTMLElement;
-
-    const isClickInDesktopSidebar = sidebarRef.current && sidebarRef.current.contains(target);
-    const isClickInDesktopSidebarButton = target.closest('.filter-toggle') !== null;
-
-    const isClickInMobileNav = target.closest('.mobile-nav-store') !== null;
-    const isClickInMobileSidebar = target.closest('.mobile-sidebar') !== null;
-    const isClickInMobileSortMenu = target.closest('.mobile-sort-menu') !== null;
-
-    if (dropdownOpen && !target.closest('.sort-controls__dropdown')) {
-      setDropdownOpen(false);
-    }
-
-    if (desktopSidebarVisible && !isClickInDesktopSidebar && !isClickInDesktopSidebarButton) {
-      setDesktopSidebarVisible(false);
-    }
-    if (!isClickInMobileNav && !isClickInMobileSidebar && !isClickInMobileSortMenu) {
-      setMobileSidebarVisible(false);
-      setSortMenuVisible(false);
-    }
   };
 
   return (
@@ -182,14 +273,24 @@ const Store = () => {
         <StoreOne />
       </div>
 
-      <div className="store-section-flex" onClick={handleClickOutside}>
-        {desktopSidebarVisible && (
-          <div className="store-sidebar-container" ref={sidebarRef}>
-            <Sidebar onClose={handleToggleDesktopSidebar} />
-          </div>
-        )}
+      <div className="store-section-flex" >
+      {desktopSidebarVisible && (
+  <div className="store-sidebar-container" ref={sidebarRef}  style={{ backgroundColor: 'white' }}>
+    <Sidebar 
+      onClose={handleToggleDesktopSidebar} 
+      onFilterChange={handleFilterChange}
+     
+    />
+  </div>
+)}
 
-        <div className={`store-content-container ${desktopSidebarVisible || sortMenuVisible || mobileSidebarVisible ? 'blurred' : ''}`}>
+        <div
+          className={`store-content-container ${
+            desktopSidebarVisible || sortMenuVisible || mobileSidebarVisible
+              ? 'blurred'
+              : ''
+          }`}
+        >
           <div className="store-controls desktop-controls">
             {!desktopSidebarVisible && (
               <button
@@ -219,8 +320,11 @@ const Store = () => {
                       <div
                         key={option}
                         onClick={() => handleSortChange(option)}
-                        className={`sort-controls__dropdown-menu-item ${sortOption === option ? 'sort-controls__dropdown-menu-item--active' : ''
-                          }`}
+                        className={`sort-controls__dropdown-menu-item ${
+                          sortOption === option
+                            ? 'sort-controls__dropdown-menu-item--active'
+                            : ''
+                        }`}
                       >
                         {option}
                       </div>
@@ -232,17 +336,23 @@ const Store = () => {
           </div>
 
           <Card
-            data={sortedProducts}
+            data={displayedProducts}
             imageKey="image"
             titleKey="name"
-            subtitleKey="producer"
+            subtitleKey="seller"
             additionalKeys={['weight', 'price']}
             showPagination={false}
             pageTitle="Products"
+            priceKey="price"
           />
+
         </div>
 
-        <div className={`mobile-nav-store ${showMobileNav ? 'mobile-nav-store--visible' : ''}`}>
+        <div
+          className={`mobile-nav-store ${
+            showMobileNav ? 'mobile-nav-store--visible' : ''
+          }`}
+        >
           <button
             className="mobile-nav-store__button"
             onClick={handleToggleMobileSidebar}
@@ -259,22 +369,40 @@ const Store = () => {
           </button>
         </div>
 
-        <div className={`mobile-sidebar ${mobileSidebarVisible ? 'mobile-sidebar--visible' : ''}`}>
+        <div
+          className={`mobile-sidebar ${
+            mobileSidebarVisible ? 'mobile-sidebar--visible' : ''
+          }`}
+        >
           <div className="mobile-sidebar__header">
             <h2>Filters</h2>
-            <button className="mobile-sidebar__close" onClick={handleToggleMobileSidebar}>
+            <button
+              className="mobile-sidebar__close"
+              onClick={handleToggleMobileSidebar}
+            >
               <X size={24} />
             </button>
           </div>
           <div className="mobile-sidebar__content">
-            <Sidebar onClose={handleToggleMobileSidebar} />
+            <Sidebar 
+              onClose={handleToggleMobileSidebar} 
+              onFilterChange={handleFilterChange}
+            />
           </div>
         </div>
 
-        <div className={`mobile-sort-menu ${sortMenuVisible ? 'mobile-sort-menu--visible' : ''}`} ref={sortMenuRef}>
+        <div
+          className={`mobile-sort-menu ${
+            sortMenuVisible ? 'mobile-sort-menu--visible' : ''
+          }`}
+          ref={sortMenuRef}
+        >
           <div className="mobile-sort-menu__header">
             <h2>Sort by</h2>
-            <button className="mobile-sort-menu__close" onClick={handleToggleSortMenu}>
+            <button
+              className="mobile-sort-menu__close"
+              onClick={handleToggleSortMenu}
+            >
               <X size={24} />
             </button>
           </div>
@@ -283,8 +411,9 @@ const Store = () => {
               <div
                 key={option}
                 onClick={() => handleSortChange(option)}
-                className={`mobile-sort-menu__item ${sortOption === option ? 'mobile-sort-menu__item--active' : ''
-                  }`}
+                className={`mobile-sort-menu__item ${
+                  sortOption === option ? 'mobile-sort-menu__item--active' : ''
+                }`}
               >
                 {option}
                 {sortOption === option && <ArrowUp size={16} />}
