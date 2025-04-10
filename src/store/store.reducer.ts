@@ -6,6 +6,7 @@ import {ru} from '../assets/lang/ru';
 import {environment} from '../core/configs/app.config';
 import {ILang} from '../assets/lang/lang';
 import jwtDecode from 'jwt-decode';
+
 const initialState: IState = {
   loader: false,
   leftMenu: true,
