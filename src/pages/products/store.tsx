@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Sidebar from './sidebar/sidebar';
 import Card from 'core/shared/base-card/card.component';
 import { SlidersHorizontal, ChevronDown, X, ArrowUp } from 'lucide-react';
@@ -6,6 +6,23 @@ import './store.component.scss';
 import StoreOne from 'core/layouts/public/components/store-one-section/store-one.component';
 import { Product } from 'core/shared/home-card/card';
 import { useGetProducts } from 'core/shared/home-card/actions/card.query';
+import { debounce} from 'lodash';
+
+
+interface FilterState {
+  searchTerm: string;
+  priceRange: [number, number];
+  categories: string[];
+  sellers: string[];
+  ratings: number[];
+  salesMethods: string[];
+  productTypes: string[];
+  isAvailable: boolean | null;
+  minQuantity: number;
+  weightRanges: string[];
+  organic: 'all' | 'organic' | 'non-organic';
+  minRating: number | null;
+}
 
 const Store = () => {
   const { data: products } = useGetProducts();
@@ -15,7 +32,21 @@ const Store = () => {
   const [sortMenuVisible, setSortMenuVisible] = useState(false);
   const [sortOption, setSortOption] = useState('Relevance');
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [sortedProducts, setSortedProducts] = useState<Product[]>([]);
+  const [displayedProducts, setDisplayedProducts] = useState<Product[]>([]);
+  const [activeFilters, setActiveFilters] = useState<FilterState>({
+    searchTerm: '',
+    priceRange: [0, 1000], 
+    categories: [],
+    sellers: [],
+    ratings: [],
+    salesMethods: [],
+    productTypes: [],
+    isAvailable: null,
+    minQuantity: 0,
+    weightRanges: [],
+    organic: 'all',
+    minRating: null,
+  });
   const [showMobileNav, setShowMobileNav] = useState(false);
 
   const oneSectionRef = useRef<HTMLDivElement | null>(null);
@@ -28,6 +59,156 @@ const Store = () => {
   
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const sortMenuRef = useRef<HTMLDivElement | null>(null);
+
+  const parseWeight = (weight: string) => {
+    if (!weight) return 0;
+    const match = weight.match(/^(\d+)(g|kg)$/);
+    if (!match) return 0;
+    const value = parseInt(match[1], 10);
+    const unit = match[2];
+    return unit === 'kg' ? value * 1000 : value;
+  };
+
+  const getWeightRange = (weight: string): string => {
+    if (!weight) return '0-1kg';
+    const weightInKg = parseWeight(weight) / 1000; 
+    
+    if (weightInKg <= 1) return '0-1kg';
+    if (weightInKg <= 5) return '1-5kg';
+    return '5+kg';
+  };
+
+  const applyFiltersAndSort = useCallback(() => {
+    if (!allProducts || allProducts.length === 0) {
+      return;
+    }
+
+    let result = [...allProducts];
+
+    if (activeFilters) {
+      if (activeFilters.searchTerm) {
+        const searchLower = activeFilters.searchTerm.toLowerCase();
+        result = result.filter(product => 
+          product.name.toLowerCase().includes(searchLower) ||
+          (product.description && product.description.toLowerCase().includes(searchLower))
+        );
+      }
+
+      result = result.filter(product => 
+        product.price >= activeFilters.priceRange[0] && product.price <= activeFilters.priceRange[1]
+      );
+
+      if (activeFilters.categories.length > 0) {
+        result = result.filter(product => {
+          const category = product.name.split(' ')[0];
+          return activeFilters.categories.includes(category);
+        });
+      }
+
+      if (activeFilters.sellers.length > 0) {
+        result = result.filter(product => 
+          product.seller && product.seller.firstname && 
+          activeFilters.sellers.includes(product.seller.firstname)
+        );
+      }
+
+      if (activeFilters.ratings.length > 0) {
+        result = result.filter(product => {
+          if (!product.rating) return false;
+          const rating = Math.floor(product.rating);
+          return activeFilters.ratings.includes(rating);
+        });
+      }
+
+      if (activeFilters.minRating !== null) {
+        result = result.filter(product => 
+          product.rating !== undefined && product.rating >= activeFilters.minRating!
+        );
+      }
+
+      if (activeFilters.salesMethods.length > 0) {
+        result = result.filter(product => {
+          const method = (product.quantity && product.quantity > 10) ? 'Online sales' : 'Local Sale';
+          return activeFilters.salesMethods.includes(method);
+        });
+      }
+
+      if (activeFilters.productTypes.length > 0) {
+        result = result.filter(product => {
+          const type = product.isOrganic ? 'Singular' : 'Basket';
+          return activeFilters.productTypes.includes(type);
+        });
+      }
+
+      if (activeFilters.isAvailable !== null) {
+        result = result.filter(product => product.isAvailable === activeFilters.isAvailable);
+      }
+
+      if (activeFilters.minQuantity > 0) {
+        result = result.filter(product => 
+          (product.quantity || 0) >= activeFilters.minQuantity
+        );
+      }
+
+      if (activeFilters.weightRanges.length > 0) {
+        result = result.filter(product => {
+          if (!product.weight) return false;
+          const weightRange = getWeightRange(product.weight);
+          return activeFilters.weightRanges.includes(weightRange);
+        });
+      }
+
+      if (activeFilters.organic !== 'all') {
+        result = result.filter(product => {
+          if (activeFilters.organic === 'organic') return product.isOrganic === true;
+          return product.isOrganic === false;
+        });
+      }
+    }
+
+    if (sortOption !== 'Relevance') {
+      switch (sortOption) {
+        case 'Price':
+          result.sort((a, b) => a.price - b.price);
+          break;
+        case 'Publication date':
+          result.sort(
+            (a, b) => new Date(b.date || '').getTime() - new Date(a.date || '').getTime()
+          );
+          break;
+        case 'Weight':
+          result.sort(
+            (a, b) => parseWeight(a.weight || '') - parseWeight(b.weight || '')
+          );
+          break;
+        case 'Rating':
+          result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+          break;
+        default:
+          break;
+      }
+    }
+
+    setDisplayedProducts(result);
+  }, [allProducts, activeFilters, sortOption]);
+
+  useEffect(() => {
+    if (allProducts && allProducts.length > 0) {
+      setDisplayedProducts([...allProducts]);
+    }
+  }, [allProducts]);
+
+  useEffect(() => {
+    applyFiltersAndSort();
+  }, [applyFiltersAndSort]);
+
+  const handleFilterChange = useCallback(
+    debounce((newFilters: FilterState) => {
+      console.log('Filters changed:', newFilters);
+      setActiveFilters(newFilters);
+    }, 500), 
+    []
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,12 +226,6 @@ const Store = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
-  useEffect(() => {
-    if (allProducts && allProducts.length > 0) {
-      setSortedProducts([...allProducts]);
-    }
-  }, [allProducts]);
 
   const handleToggleDesktopSidebar = () => {
     setDesktopSidebarVisible(!desktopSidebarVisible);
@@ -71,48 +246,9 @@ const Store = () => {
     }
   };
 
-  const parseWeight = (weight: string) => {
-    const match = weight.match(/^(\d+)(g|kg)$/);
-    if (!match) return 0;
-    const value = parseInt(match[1], 10);
-    const unit = match[2];
-    return unit === 'kg' ? value * 1000 : value;
-  };
-
   const handleSortChange = (option: string) => {
     setSortOption(option);
     setDropdownOpen(false);
-
-    const sortedData = [...allProducts];
-
-    switch (option) {
-      case 'Price':
-        sortedData.sort((a, b) => a.price - b.price);
-        break;
-      case 'Publication date':
-        sortedData.sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
-        break;
-      case 'Ad title':
-        sortedData.sort((a, b) => a.title.localeCompare(b.title));
-        break;
-      case 'Assessment':
-        sortedData.sort((a, b) => b.assessment - a.assessment);
-        break;
-      case 'Weight':
-        sortedData.sort(
-          (a, b) => parseWeight(a.weight) - parseWeight(b.weight)
-        );
-        break;
-      case 'Rating':
-        sortedData.sort((a, b) => b.rating - a.rating);
-        break;
-      default:
-        break;
-    }
-
-    setSortedProducts(sortedData);
     setSortMenuVisible(false);
   };
 
@@ -157,11 +293,14 @@ const Store = () => {
       </div>
 
       <div className="store-section-flex" onClick={handleClickOutside}>
-        {desktopSidebarVisible && (
-          <div className="store-sidebar-container" ref={sidebarRef}>
-            <Sidebar onClose={handleToggleDesktopSidebar} />
-          </div>
-        )}
+      {desktopSidebarVisible && (
+  <div className="store-sidebar-container" ref={sidebarRef}>
+    <Sidebar 
+      onClose={handleToggleDesktopSidebar} 
+      onFilterChange={handleFilterChange}
+    />
+  </div>
+)}
 
         <div
           className={`store-content-container ${
@@ -214,16 +353,16 @@ const Store = () => {
             </div>
           </div>
 
-         <Card
-  data={sortedProducts}
-  imageKey="image"
-  titleKey="name"
-  subtitleKey="seller"
-  additionalKeys={['weight', 'price']}
-  showPagination={false}
-  pageTitle="Products"
-  priceKey="price"
-/>
+          <Card
+            data={displayedProducts}
+            imageKey="image"
+            titleKey="name"
+            subtitleKey="seller"
+            additionalKeys={['weight', 'price']}
+            showPagination={false}
+            pageTitle="Products"
+            priceKey="price"
+          />
 
         </div>
 
@@ -263,7 +402,10 @@ const Store = () => {
             </button>
           </div>
           <div className="mobile-sidebar__content">
-            <Sidebar onClose={handleToggleMobileSidebar} />
+            <Sidebar 
+              onClose={handleToggleMobileSidebar} 
+              onFilterChange={handleFilterChange}
+            />
           </div>
         </div>
 
