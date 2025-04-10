@@ -4,7 +4,7 @@ import {generateGuid} from '../../helpers/generate-guid';
 
 export const successToast = (mes: string) => {
     toast.success(
-        <div className='success'>
+        <div className="success">
             {mes}
         </div>,
         {
@@ -14,7 +14,7 @@ export const successToast = (mes: string) => {
 };
 export const warningToast = (mes: string) => {
     toast.warning(
-        <div className='warning'>
+        <div className="warning">
             {mes}
         </div>,
         {
@@ -24,7 +24,7 @@ export const warningToast = (mes: string) => {
 };
 export const errorToast = (mes: string) => {
     toast.error(
-        <div className='error'>
+        <div className="error">
             {mes}
         </div>,
         {
@@ -34,7 +34,7 @@ export const errorToast = (mes: string) => {
 };
 export const infoToast = (mes: string) => {
     toast.info(
-        <div className='info'>
+        <div className="info">
             {mes}
         </div>,
         {

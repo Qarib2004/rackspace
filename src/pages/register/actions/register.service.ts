@@ -1,17 +1,13 @@
-import { IRegisterRequest, IRegisterResponse } from './register';
-import { registerUserApi } from './register.query';
+import axiosInstance from '../../../core/configs/axios.config';
+import { API } from '../../../core/configs/api.config';
 
-export class RegisterService {
-  static async register(registerData: IRegisterRequest): Promise<IRegisterResponse> {
-    try {
-      const responce = await registerUserApi(registerData);
-      return responce;
-    } catch (error:any) {
-        if (error.response && error.response.data && error.response.data.message) {
-            throw new Error(error.response.data.message);
-          }
-          throw error;
-          
-    }
+export const registerService = async (formRequest: any) => {
+  try {
+    const res = await axiosInstance.post(API.register, formRequest);
+    return res.data;
+
+  } catch (error: any) {
+    console.error('Qeydiyyat xətası:', error);
+    throw new Error(error?.response?.data?.message || 'Qeydiyyat xətası baş verdi!');
   }
-}
+};

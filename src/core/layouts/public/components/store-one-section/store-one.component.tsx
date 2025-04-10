@@ -29,7 +29,11 @@ const StoreOne: React.FC = () => {
             className={`slide ${index === currentSlide ? 'active' : ''}`}
             style={{ backgroundImage: `url(${banner})` }}
           >
-            
+            <div className="content">
+  <h1>Əkinlərinizdən satışa qədər — yanınızdayıq</h1>
+  <h2>Rahat, şəffaf və təhlükəsiz kənd təsərrüfatı ticarəti</h2>
+</div>
+
           </div>
         ))}
         
