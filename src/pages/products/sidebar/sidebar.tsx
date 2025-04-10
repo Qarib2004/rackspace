@@ -339,6 +339,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose, onFilterChange }) => {
           size={20} 
           onClick={handleArrowLeftClick}
           className="close-button"
+          style={{cursor:'pointer'}}
         />
       </div>
 

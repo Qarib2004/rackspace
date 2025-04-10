@@ -204,11 +204,26 @@ const Store = () => {
 
   const handleFilterChange = useCallback(
     debounce((newFilters: FilterState) => {
-      console.log('Filters changed:', newFilters);
       setActiveFilters(newFilters);
     }, 500), 
     []
   );
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        setDesktopSidebarVisible(false); 
+      }
+    };
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -252,52 +267,19 @@ const Store = () => {
     setSortMenuVisible(false);
   };
 
-  const handleClickOutside = (e: React.MouseEvent) => {
-    const target = e.target as HTMLElement;
-
-    const isClickInDesktopSidebar =
-      sidebarRef.current && sidebarRef.current.contains(target);
-    const isClickInDesktopSidebarButton =
-      target.closest('.filter-toggle') !== null;
-
-    const isClickInMobileNav = target.closest('.mobile-nav-store') !== null;
-    const isClickInMobileSidebar = target.closest('.mobile-sidebar') !== null;
-    const isClickInMobileSortMenu =
-      target.closest('.mobile-sort-menu') !== null;
-
-    if (dropdownOpen && !target.closest('.sort-controls__dropdown')) {
-      setDropdownOpen(false);
-    }
-
-    if (
-      desktopSidebarVisible &&
-      !isClickInDesktopSidebar &&
-      !isClickInDesktopSidebarButton
-    ) {
-      setDesktopSidebarVisible(false);
-    }
-    if (
-      !isClickInMobileNav &&
-      !isClickInMobileSidebar &&
-      !isClickInMobileSortMenu
-    ) {
-      setMobileSidebarVisible(false);
-      setSortMenuVisible(false);
-    }
-  };
-
   return (
     <>
       <div ref={oneSectionRef}>
         <StoreOne />
       </div>
 
-      <div className="store-section-flex" onClick={handleClickOutside}>
+      <div className="store-section-flex" >
       {desktopSidebarVisible && (
-  <div className="store-sidebar-container" ref={sidebarRef}>
+  <div className="store-sidebar-container" ref={sidebarRef}  style={{ backgroundColor: 'white' }}>
     <Sidebar 
       onClose={handleToggleDesktopSidebar} 
       onFilterChange={handleFilterChange}
+     
     />
   </div>
 )}
