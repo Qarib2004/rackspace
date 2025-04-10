@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 export const useLoginUser = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   return useMutation({
     mutationFn: (data: any) => {
       return loginService(data);
@@ -18,7 +18,7 @@ export const useLoginUser = () => {
       // setToken('users/login');
       setToken(data.token);
       store.dispatch(setUser(data.token));
-      navigate('/');
+      // navigate('/');
     },
     onError: (error: any) => {
       // console.log(error);

@@ -57,6 +57,7 @@ function RegisterComponent() {
         duration: 5,
       });
       form.resetFields();
+      setTimeout(() => navigate('/'), 3000);
     }
   }, [isSuccess, api, form]);
 

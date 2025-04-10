@@ -12,8 +12,8 @@ export const useRegisterUser = () => {
       return registerService(data);
     },
     onSuccess: (data: any) => {
-      successToast('Registration successful!');
-      navigate('/login');
+      // successToast('Registration successful!');
+      // navigate('/login');
     },
     onError: (error: any) => {
       // errorToast(error?.response?.data);

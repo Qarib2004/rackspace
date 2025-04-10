@@ -58,7 +58,11 @@ function LoginComponent() {
                     placement: 'topRight',
                     duration: 3
                 });
+                setTimeout(() => navigate('/'), 2000); 
             },
+            onError: (error) => {
+                console.error('Giriş hatası:', error);
+            }
         });
     };
 

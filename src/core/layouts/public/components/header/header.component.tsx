@@ -85,7 +85,8 @@ const HeaderComponent = () => {
       okText: 'Bəli, çıx',
       cancelText: 'Xeyr',
       centered: true,
-      onOk() {
+      zIndex: 10000,
+      async onOk() {
         localStorage.removeItem('token');
         window.location.reload();
         setIsAuthenticated(false);
