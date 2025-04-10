@@ -1,5 +1,6 @@
 .register {
     display: flex;
+    background-color: white;
     align-items: flex-start;
     justify-content: center;
 
@@ -342,6 +343,16 @@
             background: white;
             transform: scale(1.2);
         }
+    }
+
+    &__footer {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 20%;
+        height: 20%;
+        background-color: #4a8b3f;
+        clip-path: polygon(87% 29%, 100% 0, 100% 50%, 100% 100%, 68% 100%, 100% 100%, 0 100%, 38% 80%, 62% 58%);
     }
 
     &__error {

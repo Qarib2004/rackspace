@@ -16,7 +16,7 @@ export const useRegisterUser = () => {
       navigate('/login');
     },
     onError: (error: any) => {
-      errorToast(error?.response?.data);
+      // errorToast(error?.response?.data);
     }
   });
 };
