@@ -11,6 +11,8 @@ export enum Routes {
   messages = 'messages',
   orders = 'orders',
   addresses = 'addresses',
+  details = '/details/:id',
+  help = '/help',
 }
 
 export const goTo = (route: string, param: string | number) => {

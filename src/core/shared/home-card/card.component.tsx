@@ -1,23 +1,23 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { MoreVertical } from 'lucide-react';
 import './card.component.scss';
 import { Product } from './card';
 import { useGetProducts } from './actions/card.query';
+import { useNavigate } from 'react-router-dom';
 
 const Card = () => {
- 
-  const{ data: products} = useGetProducts();
+
+  const { data: products } = useGetProducts();
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 4;
-  
-  
-  
+  const navigate = useNavigate();
+
   const allProducts = products?.data ?? [];
 
   const totalPages = Math.ceil(products?.length / productsPerPage);
 
 
-  
+
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = allProducts.slice(
@@ -37,7 +37,7 @@ const Card = () => {
     }
   };
 
-  
+
 
   return (
     <div className="product-page">
@@ -69,7 +69,7 @@ const Card = () => {
 
         <div className="products-grid">
           {currentProducts.map((product: Product) => (
-            <div key={product.id} className="product-card">
+            <div key={product._id} className="product-card">
               <button className="options-button">
                 <MoreVertical className="options-icon" />
               </button>
@@ -79,6 +79,9 @@ const Card = () => {
                     src={product.image[0]}
                     alt={product.name}
                     className="product-image"
+                    onClick={() => {
+                      navigate(`/details/${product._id}`);
+                    }}
                   />
                 )}
               </div>
@@ -98,11 +101,11 @@ const Card = () => {
                     İstehsalçı:{' '}
                     <span className="producer-name">
                       {typeof product.seller === 'object' &&
-                      product.seller !== null
+                        product.seller !== null
                         ? product.seller.firstname || 'Unknown'
                         : typeof product.seller === 'string'
-                        ? product.seller
-                        : 'Unknown'}
+                          ? product.seller
+                          : 'Unknown'}
                     </span>
                   </p>
                 )}

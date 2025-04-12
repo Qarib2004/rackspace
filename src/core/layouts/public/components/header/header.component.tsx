@@ -232,14 +232,15 @@ const HeaderComponent = () => {
                         </Link>
                       </li>
                       <li role="menuitem">
-                        <div className="header__profile-dropdown-item-btn">
+                        <Link to="/help"
+                          className="header__profile-dropdown-item-btn">
                           <Link
                             to="/help"
                             className="header__profile-dropdown-help"
                           >
                             Kömək Lazımdır?
                           </Link>
-                        </div>
+                        </Link>
                         <div className="header__profile-dropdown-item-btn2"
                           onClick={handleLogout}
                           role="button"
