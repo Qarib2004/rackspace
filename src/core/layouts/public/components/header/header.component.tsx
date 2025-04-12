@@ -40,7 +40,6 @@ const HeaderComponent = () => {
   }, []);
 
   const userCredential = useStore('user');
-  console.log(userCredential);
   const { data: user } = useGetUser(userCredential?.id);
 
   useEffect(() => {
@@ -169,7 +168,7 @@ const HeaderComponent = () => {
                 >
                   <img
                     className="header__img"
-                    src="https://agromarketing.com/wp-content/uploads/2016/12/default-avatar.png"
+                    src={user?.photo || 'https://agromarketing.com/wp-content/uploads/2016/12/default-avatar.png'}
                     alt="Profil şəkli"
                   />
                 </button>

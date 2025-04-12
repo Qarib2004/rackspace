@@ -5,7 +5,6 @@ export const useGetUser = (id: any) => {
     return useQuery<any, Error>(
         ['user', id],
         () => {
-            console.log(id);
             return getUser(id);
         },
         {

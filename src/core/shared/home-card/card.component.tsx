@@ -80,7 +80,7 @@ const Card = () => {
                     alt={product.name}
                     className="product-image"
                     onClick={() => {
-                      navigate(`/details/${product._id}`);
+                      navigate(`/products/${product._id}`);
                     }}
                   />
                 )}
