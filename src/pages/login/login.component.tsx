@@ -171,7 +171,7 @@ function LoginComponent() {
                         </button>
 
                         <p className="login__signup">
-                            LanMark-da hələ də hesabınız yoxdur?{' '}
+                            LankMark-da hələ də hesabınız yoxdur?{' '}
                             <Link to="/register">Qeydiyyatdan keçin</Link>
                         </p>
                     </Form>
