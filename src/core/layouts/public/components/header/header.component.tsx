@@ -19,7 +19,8 @@ import SidebarBasket from 'pages/basket-sidebar/basketSidebar.component';
 import SearchComponent from '../search/search.component';
 import { useStore } from '../../../../../store/store.config';
 import { Modal } from 'antd';
-import { ExclamationCircleOutlined, LogoutOutlined } from '@ant-design/icons';
+import { LogoutOutlined } from '@ant-design/icons';
+import { useGetUser } from './actions/header.query';
 
 const HeaderComponent = () => {
 
@@ -39,8 +40,8 @@ const HeaderComponent = () => {
   }, []);
 
   const userCredential = useStore('user');
-
   console.log(userCredential);
+  const { data: user } = useGetUser(userCredential?.id);
 
   useEffect(() => {
     const handleMenuClickOutside = (event: MouseEvent) => {
@@ -182,12 +183,12 @@ const HeaderComponent = () => {
                     <div className="header__profile-dropdown-header">
                       <img
                         className="header__profile-dropdown-img"
-                        src="https://agromarketing.com/wp-content/uploads/2016/12/default-avatar.png"
+                        src={user?.photo || 'https://agromarketing.com/wp-content/uploads/2016/12/default-avatar.png'}
                         alt="Profil şəkli"
                       />
                       <div className="header__profile-dropdown-info">
                         <span className="header__profile-dropdown-name">
-                          {/* {user?.firstname || 'İstifadəçi'} */}
+                          {user?.fullname || 'İstifadəçi'}
                         </span>
                         <span className="header__profile-dropdown-user">
                           Müştəri

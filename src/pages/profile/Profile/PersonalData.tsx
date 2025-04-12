@@ -3,23 +3,14 @@ import { Card, Avatar, Typography, Button } from 'antd';
 import { Edit } from 'lucide-react';
 import './profile.stye.scss';
 import Password from './Password';
+import { useStore } from 'store/store.config';
+import { useGetUser } from '../actions/profile.query';
 
 const { Title, Text } = Typography;
 
-interface UserData {
-  name: string;
-  email: string;
-  phone: string;
-  tin: string;
-}
-
 const PersonalData: React.FC = () => {
-  const userData: UserData = {
-    name: 'Nurlan',
-    email: 'esedovn3@gmail.com',
-    phone: '0554960633',
-    tin: '123456789',
-  };
+  const userCredential = useStore('user');
+  const { data: userData } = useGetUser(userCredential?.id);
 
   return (
     <>
@@ -33,14 +24,18 @@ const PersonalData: React.FC = () => {
 
         <div className="profile-section__personal-info">
           <div className="profile-section__personal-info-avatar">
-            <Avatar size={64}>{userData.name[0]}</Avatar>
+            <Avatar
+              size={64}
+              src={userData?.photo || 'https://joeschmoe.io/api/v1/random'}
+              className="profile-section__avatar"
+            />
           </div>
           <div className="profile-section__personal-info-content">
             <div className="profile-section__personal-info-header">
               <div className="profile-section__personal-info-details">
-                <Title level={5}>{userData.name}</Title>
-                <Text className="contact-info block">{userData.email}</Text>
-                <Text className="contact-info block">{userData.phone}</Text>
+                <Title level={5}>{userData?.fullname}</Title>
+                <Text className="contact-info block">{userData?.email}</Text>
+                <Text className="contact-info block">{userData?.phoneNumber}</Text>
               </div>
               <Button
                 type="text"
@@ -49,8 +44,8 @@ const PersonalData: React.FC = () => {
               />
             </div>
             <div className="profile-section__tin-section">
-              <Text className="tin-label block">TIN</Text>
-              <Text className="tin-value">{userData.tin}</Text>
+              <Text className="tin-label block">City </Text>
+              <Text className="tin-value">{userData?.city}</Text>
             </div>
           </div>
         </div>
