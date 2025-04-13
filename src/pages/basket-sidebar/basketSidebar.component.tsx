@@ -15,6 +15,7 @@ interface BasketProduct {
   quantity: number;
   image?: string[];
   productId?: string;
+  availableStock?: number;
 }
 
 interface SidebarBasketProps {
@@ -71,6 +72,7 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
               name: string;
               price: number;
               image: string[];
+              quantity:number
             };
             quantity: number;
             _id?: string;
@@ -86,6 +88,7 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
             price: item.product?.price || 0,
             quantity: item.quantity,
             image: item.product?.image || [],
+            availableStock: item.product?.quantity,
           })
         );
 
@@ -113,17 +116,27 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
   }, [isOpen]);
 
   const handleQuantityChange = (itemId: string, newQuantity: number) => {
+    const item = basketItems.find(item => item._id === itemId);
+    
+    if (!item) return;
+    
     if (newQuantity <= 0) {
       handleRemoveItem(itemId);
       return;
     }
-  
+    
+    if (item.availableStock !== undefined && newQuantity > item.availableStock) {
+      
+      
+      return; 
+    }
+    
     setBasketItems(prevItems =>
       prevItems.map(item =>
         item._id === itemId ? { ...item, quantity: newQuantity } : item
       )
     );
-  
+    
     updateItemMutation.mutate(
       {
         itemId: itemId,
@@ -140,14 +153,20 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
       }
     );
   };
+
+
+
   const handleRemoveItem = (basketItemId: string) => {
     if (!basketItems.some(item => item._id === basketItemId)) {
       return;
     }
     
+    setBasketItems(prevItems => prevItems.filter(item => item._id !== basketItemId));
     
     const itemToRemove = basketItems.find(item => item._id === basketItemId);
-    
+    if (itemToRemove) {
+      setTotalPrice(prevTotal => prevTotal - (itemToRemove.price * itemToRemove.quantity));
+    }
     
     removeItemMutation.mutate(
       { itemId: basketItemId },
@@ -165,6 +184,8 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
             response: error.response?.data,
             status: error.response?.status
           });
+          
+          refetch();
         }
       }
     );
@@ -338,6 +359,7 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
                             onClick={() =>
                               handleQuantityChange(item._id, item.quantity + 1)
                             }
+                            disabled={item.availableStock !== undefined && item.quantity >= item.availableStock}
                           >
                             +
                           </button>
