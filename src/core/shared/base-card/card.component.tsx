@@ -17,6 +17,7 @@ interface CardProps<T> {
   showPagination?: boolean;
   pageTitle?: string;
   priceKey?: keyof T;
+  keyLabels?: Partial<Record<keyof T, string>>;
 }
 
 const Card = <T extends { rating?: number, _id?: string }>({
@@ -28,7 +29,9 @@ const Card = <T extends { rating?: number, _id?: string }>({
   itemsPerPage = 4,
   showPagination = true,
   pageTitle,
-  priceKey
+  priceKey,
+  keyLabels
+  
 }: CardProps<T>) => {
   const user = useSelector((state:RootState) => state.user);
   const userId = user?._id || user?.id || ''; 
@@ -197,7 +200,7 @@ const handleAddToBasket = (item: T) => {
                     
                     {subtitleKey && (
                       <span className="product-weight">
-                        Seller:
+                        Satıcı:
                         {typeof item[subtitleKey] === 'object' &&
                         item[subtitleKey] !== null
                           ? (item[subtitleKey] as User).firstname
@@ -207,11 +210,12 @@ const handleAddToBasket = (item: T) => {
                   </div>
 
                   {additionalKeys.map((key) => (
-                    <p key={String(key)} className="product-producer">
-                      <span className="producer-name">{String(key)}</span>:{' '}
-                      {String(item[key])}
-                    </p>
-                  ))}
+  <p key={String(key)} className="product-producer">
+    <span className="producer-name">{keyLabels?.[key] ?? String(key)}</span>:{' '}
+    {String(item[key])}
+  </p>
+))}
+
                 </div>
 
                 <div className="product-rating">

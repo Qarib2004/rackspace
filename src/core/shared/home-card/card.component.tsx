@@ -24,7 +24,20 @@ const Card = () => {
   
   const { data: products } = useGetProducts();
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 4;
+  const [productsPerPage, setProductsPerPage] = useState(4); 
+  
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      setProductsPerPage(isMobile ? 2 : 4);
+    };
+    
+    checkScreenSize();
+    
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
   
   const [openDropdownId, setOpenDropdownId] = useState<string | number | null>(null);
   const dropdownRefs = useRef<DropdownRefs>({});
@@ -237,7 +250,7 @@ const handleAddToBasket = (product: Product) => {
                   </div>
 
                   <div className="product-actions">
-                    <button className="buy-button">Indi al</button>
+                    <button className="buy-button"><ShoppingCart />Indi al</button>
                     <button className="add-button">
                       <span className="plus-icon">+</span> Əlavə etmək üçün
                     </button>
