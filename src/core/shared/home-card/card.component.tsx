@@ -8,11 +8,11 @@ import { useSelector } from 'react-redux';
 import { User } from 'core/utils/IUser';
 
 
-interface RootState {
+export interface RootState {
   user: User;
 }
 
-interface DropdownRefs {
+export interface DropdownRefs {
   [key: string]: HTMLDivElement | null;
 }
 

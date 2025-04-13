@@ -89,8 +89,10 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
           })
         );
 
-        setBasketItems(mappedItems);
-        setTotalPrice(basketData.data.totalPrice);
+        if (mappedItems.some(item => item.name !== 'Unknown goods')) {
+          setBasketItems(mappedItems);
+          setTotalPrice(basketData.data.totalPrice);
+        }
       } catch (error) {
         console.error('Error processing basket data:', error);
         setError('Basket processing error');
@@ -115,7 +117,13 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
       handleRemoveItem(itemId);
       return;
     }
-
+  
+    setBasketItems(prevItems =>
+      prevItems.map(item =>
+        item._id === itemId ? { ...item, quantity: newQuantity } : item
+      )
+    );
+  
     updateItemMutation.mutate(
       {
         itemId: itemId,
@@ -123,37 +131,44 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
       },
       {
         onSuccess: () => {
-          setBasketItems((prevItems) =>
-            prevItems.map((item) =>
-              item._id === itemId ? { ...item, quantity: newQuantity } : item
-            )
-          );
+          refetch();
         },
         onError: (error) => {
           console.error('Failed to update item quantity:', error);
+          refetch();
         },
       }
     );
   };
-
-  const handleRemoveItem = (itemId: string) => {
+  const handleRemoveItem = (basketItemId: string) => {
+    if (!basketItems.some(item => item._id === basketItemId)) {
+      return;
+    }
+    
+    
+    const itemToRemove = basketItems.find(item => item._id === basketItemId);
+    
+    
     removeItemMutation.mutate(
+      { itemId: basketItemId },
       {
-        itemId: itemId,
-      },
-      {
-        onSuccess: () => {
-          setBasketItems((prevItems) =>
-            prevItems.filter((item) => item._id !== itemId)
-          );
+        onSuccess: (data) => {
+          console.log('[Basket] Removal API call successful, response:', data);
+          refetch().then(result => {
+            console.log('[Basket] Refetch after removal:', result);
+          });
         },
-        onError: (error) => {
-          console.error('Failed to remove item:', error);
-        },
+        onError: (error:any) => {
+          console.error('[Basket] Removal API call failed:', error);
+          console.error('[Basket] Error details:', {
+            message: error.message,
+            response: error.response?.data,
+            status: error.response?.status
+          });
+        }
       }
     );
   };
-
   if (isLoading) {
     return (
       <>
@@ -237,7 +252,7 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
           <div className="sidebar-basket-content">
             <div className="error-basket">
               <p>{error}</p>
-              <button onClick={() => refetch()}>Повторить попытку</button>
+              <button onClick={() => refetch()}>Yenidən cəhd edin</button>
             </div>
           </div>
         </div>
@@ -289,7 +304,7 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
         <div className="sidebar-basket-content">
           {!userId ? (
             <div className="empty-basket">
-              <p>Войдите в аккаунт, чтобы увидеть корзину</p>
+              <p>Alış-veriş səbətinizi görmək üçün daxil olun</p>
             </div>
           ) : basketItems.length === 0 ? (
             <div className="empty-basket">

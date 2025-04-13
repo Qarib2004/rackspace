@@ -54,11 +54,11 @@ export const addToBasket = async (userId: string, item: BasketItemPayload) => {
     }
   };
 export const updateBasketItem = async (userId: string, itemId: string, quantity: number): Promise<BasketResponse> => {
-  const res = await axiosInstance.patch(`${API.basket}/${userId}/items/${itemId}`, { quantity });
+  const res = await axiosInstance.patch(`${API.basket}/items/${itemId}`, { quantity });
   return res.data;
 };
 
 export const removeFromBasket = async (userId: string, itemId: string): Promise<BasketResponse> => {
-  const res = await axiosInstance.delete(`${API.basket}/${userId}/items/${itemId}`);
+  const res = await axiosInstance.delete(`${API.basket}/items/${itemId}`);
   return res.data;
 };
