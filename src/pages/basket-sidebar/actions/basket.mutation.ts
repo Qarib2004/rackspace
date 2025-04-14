@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { addToBasket, updateBasketItem, removeFromBasket, BasketResponse } from './basket.service';
+import { addToBasket, updateBasketItem, removeFromBasket } from './basket.service';
+import { BasketResponse } from '../basket';
 
 export const useAddToBasket = (userId: string) => {
   const queryClient = useQueryClient();
