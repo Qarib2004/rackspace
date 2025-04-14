@@ -7,7 +7,7 @@ export interface ICard {
 }
 
 export interface Product {
-    id: number;
+    _id: number;
     name: string;
     description?: string;
     image?: string[];

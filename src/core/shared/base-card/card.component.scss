@@ -16,6 +16,9 @@
         font-size: 2rem;
         font-weight: 700;
         color: #111827;
+
+        @media (max-width: 768px)  { font-size: 1.25rem; }
+        @media (max-width: 576px)  { font-size: 1.1rem; }
       }
   
       .pagination {
@@ -106,6 +109,40 @@
           height: 1.25rem;
           color: black;
           background: none;
+        }
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 2.5rem;
+        right: 0.8rem;
+        background-color: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        width: 12rem;
+        z-index: 20;
+        overflow: hidden;
+        
+        .dropdown-item {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.75rem 1rem;
+          width: 100%;
+          border: none;
+          background-color: transparent;
+          color: #4b5563;
+          text-align: left;
+          cursor: pointer;
+          transition: background-color 0.2s;
+          
+          &:hover {
+            background-color: #f3f4f6;
+          }
+          
+          &:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+          }
         }
       }
   

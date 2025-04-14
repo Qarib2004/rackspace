@@ -336,15 +336,26 @@ const Store = () => {
           </div>
 
           <Card
-            data={displayedProducts}
-            imageKey="image"
-            titleKey="name"
-            subtitleKey="seller"
-            additionalKeys={['weight', 'price']}
-            showPagination={false}
-            pageTitle="Products"
-            priceKey="price"
-          />
+  data={displayedProducts.map(p => ({
+    ...p,
+    _id: String(p._id)
+  }))}
+  imageKey="image"
+  titleKey="name"
+  subtitleKey="seller"
+  additionalKeys={['weight']}
+  showPagination={false}
+  pageTitle="Məhsullar"
+  priceKey="price"
+  keyLabels={{
+    weight: 'Çəki',
+    price: 'Qiymət',
+    name: 'Ad',
+    seller: 'Satıcı',
+    quantity: 'Miqdar'
+  }}
+/>
+
 
         </div>
 
