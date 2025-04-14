@@ -15,6 +15,8 @@ import SidebarBasket from 'pages/basket-sidebar/basketSidebar.component';
 import Messages from 'pages/profile/Profile/Messages';
 import Addresses from 'pages/profile/Profile/Adresses';
 import Orders from 'pages/profile/Profile/Orders';
+import DetailsComponent from 'pages/details/details.component';
+import HelpComponent from 'pages/help/help.component';
 
 const router = createBrowserRouter([
     {
@@ -50,6 +52,14 @@ const router = createBrowserRouter([
             {
                 path: Routes.store,
                 element: <Store />,
+            },
+            {
+                path: Routes.details,
+                element: <DetailsComponent />,
+            },
+            {
+                path: Routes.help,
+                element: <HelpComponent />,
             },
             {
                 path: Routes.wihslist,
