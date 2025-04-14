@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
-import { MoreVertical } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Heart, MoreVertical, Share2, ShoppingCart } from 'lucide-react';
 import './card.component.scss';
 import { User } from 'core/utils/IUser';
+import { useSelector } from 'react-redux';
+import { DropdownRefs, RootState } from '../home-card/card.component';
+import { useAddToBasket } from 'pages/basket-sidebar/actions/basket.mutation';
+import { Product } from '../home-card/card';
 
 interface CardProps<T> {
   data: T[];
@@ -13,9 +17,10 @@ interface CardProps<T> {
   showPagination?: boolean;
   pageTitle?: string;
   priceKey?: keyof T;
+  keyLabels?: Partial<Record<keyof T, string>>;
 }
 
-const Card = <T extends { rating?: number }>({
+const Card = <T extends { rating?: number, _id?: string }>({
   data,
   imageKey,
   titleKey,
@@ -24,8 +29,19 @@ const Card = <T extends { rating?: number }>({
   itemsPerPage = 4,
   showPagination = true,
   pageTitle,
-  priceKey
+  priceKey,
+  keyLabels
+  
 }: CardProps<T>) => {
+  const user = useSelector((state:RootState) => state.user);
+  const userId = user?._id || user?.id || ''; 
+  
+  const addToBasketMutation = useAddToBasket(userId);
+
+  const [openDropdownId, setOpenDropdownId] = useState<string | number | null>(null);
+  const dropdownRefs = useRef<DropdownRefs>({});
+
+
   const totalPages = Math.ceil(data.length / itemsPerPage);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -39,6 +55,74 @@ const Card = <T extends { rating?: number }>({
 
   const goToPreviousPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  
+  const toggleDropdown = (productId: string | number, e: React.MouseEvent) => {
+    console.log('Toggling dropdown for:', productId);
+    e.stopPropagation();
+    setOpenDropdownId(prevId => {
+      const newId = prevId === productId ? null : productId;
+      return newId;
+    });
+  };
+
+
+const handleAddToBasket = (item: T) => {
+  if (!('_id' in item)) {
+    console.warn('Item does not have _id property');
+    return;
+  }
+
+  if (!userId) {
+    console.warn('User not logged in - cannot add to basket');
+    console.groupEnd();
+    return;
+  }
+
+  const mutationData = {
+    item: {
+      productId: String(item._id),
+      quantity: 1
+    }
+  };
+
+  addToBasketMutation.mutate(mutationData, {
+    onSuccess: (data) => {
+      console.groupEnd();
+    },
+    onError: (error) => {
+      console.groupEnd();
+    },
+    onSettled: () => {
+      console.log('[Mutation completed]');
+    }
+  });
+};
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (openDropdownId !== null) {
+        const dropdownRef = dropdownRefs.current[openDropdownId];
+        
+        if (
+          dropdownRef && 
+          !dropdownRef.contains(event.target as Node) && 
+          !(event.target as Element).closest(`.options-button[data-product-id="${openDropdownId}"]`)
+        ) {
+          setOpenDropdownId(null);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [openDropdownId]);
+
+  const setDropdownRef = (id: string | number, element: HTMLDivElement | null) => {
+    dropdownRefs.current[id] = element;
   };
 
   return (
@@ -74,9 +158,30 @@ const Card = <T extends { rating?: number }>({
         <div className="products-grid">
           {currentItems.map((item, index) => (
             <div key={index} className="product-card">
-              <button className="options-button">
+              <button 
+                className="options-button"
+                data-product-id={item._id}
+                onClick={(e) => item._id && toggleDropdown(item._id, e)}
+              >
                 <MoreVertical className="options-icon" />
               </button>
+
+              {item._id && openDropdownId === item._id && (
+                <div className="dropdown-menu" ref={(el) => setDropdownRef(item._id as string, el) }>
+                  <button className="dropdown-item">
+                    <Heart size={16} />
+                    <span>Sevimlilərə əlavə edin</span>
+                  </button>
+                  <button className="dropdown-item" onClick={() => handleAddToBasket(item)}>
+                    <ShoppingCart size={16} />
+                    <span>Səbətə əlavə et</span>
+                  </button>
+                  <button className="dropdown-item">
+                    <Share2 size={16} />
+                    <span>Paylaşın</span>
+                  </button>
+                </div>
+              )}
 
               {imageKey && (
                 <div className="product-image-container">
@@ -95,7 +200,7 @@ const Card = <T extends { rating?: number }>({
                     
                     {subtitleKey && (
                       <span className="product-weight">
-                        Seller:
+                        Satıcı:
                         {typeof item[subtitleKey] === 'object' &&
                         item[subtitleKey] !== null
                           ? (item[subtitleKey] as User).firstname
@@ -105,11 +210,12 @@ const Card = <T extends { rating?: number }>({
                   </div>
 
                   {additionalKeys.map((key) => (
-                    <p key={String(key)} className="product-producer">
-                      <span className="producer-name">{String(key)}</span>:{' '}
-                      {String(item[key])}
-                    </p>
-                  ))}
+  <p key={String(key)} className="product-producer">
+    <span className="producer-name">{keyLabels?.[key] ?? String(key)}</span>:{' '}
+    {String(item[key])}
+  </p>
+))}
+
                 </div>
 
                 <div className="product-rating">

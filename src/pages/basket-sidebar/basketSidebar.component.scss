@@ -219,17 +219,18 @@
     }
     
     .checkout-button {
-      padding: clamp(12px, 3vw, 16px);
+      padding: 16px;
       background-color: #e67e22;
       color: white;
       border: none;
       border-radius: 0 2rem 0 2rem;
-      font-size: clamp(14px, 4vw, 16px);
+      font-size: 16px;
       font-weight: 600;
       cursor: pointer;
       margin-top: 16px;
       transition: background-color 0.2s ease;
       width: 100%;
+      min-height: 50px;
       
       &:hover {
         background-color: darken(#e67e22, 10%);
@@ -237,6 +238,12 @@
       
       &:active {
         transform: translateY(1px);
+      }
+
+      @media (max-width: 576px) {
+        padding: 14px;
+        font-size: 16px;
+        margin-top: 20px; 
       }
     }
   }

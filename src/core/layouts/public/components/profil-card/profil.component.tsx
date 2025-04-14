@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { MoreVertical } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { FileUser, MoreVertical } from 'lucide-react';
 import './profil.component.scss';
 import cardImg from '../../../../../assets/images/profil-card/Grupo 32300.png';
 import cardImg2 from '../../../../../assets/images/profil-card/Grupo 32331.jpeg';
@@ -124,7 +124,21 @@ const products: Product[] = [
 ];
 
 const ProfilCard = () => {
-  const productsPerPage = 4;
+  const [productsPerPage, setProductsPerPage] = useState(4); 
+  
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      setProductsPerPage(isMobile ? 2 : 4);
+    };
+    
+    checkScreenSize();
+    
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+  
   const totalPages = Math.ceil(products.length / productsPerPage);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -216,7 +230,7 @@ const ProfilCard = () => {
                 </div>
 
                 <div className="product-actions">
-                  <button className="buy-button">Ətraflı məlumat əldə edin</button>
+                  <button className="buy-button"><FileUser />Ətraflı məlumat əldə edin</button>
                   <button className="add-button">
                     <span className="plus-icon">
                       <svg
