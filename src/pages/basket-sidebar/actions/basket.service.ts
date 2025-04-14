@@ -1,40 +1,8 @@
 import { API } from 'core/configs/api.config';
 import axiosInstance from 'core/configs/axios.config';
+import { BasketItemPayload, BasketResponse } from '../basket';
 
-export interface BasketItemPayload {
-    productId: string;
-    quantity: number;
-  }
 
-export interface PopulatedProduct {
-    _id: string;
-    name: string;
-    description: string;
-    price: number;
-    image: string[];
-    quantity: number; 
-  }
-  
-  export interface BasketItem {
-    product: PopulatedProduct;
-    quantity: number;
-    _id?: string; 
-  }
-  
- export interface Basket {
-    userId: string;
-    items: BasketItem[];
-    totalPrice: number;
-    updatedAt: string;
-  }
-
-  export interface BasketResponse {
-    status: string;
-    data: {
-      items: BasketItem[];
-      totalPrice: number;
-    };
-  }
 export const getBasket = async (userId: string): Promise<BasketResponse> => {
     try {
       const res = await axiosInstance.get(`${API.basket}`);

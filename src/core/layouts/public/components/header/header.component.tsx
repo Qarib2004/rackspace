@@ -20,7 +20,7 @@ import SearchComponent from '../search/search.component';
 import { useStore } from '../../../../../store/store.config';
 import { Modal } from 'antd';
 import { LogoutOutlined } from '@ant-design/icons';
-import { useGetUser } from './actions/header.query';
+import { useGetBasketCount, useGetUser } from './actions/header.query';
 
 const HeaderComponent = () => {
 
@@ -41,6 +41,9 @@ const HeaderComponent = () => {
 
   const userCredential = useStore('user');
   const { data: user } = useGetUser(userCredential?.id);
+  const {
+    data: basketData,
+  } = useGetBasketCount(userCredential?.id);
 
   useEffect(() => {
     const handleMenuClickOutside = (event: MouseEvent) => {
@@ -150,6 +153,7 @@ const HeaderComponent = () => {
 
             <button onClick={toggleBasket} className="header__cart-btn" aria-label="Səbət">
               <ShoppingBag size={24} />
+              <span className="header__cart-count">{basketData?.data.items.length}</span>
             </button>
 
             {!isAuthenticated && (

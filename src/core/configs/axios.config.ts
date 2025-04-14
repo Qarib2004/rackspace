@@ -34,7 +34,7 @@ axiosInstance.interceptors.response.use(
         const method = response?.config?.method?.toUpperCase() ?? '';
 
         if (method === 'POST') {
-            successToast('Müraciət göndərildi');
+            // successToast('Müraciət göndərildi');
         }
 
         if (response.data) {

@@ -6,6 +6,8 @@ import { useGetProducts } from './actions/card.query';
 import { useAddToBasket } from 'pages/basket-sidebar/actions/basket.mutation';
 import { useSelector } from 'react-redux';
 import { User } from 'core/utils/IUser';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 export interface RootState {
@@ -25,6 +27,7 @@ const Card = () => {
   const { data: products } = useGetProducts();
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(4); 
+  const navigate = useNavigate();
   
   useEffect(() => {
     const checkScreenSize = () => {
@@ -99,7 +102,16 @@ const handleAddToBasket = (product: Product) => {
       console.groupEnd();
     },
     onSettled: () => {
-      console.log('[Mutation completed]');
+      toast.success('Məhsul səbətə əlavə edildi', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      // console.log('[Mutation completed]');
     }
   });
 };
@@ -199,6 +211,9 @@ const handleAddToBasket = (product: Product) => {
                       src={product.image[0]}
                       alt={product.name}
                       className="product-image"
+                      onClick={() => {
+                        navigate(`/products/${product._id}`);
+                      }}
                     />
                   )}
                 </div>
