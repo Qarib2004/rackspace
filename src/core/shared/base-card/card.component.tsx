@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { DropdownRefs, RootState } from '../home-card/card.component';
 import { useAddToBasket } from 'pages/basket-sidebar/actions/basket.mutation';
 import { Product } from '../home-card/card';
+import { useAddToWishlist } from 'pages/wishlist/actions/wihslist.mutation';
 
 interface CardProps<T> {
   data: T[];
@@ -37,7 +38,7 @@ const Card = <T extends { rating?: number, _id?: string }>({
   const userId = user?._id || user?.id || ''; 
   
   const addToBasketMutation = useAddToBasket(userId);
-
+  const addToWishlistMutation = useAddToWishlist(userId);
   const [openDropdownId, setOpenDropdownId] = useState<string | number | null>(null);
   const dropdownRefs = useRef<DropdownRefs>({});
 
@@ -99,6 +100,40 @@ const handleAddToBasket = (item: T) => {
     }
   });
 };
+
+
+const handleAddToWishlist = (item: T) => {
+  if (!('_id' in item)) {
+    console.warn('Item does not have _id property');
+    return;
+  }
+
+  if (!userId) {
+    console.warn('User not logged in - cannot add to wishlist');
+    console.groupEnd();
+    return;
+  }
+
+  const mutationData = {
+    productId: String(item._id),
+  };
+
+  addToWishlistMutation.mutate(mutationData, {
+    onSuccess: (data) => {
+      console.groupEnd();
+    },
+    onError: (error) => {
+      console.error('Error adding to wishlist:', error);
+      console.groupEnd();
+    },
+    onSettled: () => {
+      console.log('[Wishlist mutation completed]');
+    }
+  });
+};
+
+
+
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -168,7 +203,7 @@ const handleAddToBasket = (item: T) => {
 
               {item._id && openDropdownId === item._id && (
                 <div className="dropdown-menu" ref={(el) => setDropdownRef(item._id as string, el) }>
-                  <button className="dropdown-item">
+                  <button className="dropdown-item" onClick={() => handleAddToWishlist(item)}>
                     <Heart size={16} />
                     <span>Sevimlilərə əlavə edin</span>
                   </button>
