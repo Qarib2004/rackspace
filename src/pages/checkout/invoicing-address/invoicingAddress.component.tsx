@@ -3,6 +3,7 @@ import './invoicingAddress.component.scss';
 import { Dot, EllipsisVertical, Minus, Plus, Trash2 } from 'lucide-react';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const InvoicingAddressComponent = () => {
   const [open, setOpen] = useState<boolean>(true);
@@ -288,14 +289,17 @@ const InvoicingAddressComponent = () => {
                       </p>
                     </div>
                   </div>
-
                   <div className="invoicing__address__payment__product__btns">
-                    <button className="invoicing__address__payment__product__btns__back">
-                      Alış-verişə qayıt
-                    </button>
-                    <button className="invoicing__address__payment__product__btns__go">
-                      İrəli
-                    </button>
+                    <Link to={'/'}>
+                      <button className="invoicing__address__payment__product__btns__back">
+                        Alış-verişə qayıt
+                      </button>
+                    </Link>
+                    <Link to={'/delivery-method'}>
+                      <button className="invoicing__address__payment__product__btns__go">
+                        İrəli
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </Col>

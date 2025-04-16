@@ -13,7 +13,9 @@ export enum Routes {
   addresses = 'addresses',
   details = '/products/:id',
   producer = '/producer/:id',
-  checkout = '/checkout',
+  invoincingAddress = '/invoicing-address',
+  deliveryMethod = '/delivery-method',
+  payment = '/payment',
   help = '/help',
 }
 

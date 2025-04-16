@@ -19,6 +19,8 @@ import DetailsComponent from 'pages/details/details.component';
 import HelpComponent from 'pages/help/help.component';
 import ProducerDetailsComponent from 'pages/producer-details/producerDetails.component';
 import InvoicingAddressComponent from 'pages/checkout/invoicing-address/invoicingAddress.component';
+import DeliveryMethodComponent from 'pages/checkout/delivery-method/deliveryMethod.component';
+import PaymentComponent from 'pages/checkout/payment/payment.component';
 
 const router = createBrowserRouter(
   [
@@ -69,8 +71,16 @@ const router = createBrowserRouter(
           element: <ProducerDetailsComponent />,
         },
         {
-          path: Routes.checkout,
+          path: Routes.invoincingAddress,
           element: <InvoicingAddressComponent />,
+        },
+        {
+          path: Routes.deliveryMethod,
+          element: <DeliveryMethodComponent />,
+        },
+        {
+          path: Routes.payment,
+          element: <PaymentComponent />,
         },
         {
           path: Routes.help,

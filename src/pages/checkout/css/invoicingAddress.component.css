@@ -120,6 +120,11 @@
   margin-bottom: 17px;
 }
 @media only screen and (min-width: 600px) {
+  .invoicing__address__details__heading-box {
+    margin: 0;
+  }
+}
+@media only screen and (min-width: 600px) {
   .invoicing__address__details__heading-icon {
     display: none;
   }
