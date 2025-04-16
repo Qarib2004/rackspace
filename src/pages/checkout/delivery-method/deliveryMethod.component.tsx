@@ -52,18 +52,17 @@ const DeliveryMethodComponent = () => {
                 {' '}
                 <Check className="delivery__shipping-info__box__checked" />
               </p>
-              <p className="delivery__shipping-info__box__name-bold">
+              <p className="delivery__shipping-info__box__name">
                 faktura ünvanı
               </p>
               <span className="delivery__shipping-info__box__tick">
                 <Check />
               </span>
             </div>
-            <div></div>
             <span className="delivery__shipping-info__line"></span>
             <div className="delivery__shipping-info__box">
               <p className="delivery__shipping-info__box__number-bg">2</p>
-              <p className="delivery__shipping-info__box__name">
+              <p className="delivery__shipping-info__box__name-bold">
                 çatdırılma üsulu
               </p>
               <span className="delivery__shipping-info__box__circle delivery__shipping-info__box__circle-color">

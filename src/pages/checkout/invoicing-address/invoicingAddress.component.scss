@@ -403,9 +403,6 @@
           justify-content: right;
           gap: 20px;
           border-color: #cbcbcb;
-          @media only screen and (max-width: 600px) {
-            justify-content: space-between;
-          }
           &__back,
           &__go {
             opacity: 1;
@@ -418,7 +415,6 @@
             font-weight: 600;
             font-size: 0.875rem;
             @media only screen and (max-width: 600px) {
-              width: 100%;
               padding: 0.625rem 1rem;
             }
           }

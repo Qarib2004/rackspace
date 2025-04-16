@@ -39,7 +39,6 @@ const InvoicingAddressComponent = () => {
                 <Dot />
               </span>
             </div>
-            <div></div>
             <span className="invoicing__shipping-info__line"></span>
             <div className="invoicing__shipping-info__box">
               <p className="invoicing__shipping-info__box__number">2</p>
