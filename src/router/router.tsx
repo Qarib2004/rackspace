@@ -18,6 +18,7 @@ import Orders from 'pages/profile/Profile/Orders';
 import DetailsComponent from 'pages/details/details.component';
 import HelpComponent from 'pages/help/help.component';
 import ProducerDetailsComponent from 'pages/producer-details/producerDetails.component';
+import InvoicingAddressComponent from 'pages/checkout/invoicing-address/invoicingAddress.component';
 
 const router = createBrowserRouter(
   [
@@ -66,6 +67,10 @@ const router = createBrowserRouter(
         {
           path: Routes.producer,
           element: <ProducerDetailsComponent />,
+        },
+        {
+          path: Routes.checkout,
+          element: <InvoicingAddressComponent />,
         },
         {
           path: Routes.help,

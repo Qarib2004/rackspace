@@ -70,7 +70,7 @@ const ProducerDetailsComponent = () => {
                 <img
                   className="producer__img-box__img"
                   src="https://api.agromarket.pt//public_images/producer/notices/cnDpkdergVbO0W57qaoDP1wZZ8nH5OpmXLe6LBNI.jpg"
-                  alt="products"
+                  alt="product"
                 />
               </div>
               <div className="producer__icons">
