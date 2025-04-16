@@ -4,5 +4,6 @@ export const API = {
     register: 'users/signup',
     basket:'basket',
     user: 'users/:id',
+    wishlist: 'wishlist'
 };
 
