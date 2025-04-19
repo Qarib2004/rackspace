@@ -38,3 +38,6 @@ export const deleteUser = async (id: string) => {
   const res = await axiosInstance.delete(`users/${id}`);
   return res.data;
 };
+
+
+

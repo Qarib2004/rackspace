@@ -1,6 +1,12 @@
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { IBasketResponse } from '../header';
-import { getAllUsers, getAllUsersForSeller, getBasket, getUser } from './header.service';
+import {
+  getAllUsers,
+  getAllUsersForSeller,
+  getBasket,
+  getUser,
+  updateUser,
+} from './header.service';
 
 export const useGetUser = (id: any) => {
   return useQuery<any, Error>(
@@ -9,7 +15,7 @@ export const useGetUser = (id: any) => {
       return getUser(id);
     },
     {
-      enabled: !!id, 
+      enabled: !!id,
       refetchOnWindowFocus: false,
     }
   );
@@ -39,16 +45,33 @@ export const useGetAllUsersForSeller = () => {
   );
 };
 
-
 export const useGetBasketCount = (userId: string) => {
-    return useQuery<IBasketResponse, Error>(
-      ['basket', userId],
-      () => {
-        return getBasket(userId);
-      },
-      {
-        enabled: !!userId, 
-        refetchOnWindowFocus: false,
-      }
-    );
-  };
+  return useQuery<IBasketResponse, Error>(
+    ['basket', userId],
+    () => {
+      return getBasket(userId);
+    },
+    {
+      enabled: !!userId,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+// export const useUpdateUser = () => {
+//   const queryClient = useQueryClient();
+
+//   return useMutation(
+//     (updatedData: { id: string; body: any }) => updateUser(updatedData),
+
+//     {
+//       onSuccess: (data, variables) => {
+//         queryClient.invalidateQueries(['user', variables.id]);
+//         queryClient.invalidateQueries(['users']);      },
+//         onError: (error) => {
+//           console.error('Error for updating:', error);
+//         },
+//     },
+    
+//   );
+// };

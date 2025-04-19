@@ -27,6 +27,7 @@ axiosInstance.interceptors.request.use(
     }, (error) => {
         store.dispatch(setLoader(true));
         return Promise.reject(error);
+        
     });
 
 axiosInstance.interceptors.response.use(
