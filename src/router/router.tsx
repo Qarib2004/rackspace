@@ -11,7 +11,6 @@ import ProfileComponent from 'pages/profile/profile.component';
 import PersonalData from 'pages/profile/Profile/PersonalData';
 import FavoritesPage from 'pages/wishlist/wishlist.component';
 import SidebarBasket from 'pages/basket-sidebar/basketSidebar.component';
-
 import Messages from 'pages/profile/Profile/Messages';
 import Addresses from 'pages/profile/Profile/Adresses';
 import Orders from 'pages/profile/Profile/Orders';
@@ -21,11 +20,11 @@ import ProducerDetailsComponent from 'pages/producer-details/producerDetails.com
 import InvoicingAddressComponent from 'pages/checkout/invoicing-address/invoicingAddress.component';
 import DeliveryMethodComponent from 'pages/checkout/delivery-method/deliveryMethod.component';
 import PaymentComponent from 'pages/checkout/payment/payment.component';
+import CheckoutComponent from 'core/layouts/checkout/checkout.component';
 
 const router = createBrowserRouter(
   [
     {
-      // element: <PublicComponent />,
       element: (
         <AuthProtectedComponent layout="public">
           <PublicComponent />
@@ -71,18 +70,6 @@ const router = createBrowserRouter(
           element: <ProducerDetailsComponent />,
         },
         {
-          path: Routes.invoincingAddress,
-          element: <InvoicingAddressComponent />,
-        },
-        {
-          path: Routes.deliveryMethod,
-          element: <DeliveryMethodComponent />,
-        },
-        {
-          path: Routes.payment,
-          element: <PaymentComponent />,
-        },
-        {
           path: Routes.help,
           element: <HelpComponent />,
         },
@@ -115,6 +102,32 @@ const router = createBrowserRouter(
         {
           path: Routes.login,
           element: <LoginComponent />,
+        },
+      ],
+    },
+    {
+      element: (
+        <AuthProtectedComponent layout="checkout">
+          <CheckoutComponent />
+        </AuthProtectedComponent>
+      ),
+      children: [
+        {
+          path: Routes.checkout,
+          children: [
+            {
+              path: Routes.invoincingAddress,
+              element: <InvoicingAddressComponent />,
+            },
+            {
+              path: Routes.deliveryMethod,
+              element: <DeliveryMethodComponent />,
+            },
+            {
+              path: Routes.payment,
+              element: <PaymentComponent />,
+            },
+          ],
         },
       ],
     },

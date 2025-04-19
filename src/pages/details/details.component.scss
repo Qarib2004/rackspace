@@ -2,6 +2,16 @@
   max-width: 80rem;
   margin: 0 auto;
 }
+.in-stock{
+  color: #4b7d30;
+  font-weight: bold;
+  font-size: 0.875rem;
+}
+.out-of-stock{
+  color: #e2711d;
+  font-weight: bold;
+  font-size: 0.875rem;
+} 
 
 .details {
   margin-top: 4.75rem;

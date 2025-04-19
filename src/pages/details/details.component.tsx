@@ -217,72 +217,86 @@ const DetailsComponent = () => {
 
                 <div className="details__product__info">
                   <div className="details__product__info__left">
-                    <p className="details__product__info__left__label">
-                      İstehsalçı
-                    </p>
-                    <p className="details__product__info__left__value">
-                      <Link
-                        className="details__product__info__left__value__link"
-                        to={'#'}
-                      >
-                        {product.seller.fullname || 'Maria Jardim'}
-                      </Link>
-                      <span className="details__product__info__left__value__icon">
-                        {<QuestionMessage />}
-                      </span>
-                    </p>
-                    <p className="details__product__info__left__label">
-                      İstehsal yerləri
-                    </p>
-                    <p className="details__product__info__left__value">
-                      <Link
-                        className="details__product__info__left__value__link"
-                        to={'#'}
-                      >
-                        {product.productionLocation || product.seller.fullname || 'Maria Jardim'}
-                      </Link>
-                    </p>
-                    <p className="details__product__info__left__label">
-                      Sertifikatlar
-                    </p>
-                    <p className="details__product__info__left__value">
-                      {product.certificates || '-'}
-                    </p>
+                    <div className="producer__product__info__left__box">
+                      <p className="details__product__info__left__box__label">
+                        İstehsalçı
+                      </p>
+                      <p className="details__product__info__left__box__value">
+                        <Link
+                          className="details__product__info__left__box__value__link"
+                          to={'#'}
+                        >
+                          {product.seller.fullname || 'Maria Jardim'}
+                        </Link>
+                        <span className="details__product__info__left__box__value__icon">
+                          {<QuestionMessage />}
+                        </span>
+                      </p>
+                    </div>
+                    <div className="producer__product__info__left__box">
+                      <p className="details__product__info__left__box__label details__product__info__left__box__label-margin">
+                        İstehsal yerləri
+                      </p>
+                      <p className="details__product__info__left__box__value">
+                        <Link
+                          className="details__product__info__left__box__value__link"
+                          to={'#'}
+                        >
+                          {product.productionLocation || product.seller.fullname || 'Maria Jardim'}
+                        </Link>
+                      </p>
+                    </div>
+                    <div className="producer__product__info__left__box">
+                      <p className="details__product__info__left__box__label details__product__info__left__box__label-margin">
+                        Sertifikatlar
+                      </p>
+                      <p className="details__product__info__left__box__value">
+                        {product.certificates || '-'}
+                      </p>
+                    </div>
                   </div>
                   <div className="details__product__info__right">
-                    <p className="details__product__info__right__label">
-                      Vəziyyət
-                    </p>
-                    <p className={`details__product__info__right__value-status ${product.quantity > 0 ? 'in-stock' : 'out-of-stock'}`}>
-                      {product.quantity > 0 ? 'Stokda' : 'Stokda yox'}
-                    </p>
-                    <p className="details__product__info__right__label">
-                      Satış növü
-                    </p>
-                    <p className="details__product__info__right__value">
-                      {product.saleType || 'Onlayn və yerində'}
-                    </p>
-                    <p className="details__product__info__right__label">
-                      Məhsulun geri qaytarılması
-                    </p>
-                    <p className="details__product__info__right__value">
-                      {product.returnable ? 'bəli' : 'yox'}
-                    </p>
-                    <p className="details__product__info__right__label">
-                      Ümumi reytinq
-                    </p>
-                    <div className="details__product__info__rating">
-                      <div className="details__product__info__rating__box">
-                        <Rate
-                          className="details__product__info__rating__box__rate-icon"
-                          value={product.rating}
-                          disabled
-                        />
-                        <DownOutlined className="details__product__info__rating__box__down-icon" />
+                    <div className="producer__product__info__right__box">
+                      <p className="details__product__info__right__box__label">
+                        Vəziyyət
+                      </p>
+                      <p className={`details__product__info__right__box__value-status ${product.quantity > 0 ? 'in-stock' : 'out-of-stock'}`}>
+                        {product.quantity > 0 ? 'Stokda' : 'Stokda yox'}
+                      </p>
+                    </div>
+                    <div className="producer__product__info__right__box">
+                      <p className="details__product__info__right__box__label">
+                        Satış növü
+                      </p>
+                      <p className="details__product__info__right__box__value">
+                        {product.saleType || 'Onlayn və yerində'}
+                      </p>
+                    </div>
+                    <div className="producer__product__info__right__box">
+                      <p className="details__product__info__right__box__label">
+                        Məhsulun geri qaytarılması
+                      </p>
+                      <p className="details__product__info__right__box__value">
+                        {product.returnable ? 'bəli' : 'yox'}
+                      </p>
+                    </div>
+                    <div className="producer__product__info__right__box">
+                      <p className="details__product__info__right__box__label">
+                        Ümumi reytinq
+                      </p>
+                      <div className="details__product__info__rating">
+                        <div className="details__product__info__rating__box">
+                          <Rate
+                            className="details__product__info__rating__box__rate-icon"
+                            value={product.rating}
+                            disabled
+                          />
+                          <DownOutlined className="details__product__info__rating__box__down-icon" />
+                        </div>
+                        <span className="details__product__info__rating__rating-text">
+                          <span>{product.reviewCount || 0}</span> rəy
+                        </span>
                       </div>
-                      <span className="details__product__info__rating__rating-text">
-                        <span>{product.reviewCount || 0}</span> rəy
-                      </span>
                     </div>
                   </div>
                 </div>

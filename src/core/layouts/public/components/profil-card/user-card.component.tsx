@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { FileUser, MoreVertical } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import './profil.component.scss';
 import { User } from 'core/utils/IUser';
-import defaultImage from '../../../../../assets/images/profil-card/hFicmWpIh6RnU8cNVzRVY594zGMfbEFQicik4dPr (1).jpg'; // default image for fallback
+import defaultImage from '../../../../../assets/images/profil-card/hFicmWpIh6RnU8cNVzRVY594zGMfbEFQicik4dPr (1).jpg';
 
 interface ProfilCardProps {
   users: User[];
 }
 
 const UsersPage: React.FC<ProfilCardProps> = ({ users }) => {
+  const navigate = useNavigate();
   const [productsPerPage, setProductsPerPage] = useState(4);
 
   useEffect(() => {
@@ -41,6 +43,10 @@ const UsersPage: React.FC<ProfilCardProps> = ({ users }) => {
     }
   };
 
+  const handleProfileClick = (userId: any) => {
+    navigate(`/producer/${userId}`);
+  };
+
   return (
     <div className="product-page">
       <div className="container">
@@ -71,11 +77,15 @@ const UsersPage: React.FC<ProfilCardProps> = ({ users }) => {
 
         <div className="products-grid">
           {currentProducts.map((user) => (
-            <div key={user.id} className="product-card">
+            <div key={user._id} className="product-card">
               <button className="options-button">
                 <MoreVertical className="options-icon" />
               </button>
-              <div className="product-image-container">
+              <div 
+                className="product-image-container"
+                onClick={() => handleProfileClick(user._id)}
+                style={{ cursor: 'pointer' }}
+              >
                 <img
                   src={user.photo || defaultImage}
                   alt={user.firstname}
@@ -109,7 +119,10 @@ const UsersPage: React.FC<ProfilCardProps> = ({ users }) => {
                 </div>
 
                 <div className="product-actions">
-                  <button className="buy-button">
+                  <button 
+                    className="buy-button"
+                    onClick={() => handleProfileClick(user._id)}
+                  >
                     <FileUser />
                     Ətraflı məlumat əldə edin
                   </button>

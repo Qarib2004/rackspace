@@ -17,6 +17,7 @@ export enum Routes {
   deliveryMethod = '/delivery-method',
   payment = '/payment',
   help = '/help',
+  checkout = '/', 
 }
 
 export const goTo = (route: string, param: string | number) => {
