@@ -1,0 +1,191 @@
+.categories-section {
+  padding: 4rem 1.5rem;
+  background-color: #F4F7F6;
+}
+.categories-section .container {
+  max-width: 80rem;
+  margin: 0 auto;
+  width: 100%;
+}
+.categories-section .section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+.categories-section .categories-container {
+  background-color: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  padding: 1.6rem;
+  border-radius: 3rem 0 3rem 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+.categories-section .categories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+@media (min-width: 576px) {
+  .categories-section .categories-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 768px) {
+  .categories-section .categories-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+@media (min-width: 992px) {
+  .categories-section .categories-grid {
+    grid-template-columns: repeat(10, 1fr);
+  }
+}
+.categories-section .category-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  cursor: pointer;
+  position: relative;
+}
+.categories-section .category-item:hover .icon-background {
+  opacity: 1;
+}
+.categories-section .category-item:hover .category-icon {
+  transform: scale(1.1);
+}
+.categories-section .category-item:hover .category-label {
+  color: #10B981;
+}
+.categories-section .icon-container {
+  position: relative;
+  width: 5rem;
+  height: 5rem;
+}
+@media (min-width: 576px) {
+  .categories-section .icon-container {
+    width: 5.5rem;
+    height: 5.5rem;
+  }
+}
+@media (min-width: 992px) {
+  .categories-section .icon-container {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+}
+@media (min-width: 1200px) {
+  .categories-section .icon-container {
+    width: 5rem;
+    height: 5rem;
+  }
+}
+.categories-section .icon-background {
+  position: absolute;
+  inset: 0;
+  background-color: #f3f4f6;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 1rem 0 1rem 0;
+  padding: 4rem;
+}
+.categories-section .icon-wrapper {
+  position: relative;
+  z-index: 10;
+  padding: 0.75rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+.categories-section .icon-wrapper.green {
+  color: #059669;
+}
+.categories-section .icon-wrapper.orange {
+  color: #fb923c;
+}
+.categories-section .icon-wrapper.red {
+  color: #ef4444;
+}
+.categories-section .icon-wrapper.blue {
+  color: #60a5fa;
+}
+.categories-section .icon-wrapper.amber-dark {
+  color: #b45309;
+}
+.categories-section .icon-wrapper.orange-dark {
+  color: #ea580c;
+}
+.categories-section .icon-wrapper.amber {
+  color: #d97706;
+}
+.categories-section .icon-wrapper.yellow {
+  color: #facc15;
+}
+.categories-section .icon-wrapper.emerald {
+  color: #10b981;
+}
+.categories-section .icon-wrapper.amber-light {
+  color: #f59e0b;
+}
+.categories-section .category-icon {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+@media (min-width: 576px) {
+  .categories-section .category-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+}
+@media (min-width: 992px) {
+  .categories-section .category-icon {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+}
+@media (min-width: 1200px) {
+  .categories-section .category-icon {
+    width: 3.2rem;
+    height: 3.2rem;
+  }
+}
+.categories-section .category-label {
+  font-size: 0.75rem;
+  color: #4b5563;
+  text-align: center;
+  z-index: 10;
+}
+@media (min-width: 576px) {
+  .categories-section .category-label {
+    font-size: 0.85rem;
+  }
+}
+@media (min-width: 992px) {
+  .categories-section .category-label {
+    font-size: 1rem;
+  }
+}
+.categories-section .category-label:hover {
+  color: #10B981;
+  transition: color 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .categories-section {
+    padding: 2rem 1rem;
+  }
+  .categories-section .categories-container {
+    padding: 1.5rem;
+  }
+}
+@media (max-width: 576px) {
+  .categories-section .categories-container {
+    padding: 1rem;
+  }
+}/*# sourceMappingURL=categories.compinent.css.map */

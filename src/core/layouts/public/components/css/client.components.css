@@ -1,0 +1,107 @@
+.cliente-section {
+  min-height: 60vh;
+  padding: 2rem;
+}
+.cliente-section__container {
+  max-width: 80rem;
+  margin: 0 auto;
+  gap: 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+  .cliente-section__container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.cliente-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0 0 0 10rem;
+}
+@media (max-width: 480px) {
+  .cliente-card {
+    border-radius: 0 5rem 0 5rem;
+  }
+}
+.cliente-card--produtor {
+  border-radius: 0 10rem 0 0;
+}
+@media (max-width: 480px) {
+  .cliente-card--produtor {
+    border-radius: 0 5rem 0 5rem;
+  }
+}
+.cliente-card:hover .cliente-card__image {
+  transform: scale(1.05);
+}
+.cliente-card:hover .cliente-card__overlay {
+  opacity: 0.4;
+}
+.cliente-card:hover .cliente-card__content {
+  opacity: 1;
+}
+.cliente-card:hover .cliente-card__title:not(.cliente-card__title--white) {
+  color: white;
+}
+.cliente-card__image-container {
+  position: relative;
+  aspect-ratio: 4/3;
+}
+.cliente-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+.cliente-card__overlay {
+  position: absolute;
+  inset: 0;
+  background-color: black;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.cliente-card__title {
+  position: absolute;
+  left: 2rem;
+  top: 2rem;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: black;
+  transition: color 0.3s;
+}
+@media (max-width: 480px) {
+  .cliente-card__title {
+    left: 0.5rem;
+    top: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+}
+.cliente-card__title--white {
+  color: white;
+}
+.cliente-card__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.cliente-card__text {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 500;
+  padding: 0 2rem;
+  text-align: center;
+}
+@media (max-width: 480px) {
+  .cliente-card__text {
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 0 1rem;
+  }
+}/*# sourceMappingURL=client.components.css.map */
