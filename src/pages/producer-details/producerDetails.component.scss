@@ -3,7 +3,7 @@
   margin: 0 auto;
 }
 
-.details {
+.producer {
   margin-top: 4.75rem;
   @media only screen and (min-width: 824px) {
     padding-top: 6%;
@@ -21,17 +21,21 @@
       width: 100%;
       height: 12.5rem;
       margin-bottom: 0.875rem;
+      border-radius: 0;
     }
     &__img {
       width: 100%;
       cursor: pointer;
       height: 14.1875rem;
       object-fit: cover;
+      transition: 0.3s ease-in-out;
       @media only screen and (max-width: 824px) {
         width: 100%;
         height: 100%;
-        border-radius: 0;
       }
+    }
+    &__img:hover {
+      transform: scale(1.1);
     }
   }
   &__icons {
@@ -69,127 +73,11 @@
       }
     }
   }
-  &__product {
-    &__name-price {
+  &__user {
+    &__name {
       font-size: 1.625rem;
       font-weight: bold;
       padding: 0 0.625rem 1.125rem;
-    }
-    &__details {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.4375rem 0.625rem;
-      border-top: 1px solid #e2e2e2;
-      border-bottom: 1px solid #e2e2e2;
-      @media only screen and (max-width: 600px) {
-        display: block;
-      }
-      &__quantity {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 2.5rem;
-        color: #1d1d1d;
-        @media only screen and (max-width: 600px) {
-          margin-bottom: 1.875rem;
-        }
-      }
-      &__quantity-adjuster {
-        display: flex;
-        gap: 2.1875rem;
-        align-items: center;
-        position: relative;
-      }
-      &__quantity-number {
-        font-size: 0.875rem;
-        border-bottom: 1 solid #1d1d1d;
-      }
-      &__quantity-number::after {
-        position: absolute;
-        content: " ";
-        width: 3.75rem;
-        height: 0.0625rem;
-        background-color: #1d1d1d;
-        bottom: -0.625rem;
-        left: 1.25rem;
-      }
-      &__decrement,
-      &__increment {
-        font-size: 0.75rem;
-        font-weight: bold;
-        cursor: pointer;
-      }
-      &__decrement:hover,
-      &__increment:hover {
-        color: #e2711d;
-      }
-
-      &__price-info {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        color: #1d1d1d;
-        &__unit-price {
-          font-size: 0.75rem;
-        }
-        &__total-price {
-          font-size: 1.625rem;
-          font-weight: bold;
-        }
-      }
-      &__actions {
-        display: flex;
-        gap: 0.9375rem;
-        border-color: #cbcbcb;
-        @media only screen and (max-width: 600px) {
-          justify-content: space-between;
-        }
-        &__add-button,
-        &__buy-button {
-          opacity: 1;
-          padding: 0.375rem 1.125rem;
-          box-shadow: none;
-          text-align: center;
-          border-radius: 0px 1rem;
-          letter-spacing: 0;
-          text-transform: capitalize;
-          cursor: pointer;
-          font-weight: 600;
-          font-size: 0.875rem;
-          @media only screen and (max-width: 600px) {
-            width: 100%;
-            padding: 0.625rem 1rem;
-          }
-        }
-        &__add-button {
-          color: #000;
-          border: 1px solid #1d1d1d;
-          background-color: transparent;
-          transition: 0.3s ease-in-out;
-          &__shopping-bag {
-            font-size: 1.0625rem;
-            margin-right: 0.3125rem;
-          }
-        }
-        &__add-button:hover {
-          border-color: #aaaaaa;
-          color: #cbcbcb;
-        }
-        &__buy-button {
-          border: none;
-          border-color: #4b7d30;
-          background-color: #4b7d30;
-          color: #fff;
-          transition: 0.3s ease-in-out;
-        }
-        &__buy-button:hover {
-          opacity: 1;
-          border-color: #809528;
-          background-color: #809528;
-        }
-      }
     }
     &__info {
       display: flex;
@@ -210,6 +98,10 @@
           &__value {
             font-size: 0.875rem;
             margin-bottom: 0.5rem;
+            width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             &__link {
               font-weight: bold;
               color: #1d1d1d;

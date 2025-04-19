@@ -1,0 +1,227 @@
+.login {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: white;
+}
+.login__content {
+  display: flex;
+  max-width: 100vw;
+  width: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+}
+.login__left {
+  flex: 1;
+  padding: 2rem;
+  max-width: 400px;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  min-height: calc(100vh - 4rem);
+}
+.login__right {
+  flex: 1;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+.login__back {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.login__back:hover {
+  color: #333;
+}
+.login__header h1 {
+  font-size: 1.25rem;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+.login__header h2 {
+  font-size: 1.875rem;
+  color: #4a8b3f;
+  font-weight: 700;
+}
+.login__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.login__field label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+.login__field label span {
+  color: #ef4444;
+}
+.login__field input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+}
+.login__field input:focus {
+  outline: none;
+  border-color: #4a8b3f;
+  box-shadow: 0 0 0 2px rgba(74, 139, 63, 0.2);
+}
+.login__password {
+  position: relative;
+}
+.login__password input {
+  padding-right: 2.5rem;
+}
+.login__toggle-password {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0;
+}
+.login__toggle-password:hover {
+  color: #374151;
+}
+.login__options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+}
+.login__stay-logged {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  cursor: pointer;
+}
+.login__stay-logged input[type=checkbox] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #4a8b3f;
+}
+.login__forgot-password {
+  color: #4a8b3f;
+  text-decoration: none;
+}
+.login__forgot-password:hover {
+  text-decoration: underline;
+}
+.login__submit {
+  background: #4a8b3f;
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.login__submit:hover {
+  background: #417937;
+}
+.login__signup {
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+.login__signup a {
+  color: #4a8b3f;
+  text-decoration: none;
+}
+.login__signup a:hover {
+  text-decoration: underline;
+}
+.login__slider {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.login__slider img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-top-left-radius: 400px;
+  border-bottom-right-radius: 300px;
+  transition: opacity 0.9s ease;
+}
+.login__dots {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+}
+.login__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.login__dot.active {
+  background: white;
+}
+.login__footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20%;
+  height: 20%;
+  background-color: #4a8b3f;
+  clip-path: polygon(87% 29%, 100% 0, 100% 50%, 100% 100%, 68% 100%, 100% 100%, 0 100%, 38% 80%, 62% 58%);
+}
+
+@media (max-width: 1024px) {
+  .login__right {
+    display: none;
+  }
+  .login__left {
+    max-width: 100%;
+    min-height: auto;
+  }
+}
+.Toastify__toast-container {
+  z-index: 9999 !important;
+}
+
+.Toastify__toast {
+  font-family: inherit !important;
+  border-radius: 4px !important;
+  padding: 12px 16px !important;
+  min-height: auto !important;
+}
+
+.error-toast {
+  background: #ff4d4f !important;
+  color: white !important;
+}
+.error-toast .Toastify__close-button {
+  color: white !important;
+  opacity: 0.8;
+}
+.error-toast .Toastify__close-button:hover {
+  opacity: 1;
+}/*# sourceMappingURL=login.component.css.map */

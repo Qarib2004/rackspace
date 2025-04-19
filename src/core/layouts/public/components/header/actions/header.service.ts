@@ -16,3 +16,25 @@ export const getBasket = async (userId: string): Promise<IBasketResponse> => {
     throw error;
   }
 };
+
+export const getAllUsers = async () => {
+  const res = await axiosInstance.get('users');
+  return res.data.data; 
+};
+
+export const getAllUsersForSeller = async () => {
+  const res = await axiosInstance.get('users?role=seller');
+  return res.data.data; 
+};
+
+
+
+export const updateUser = async (updatedData: { id: string; body: any }) => {
+  const res = await axiosInstance.patch(`users/${updatedData.id}`, updatedData.body);
+  return res.data.data.user;
+};
+
+export const deleteUser = async (id: string) => {
+  const res = await axiosInstance.delete(`users/${id}`);
+  return res.data;
+};

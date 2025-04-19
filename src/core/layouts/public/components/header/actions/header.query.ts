@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import { IBasketResponse } from '../header';
-import { getBasket, getUser } from './header.service';
+import { getAllUsers, getAllUsersForSeller, getBasket, getUser } from './header.service';
 
 export const useGetUser = (id: any) => {
   return useQuery<any, Error>(
@@ -14,6 +14,31 @@ export const useGetUser = (id: any) => {
     }
   );
 };
+
+export const useGetAllUsers = () => {
+  return useQuery<any[], Error>(
+    ['users'],
+    () => {
+      return getAllUsers();
+    },
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useGetAllUsersForSeller = () => {
+  return useQuery<any[], Error>(
+    ['users'],
+    () => {
+      return getAllUsersForSeller();
+    },
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
 
 export const useGetBasketCount = (userId: string) => {
     return useQuery<IBasketResponse, Error>(
