@@ -8,7 +8,6 @@ import {
   useAddToBasket,
   useRemoveFromBasket,
 } from 'pages/basket-sidebar/actions/basket.mutation';
-import { Product } from '../home-card/card';
 import {
   useAddToWishlist,
   useRemoveFromWishlist,
@@ -20,6 +19,7 @@ import { FavoriteProduct } from 'pages/wishlist/wishlist.component';
 import { BasketItem } from 'pages/basket-sidebar/basket';
 import { WishlistItem } from 'pages/wishlist/wishlist';
 import { useGetProducts } from '../home-card/actions/card.query';
+import { useNavigate } from 'react-router-dom';
 
 interface CardProps<T> {
   data: T[];
@@ -48,6 +48,7 @@ const Card = <T extends { rating?: number; _id?: string }>({
 }: CardProps<T>) => {
   const user = useSelector((state: RootState) => state.user);
   const userId = user?._id || user?.id || '';
+  const navigate = useNavigate();
 
   const addToBasketMutation = useAddToBasket(userId);
   const addToWishlistMutation = useAddToWishlist(userId);
@@ -59,6 +60,10 @@ const Card = <T extends { rating?: number; _id?: string }>({
     null
   );
   const dropdownRefs = useRef<DropdownRefs>({});
+
+  const onClickDetails = (id: string) => {
+    navigate(`/products/${id}`);
+  };
 
   const totalPages = Math.ceil(data.length / itemsPerPage);
   const [currentPage, setCurrentPage] = useState(1);
@@ -76,23 +81,19 @@ const Card = <T extends { rating?: number; _id?: string }>({
   };
 
   const toggleDropdown = (productId: string | number, e: React.MouseEvent) => {
-    console.log('Toggling dropdown for:', productId);
     e.stopPropagation();
-    setOpenDropdownId((prevId) => {
-      const newId = prevId === productId ? null : productId;
-      return newId;
-    });
+    setOpenDropdownId((prevId) => (prevId === productId ? null : productId));
   };
 
-  const handleAddToBasket = (item: T) => {
+  const handleAddToBasket = (item: T, e: React.MouseEvent) => {
+    e.stopPropagation();
     if (!('_id' in item)) {
       console.warn('Item does not have _id property');
       return;
     }
 
     if (!userId) {
-      console.warn('User not logged in - cannot add to basket');
-      console.groupEnd();
+      toast.error('Zəhmət olmasa daxil olun');
       return;
     }
 
@@ -104,36 +105,26 @@ const Card = <T extends { rating?: number; _id?: string }>({
     };
 
     addToBasketMutation.mutate(mutationData, {
-      onSuccess: (data) => {
+      onSuccess: () => {
         refetchBasket();
         setOpenDropdownId(null);
+        toast.success('Məhsul səbətə əlavə edildi');
       },
-      onError: (error) => {
-        console.groupEnd();
-      },
-      onSettled: () => {
-        toast.success('Məhsul səbətə əlavə edildi', {
-          position: 'top-right',
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+      onError: () => {
+        toast.error('Xəta baş verdi');
       },
     });
   };
 
-  const handleAddToWishlist = (item: T) => {
+  const handleAddToWishlist = (item: T, e: React.MouseEvent) => {
+    e.stopPropagation();
     if (!('_id' in item)) {
       console.warn('Item does not have _id property');
       return;
     }
 
     if (!userId) {
-      console.warn('User not logged in - cannot add to wishlist');
-      console.groupEnd();
+      toast.error('Zəhmət olmasa daxil olun');
       return;
     }
 
@@ -142,24 +133,13 @@ const Card = <T extends { rating?: number; _id?: string }>({
     };
 
     addToWishlistMutation.mutate(mutationData, {
-      onSuccess: (data) => {
+      onSuccess: () => {
         refetchWishlist();
         setOpenDropdownId(null);
+        toast.success('Məhsul sevimlilərə əlavə edildi');
       },
-      onError: (error) => {
-        console.error('Error adding to wishlist:', error);
-        console.groupEnd();
-      },
-      onSettled: () => {
-        toast.success('Məhsul sevimlere əlavə edildi', {
-          position: 'top-right',
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+      onError: () => {
+        toast.error('Xəta baş verdi');
       },
     });
   };
@@ -168,7 +148,6 @@ const Card = <T extends { rating?: number; _id?: string }>({
     const handleClickOutside = (event: MouseEvent) => {
       if (openDropdownId !== null) {
         const dropdownRef = dropdownRefs.current[openDropdownId];
-
         if (
           dropdownRef &&
           !dropdownRef.contains(event.target as Node) &&
@@ -208,23 +187,19 @@ const Card = <T extends { rating?: number; _id?: string }>({
   const [favoriteItems, setFavoriteItems] = useState<FavoriteProduct[]>([]);
   const removeItemMutation = useRemoveFromWishlist(userId);
 
-  const handleRemoveFavorite = (productId: string) => {
-    setFavoriteItems((prevItems) => {
-      const updated = prevItems.filter((item) => item._id !== productId);
-      return updated;
-    });
+  const handleRemoveFavorite = (productId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setFavoriteItems((prevItems) => prevItems.filter((item) => item._id !== productId));
 
     removeItemMutation.mutate(
       { productId },
       {
-        onSuccess: (data) => {
-          toast.success('Məhsul sevimlerden silindi');
-
+        onSuccess: () => {
+          toast.success('Məhsul sevimlilərdən silindi');
           refetch();
         },
-        onError: (error) => {
-          console.error('[Wishlist] Removal failed:', error);
-
+        onError: () => {
+          toast.error('Xəta baş verdi');
           refetch();
         },
       }
@@ -233,9 +208,10 @@ const Card = <T extends { rating?: number; _id?: string }>({
 
   const removeFromBasketMutation = useRemoveFromBasket(userId);
 
-  const handleRemoveFromBasket = (productId: string) => {
+  const handleRemoveFromBasket = (productId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
     if (!userId) {
-      console.warn('User not logged in - cannot remove from basket');
+      toast.error('Zəhmət olmasa daxil olun');
       return;
     }
 
@@ -243,12 +219,10 @@ const Card = <T extends { rating?: number; _id?: string }>({
       { itemId: productId },
       {
         onSuccess: () => {
-          console.log('[Basket] Product removed successfully:', productId);
           toast.success('Məhsul səbətdən silindi');
         },
-        onError: (error) => {
-          console.error('[Basket] Error removing product:', productId, error);
-          toast.error('Səbətdən silinmə zamanı xəta baş verdi');
+        onError: () => {
+          toast.error('Xəta baş verdi');
         },
       }
     );
@@ -286,11 +260,18 @@ const Card = <T extends { rating?: number; _id?: string }>({
 
         <div className="products-grid">
           {currentItems.map((item, index) => (
-            <div key={index} className="product-card">
+            <div 
+              key={index} 
+              className="product-card"
+              onClick={() => item._id && onClickDetails(item._id)}
+            >
               <button
                 className="options-button"
                 data-product-id={item._id}
-                onClick={(e) => item._id && toggleDropdown(item._id, e)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  item._id && toggleDropdown(item._id, e);
+                }}
               >
                 <MoreVertical className="options-icon" />
               </button>
@@ -299,12 +280,13 @@ const Card = <T extends { rating?: number; _id?: string }>({
                 <div
                   className="dropdown-menu"
                   ref={(el) => setDropdownRef(item._id as string, el)}
+                  onClick={(e) => e.stopPropagation()}
                 >
                   {isInWishlist(item._id ? String(item._id) : '') ? (
                     <button
                       className="dropdown-item"
-                      onClick={() =>
-                        item._id && handleRemoveFavorite(item._id.toString())
+                      onClick={(e) =>
+                        item._id && handleRemoveFavorite(item._id.toString(), e)
                       }
                     >
                       <Heart size={16} fill="red" color="red" />
@@ -313,7 +295,7 @@ const Card = <T extends { rating?: number; _id?: string }>({
                   ) : (
                     <button
                       className="dropdown-item"
-                      onClick={() => item._id && handleAddToWishlist(item)}
+                      onClick={(e) => item._id && handleAddToWishlist(item, e)}
                     >
                       <Heart size={16} />
                       <span>Sevimlilərə əlavə edin</span>
@@ -323,8 +305,8 @@ const Card = <T extends { rating?: number; _id?: string }>({
                   {isInBasket(item._id ? String(item._id) : '') ? (
                     <button
                       className="dropdown-item"
-                      onClick={() =>
-                        item._id && handleRemoveFromBasket(item._id.toString())
+                      onClick={(e) =>
+                        item._id && handleRemoveFromBasket(item._id.toString(), e)
                       }
                     >
                       <ShoppingCart size={16} fill="red" color="red" />
@@ -333,14 +315,14 @@ const Card = <T extends { rating?: number; _id?: string }>({
                   ) : (
                     <button
                       className="dropdown-item"
-                      onClick={() => item._id && handleAddToBasket(item)}
+                      onClick={(e) => item._id && handleAddToBasket(item, e)}
                     >
                       <ShoppingCart size={16} />
                       <span>Səbətə əlavə et</span>
                     </button>
                   )}
 
-                  <button className="dropdown-item">
+                  <button className="dropdown-item" onClick={(e) => e.stopPropagation()}>
                     <Share2 size={16} />
                     <span>Paylaşın</span>
                   </button>
@@ -398,23 +380,34 @@ const Card = <T extends { rating?: number; _id?: string }>({
                   </div>
                   {priceKey && (
                     <span className="product-price">
-                      {' '}
                       {String(item[priceKey as keyof T])}₼
                     </span>
                   )}
                 </div>
 
                 <div className="product-actions">
-                  <button className="buy-button">
+                  <button 
+                    className="buy-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      item._id && handleAddToBasket(item, e);
+                    }}
+                  >
                     <span>
                       <i
                         className="fa-solid fa-cart-shopping"
                         style={{ color: '#ccdadb' }}
                       ></i>
                     </span>
-                    Buy{' '}
+                    Buy
                   </button>
-                  <button className="add-button">
+                  <button 
+                    className="add-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      item._id && handleAddToBasket(item, e);
+                    }}
+                  >
                     <span className="plus-icon">+</span>
                     Add
                   </button>

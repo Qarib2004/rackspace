@@ -21,6 +21,7 @@ import { useStore } from '../../../../../store/store.config';
 import { Modal } from 'antd';
 import { LogoutOutlined } from '@ant-design/icons';
 import { useGetBasketCount, useGetUser } from './actions/header.query';
+import { useGetWishlist } from 'pages/wishlist/actions/wishlist.query';
 
 const HeaderComponent = () => {
 
@@ -44,6 +45,9 @@ const HeaderComponent = () => {
   const {
     data: basketData,
   } = useGetBasketCount(userCredential?.id);
+  const {
+    data: wishlistData,
+  } = useGetWishlist(userCredential?.id);
 
   useEffect(() => {
     const handleMenuClickOutside = (event: MouseEvent) => {
@@ -147,6 +151,7 @@ const HeaderComponent = () => {
                 </Link>
                 <Link to="/wishlist" className="header__icon-btn" aria-label="İstək siyahısı">
                   <Heart size={24} />
+                  <span className="header__cart-count">{wishlistData?.data.items.length}</span>
                 </Link>
               </>
             )}

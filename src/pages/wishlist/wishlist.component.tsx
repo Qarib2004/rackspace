@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import placeholderImg from '../../assets/images/basket/OKdAduzv3SOT6gVBYVfP349DhSyKO3MoRclv3BoP.png';
 import { useGetWishlist } from './actions/wishlist.query';
 import { useRemoveFromWishlist } from './actions/wihslist.mutation';
+import { useGetUser } from 'pages/profile/actions/profile.query';
 
 export interface FavoriteProduct {
   _id: string;
@@ -46,6 +47,7 @@ const FavoritesPage: React.FC = () => {
     isLoading: wishlistLoading,
     refetch,
   } = useGetWishlist(userId);
+  const { data: User } = useGetUser(userId);
 
   const removeItemMutation = useRemoveFromWishlist(userId);
 
@@ -210,7 +212,7 @@ const FavoritesPage: React.FC = () => {
   return (
     <div className="favorites-page">
       <header className="header1">
-        <h1 className="header1__title">SALAM {user?.username || 'USERNAME'}</h1>
+        <h1 className="header1__title">SALAM {User?.firstname || 'USERNAME'}</h1>
         <p className="header1__welcome">SEVİMLİ SİYAHINA XOŞ GƏLİRSİNİZ</p>
       </header>
 

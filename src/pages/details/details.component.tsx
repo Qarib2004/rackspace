@@ -12,20 +12,47 @@ import {
 } from '@ant-design/icons';
 import { Search } from 'lucide-react';
 import QuestionMessage from 'assets/images/icons/question-message';
-import { Link } from 'react-router-dom';
-import React, { useState, useRef, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { useGetProduct } from './actions/details.query';
+import { toast } from 'react-toastify';
+import { Product } from 'core/shared/home-card/card';
+import { useAddToBasket } from 'pages/basket-sidebar/actions/basket.mutation';
+import { useGetBasket } from 'pages/basket-sidebar/actions/basket.query';
 
 const labels = ['Haqqında', 'Çatdırılma/Çatdırılma Siyasəti', 'Rəylər'];
 
 const DetailsComponent = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
+  const [quantity, setQuantity] = useState<number>(1);
   const tabRefs = useRef<Array<HTMLParagraphElement | null>>([]);
   const underlineRef = useRef<HTMLSpanElement | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const [showArrows, setShowArrows] = useState(false);
+  const id = useParams().id;
+  const { data: product } = useGetProduct(id);
+  const addToBasketMutation = useAddToBasket(id);
+  const { data: basketData, refetch: refetchBasket } = useGetBasket(id);
 
   const handleTabClick = (index: number): void => {
     setActiveTab(index);
+  };
+
+  const increaseQuantity = () => {
+    if (product && quantity < product.quantity) {
+      setQuantity(prev => prev + 1);
+    } else {
+      toast.warning('Maksimum stok miqdarına çatdınız', {
+        position: 'top-right',
+        autoClose: 2000,
+      });
+    }
+  };
+
+  const decreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(prev => prev - 1);
+    }
   };
 
   const scrollTabs = (direction: 'left' | 'right') => {
@@ -36,6 +63,52 @@ const DetailsComponent = () => {
         behavior: 'smooth',
       });
     }
+  };
+
+  const handleAddToBasket = (product: Product) => {
+    if (!id) {
+      toast.error('Zəhmət olmasa daxil olun', {
+        position: 'top-right',
+        autoClose: 2000,
+      });
+      return;
+    }
+
+    if ((product?.quantity ?? 0) < quantity) {
+      toast.error('Kifayət qədər stok yoxdur', {
+        position: 'top-right',
+        autoClose: 2000,
+      });
+      return;
+    }
+
+    const mutationData = {
+      item: {
+        productId: String(product._id),
+        quantity: quantity,
+      },
+    };
+
+    addToBasketMutation.mutate(mutationData, {
+      onSuccess: (data) => {
+        refetchBasket();
+        toast.success('Məhsul səbətə əlavə edildi', {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      },
+      onError: (error) => {
+        toast.error('Əlavə edilərkən xəta baş verdi', {
+          position: 'top-right',
+          autoClose: 2000,
+        });
+      },
+    });
   };
 
   useEffect(() => {
@@ -61,6 +134,10 @@ const DetailsComponent = () => {
     return () => window.removeEventListener('resize', checkOverflow);
   }, []);
 
+  if (!product) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <div className="details">
@@ -70,8 +147,8 @@ const DetailsComponent = () => {
               <div className="details__img-box">
                 <img
                   className="details__img-box__img"
-                  src="https://api.agromarket.pt//public_images/producer/notices/cnDpkdergVbO0W57qaoDP1wZZ8nH5OpmXLe6LBNI.jpg"
-                  alt="products"
+                  src={product.image || 'https://api.agromarket.pt//public_images/producer/notices/cnDpkdergVbO0W57qaoDP1wZZ8nH5OpmXLe6LBNI.jpg'}
+                  alt={product.name}
                 />
               </div>
               <div className="details__icons">
@@ -86,41 +163,54 @@ const DetailsComponent = () => {
             <Col xs={24} sm={24} md={24} lg={16} xl={16}>
               <div className="details__product">
                 <h2 className="details__product__name-price">
-                  Limon <span>(1 kq)</span>
+                  {product.name} <span>({product.quantity} {product.unit} stokda)</span>
                 </h2>
 
                 <div className="details__product__details">
                   <div className="details__product__details__quantity">
                     <div className="details__product__details__quantity-adjuster">
-                      <p className="details__product__details__decrement">
+                      <p
+                        className="details__product__details__decrement"
+                        onClick={decreaseQuantity}
+                      >
                         <MinusOutlined />
                       </p>
                       <p className="details__product__details__quantity-number">
-                        1
+                        {quantity}
                       </p>
-                      <p className="details__product__details__increment">
+                      <p
+                        className="details__product__details__increment"
+                        onClick={increaseQuantity}
+                      >
                         <PlusOutlined />
                       </p>
                     </div>
                     <div className="details__product__details__price-info">
                       <p className="details__product__details__price-info__unit-price">
-                        1,00 €/vahid
+                        {product.price} ₼/vahid
                       </p>
                       <p className="details__product__details__price-info__total-price">
-                        €1.00
+                        ₼{(product.price * quantity).toFixed(2)}
                       </p>
                     </div>
                   </div>
 
                   <div className="details__product__details__actions">
-                    <button className="details__product__details__actions__add-button">
+                    <button
+                      className="details__product__details__actions__add-button"
+                      onClick={() => handleAddToBasket(product)}
+                      disabled={product.quantity === 0}
+                    >
                       <span>
                         <ShoppingOutlined className="details__product__details__actions__add-button__shopping-bag" />
                       </span>
-                      əlavə et
+                      {product.quantity > 0 ? 'əlavə et' : 'Stokda yox'}
                     </button>
-                    <button className="details__product__details__actions__buy-button">
-                      indi al
+                    <button
+                      className="details__product__details__actions__buy-button"
+                      disabled={product.quantity === 0}
+                    >
+                      {product.quantity > 0 ? 'indi al' : 'Stokda yox'}
                     </button>
                   </div>
                 </div>
@@ -135,7 +225,7 @@ const DetailsComponent = () => {
                         className="details__product__info__left__value__link"
                         to={'#'}
                       >
-                        Maria Jardim
+                        {product.seller.fullname || 'Maria Jardim'}
                       </Link>
                       <span className="details__product__info__left__value__icon">
                         {<QuestionMessage />}
@@ -149,41 +239,49 @@ const DetailsComponent = () => {
                         className="details__product__info__left__value__link"
                         to={'#'}
                       >
-                        Maria Jardim
+                        {product.productionLocation || product.seller.fullname || 'Maria Jardim'}
                       </Link>
                     </p>
                     <p className="details__product__info__left__label">
                       Sertifikatlar
                     </p>
-                    <p className="details__product__info__left__value">-</p>
+                    <p className="details__product__info__left__value">
+                      {product.certificates || '-'}
+                    </p>
                   </div>
                   <div className="details__product__info__right">
                     <p className="details__product__info__right__label">
                       Vəziyyət
                     </p>
-                    <p className="details__product__info__right__value-status">
-                      Stokda
+                    <p className={`details__product__info__right__value-status ${product.quantity > 0 ? 'in-stock' : 'out-of-stock'}`}>
+                      {product.quantity > 0 ? 'Stokda' : 'Stokda yox'}
                     </p>
                     <p className="details__product__info__right__label">
                       Satış növü
                     </p>
                     <p className="details__product__info__right__value">
-                      Onlayn və yerində
+                      {product.saleType || 'Onlayn və yerində'}
                     </p>
                     <p className="details__product__info__right__label">
                       Məhsulun geri qaytarılması
                     </p>
-                    <p className="details__product__info__right__value">yox</p>
+                    <p className="details__product__info__right__value">
+                      {product.returnable ? 'bəli' : 'yox'}
+                    </p>
                     <p className="details__product__info__right__label">
                       Ümumi reytinq
                     </p>
                     <div className="details__product__info__rating">
                       <div className="details__product__info__rating__box">
-                        <Rate className="details__product__info__rating__box__rate-icon" />
+                        <Rate
+                          className="details__product__info__rating__box__rate-icon"
+                          value={product.rating}
+                          disabled
+                        />
                         <DownOutlined className="details__product__info__rating__box__down-icon" />
                       </div>
                       <span className="details__product__info__rating__rating-text">
-                        <span>0</span> rəy
+                        <span>{product.reviewCount || 0}</span> rəy
                       </span>
                     </div>
                   </div>
@@ -201,7 +299,7 @@ const DetailsComponent = () => {
                             Satış nöqtəsi
                           </p>
                           <p className="details__product__location__box__value-with-underline">
-                            Maria Jardim
+                            {product.salesPoint || product.seller.fullname || 'Maria Jardim'}
                           </p>
                         </Col>
 
@@ -210,14 +308,14 @@ const DetailsComponent = () => {
                             Cədvəllər
                           </p>
                           <p className="details__product__location__box__value">
-                            Çərşənbə axşamı və cümə günləri saat 13:00-da...
+                            {product.schedule || 'Çərşənbə axşamı və cümə günləri saat 13:00-da...'}
                           </p>
                         </Col>
                       </Row>
                     </div>
                     <div className="details__product__location__box__small-device">
                       <p className="details__product__location__box__value-with-underline">
-                        Kahinlərin Fajası
+                        {product.salesPoint || 'Kahinlərin Fajası'}
                       </p>
                       <p>
                         <Search className="details__product__location__box__small-device__search-icon" />
@@ -245,9 +343,8 @@ const DetailsComponent = () => {
                         <p
                           key={index}
                           ref={(el) => (tabRefs.current[index] = el)}
-                          className={`details__product__status__info__label ${
-                            activeTab === index ? 'active' : ''
-                          }`}
+                          className={`details__product__status__info__label ${activeTab === index ? 'active' : ''
+                            }`}
                           onClick={() => handleTabClick(index)}
                         >
                           {label}
@@ -271,17 +368,21 @@ const DetailsComponent = () => {
 
                   {activeTab === 0 && (
                     <p className="details__product__status__description">
-                      Orqanik olaraq istehsal olunan limon.
+                      {product.description || 'Orqanik olaraq istehsal olunan limon.'}
                     </p>
                   )}
                   {activeTab === 1 && (
                     <p className="details__product__status__missing-description">
-                      Konfiqurasiya edilmiş çatdırılma/göndərmə siyasəti yoxdur
+                      {product.deliveryPolicy || 'Konfiqurasiya edilmiş çatdırılma/göndərmə siyasəti yoxdur'}
                     </p>
                   )}
                   {activeTab === 2 && (
                     <p className="details__product__status__missing-description">
-                      Rəy yoxdur.
+                      {product.reviews?.length > 0 ?
+                        product.reviews.map((review: any) => (
+                          <div key={review.id}>{review.text}</div>
+                        )) :
+                        'Rəy yoxdur.'}
                     </p>
                   )}
                 </div>

@@ -364,7 +364,7 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
                             +
                           </button>
                         </div>
-                        <div className="price">€{item.price.toFixed(2)}</div>
+                        <div className="price">₼{item.price.toFixed(2)}</div>
                       </div>
                     </div>
                     <button
@@ -393,11 +393,11 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
               <div className="basket-summary">
                 <div className="summary-row">
                   <span>ƏDV</span>
-                  <span>€{(totalPrice * 0.18).toFixed(2)}</span>
+                  <span>₼{(totalPrice * 0.18).toFixed(2)}</span>
                 </div>
                 <div className="summary-row total">
                   <span>Cəmi:</span>
-                  <span>€{totalPrice.toFixed(2)}</span>
+                  <span>₼{totalPrice.toFixed(2)}</span>
                 </div>
               </div>
 

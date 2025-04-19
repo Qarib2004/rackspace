@@ -173,10 +173,9 @@
     //   display: none;
     // }
   }
-
   .header__cart-btn {
     position: relative;
-
+    color: black;
     .header__cart-count {
       position: absolute;
       top: -3px;
@@ -196,6 +195,29 @@
       box-shadow: 0 0 0 2px white;
     }
   }
+  .header__icon-btn{
+    position: relative;
+    .header__cart-count {
+      position: absolute;
+      top: -10px;
+      right: -12px;
+      background-color: #ff4d4f;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 2px 6px;
+      border-radius: 999px;
+      min-width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      box-shadow: 0 0 0 2px white;
+    }
+  }
+
+  
 
   &__icon-btn {
     @media (max-width: 768px) {
