@@ -4,11 +4,19 @@ import { updateUser, deleteUser } from './header.service';
 export const useUpdateUser = () => {
   const queryClient = useQueryClient();
 
-  return useMutation(updateUser, {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(['user', data?.id]);
+  return useMutation(
+    (updatedData: { id: string; body: any }) => updateUser(updatedData),
+
+    {
+      onSuccess: (data, variables) => {
+        queryClient.invalidateQueries(['user', variables.id]);
+        queryClient.invalidateQueries(['users']);      },
+        onError: (error) => {
+          console.error('Error for updating:', error);
+        },
     },
-  });
+    
+  );
 };
 
 export const useDeleteUser = () => {
