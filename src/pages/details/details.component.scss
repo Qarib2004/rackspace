@@ -2,6 +2,16 @@
   max-width: 80rem;
   margin: 0 auto;
 }
+.in-stock{
+  color: #4b7d30;
+  font-weight: bold;
+  font-size: 0.875rem;
+}
+.out-of-stock{
+  color: #e2711d;
+  font-weight: bold;
+  font-size: 0.875rem;
+} 
 
 .details {
   margin-top: 4.75rem;
@@ -14,6 +24,8 @@
   &__img-box {
     width: 18.375rem;
     margin-bottom: 1.25rem;
+    overflow: hidden;
+    border-radius: 0 6rem 0 6rem;
     @media only screen and (max-width: 824px) {
       position: relative;
       width: 100%;
@@ -23,7 +35,6 @@
     &__img {
       width: 100%;
       cursor: pointer;
-      border-radius: 0 6rem 0 6rem;
       height: 14.1875rem;
       object-fit: cover;
       @media only screen and (max-width: 824px) {
@@ -119,6 +130,10 @@
         font-weight: bold;
         cursor: pointer;
       }
+      &__decrement:hover,
+      &__increment:hover {
+        color: #e2711d;
+      }
 
       &__price-info {
         display: flex;
@@ -169,7 +184,6 @@
           }
         }
         &__add-button:hover {
-          opacity: 0.7;
           border-color: #aaaaaa;
           color: #cbcbcb;
         }
@@ -192,43 +206,49 @@
       justify-content: space-between;
       padding: 1.125rem 0.625rem;
       border-bottom: 1px solid #e2e2e2;
+      border-top: 1px solid #e2e2e2;
       &__left {
         color: #1d1d1d;
-        &__label {
-          font-size: 0.75rem;
-          margin-bottom: 0.3125rem;
-        }
-        &__value {
-          font-size: 0.875rem;
-          font-weight: bold;
-          margin-bottom: 0.9375rem;
-          &__link {
-            color: #1d1d1d;
-            text-decoration: underline;
+        &__box {
+          margin-bottom: 0.788rem;
+          &__label {
+            font-size: 0.75rem;
           }
-          &__icon {
-            margin-left: 1.25rem;
-            cursor: pointer;
-            @media only screen and (max-width: 320px) {
-              margin-left: 0.625rem;
+          &__label-margin {
+            margin-bottom: 0.5125rem;
+          }
+          &__value {
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            &__link {
+              font-weight: bold;
+              color: #1d1d1d;
+              text-decoration: underline;
+            }
+            &__icon {
+              margin-left: 1.25rem;
+              cursor: pointer;
+              @media only screen and (max-width: 320px) {
+                margin-left: 0.625rem;
+              }
             }
           }
         }
       }
       &__right {
-        &__label {
-          font-size: 0.75rem;
-          color: #1d1d1d;
-          margin-bottom: 0.3125rem;
-        }
-        &__value,
-        &__value-status {
-          font-size: 0.875rem;
-          font-weight: bold;
-          margin-bottom: 0.9375rem;
-        }
-        &__value-status {
-          color: #4b7d30;
+        &__box {
+          margin-bottom: 0.688rem;
+          &__label {
+            font-size: 0.75rem;
+            color: #1d1d1d;
+            margin-bottom: 0.5125rem;
+          }
+          &__value,
+          &__value-status {
+            font-size: 0.875rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+          }
         }
       }
       &__rating {
@@ -244,8 +264,9 @@
           gap: 0.3125rem;
           align-items: center;
           &__rate-icon {
-            @media only screen and (max-width: 600px) {
-              font-size: 1.125rem;
+            font-size: 1.125rem;
+            @media only screen and (max-width: 376px) {
+              font-size: 0.92rem;
             }
           }
           &__down-icon {

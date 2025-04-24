@@ -12,7 +12,12 @@ export enum Routes {
   orders = 'orders',
   addresses = 'addresses',
   details = '/products/:id',
+  producer = '/producer/:id',
+  invoincingAddress = '/invoicing-address',
+  deliveryMethod = '/delivery-method',
+  payment = '/payment',
   help = '/help',
+  checkout = '/', 
 }
 
 export const goTo = (route: string, param: string | number) => {

@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { addToBasket, updateBasketItem, removeFromBasket } from './basket.service';
 import { BasketResponse } from '../basket';
 
-export const useAddToBasket = (userId: string) => {
+export const useAddToBasket = (userId: any) => {
   const queryClient = useQueryClient();
 
   return useMutation<BasketResponse, Error, { item: { productId: string; quantity: number } }>(

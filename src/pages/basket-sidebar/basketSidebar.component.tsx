@@ -7,6 +7,7 @@ import {
 } from './actions/basket.mutation';
 import { useSelector } from 'react-redux';
 import placeholderImg from '../../assets/images/basket/OKdAduzv3SOT6gVBYVfP349DhSyKO3MoRclv3BoP.png';
+import { useNavigate } from 'react-router-dom';
 
 interface BasketProduct {
   _id: string;
@@ -31,6 +32,7 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const {
     data: basketData,
@@ -72,7 +74,7 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
               name: string;
               price: number;
               image: string[];
-              quantity:number
+              quantity: number
             };
             quantity: number;
             _id?: string;
@@ -117,26 +119,26 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
 
   const handleQuantityChange = (itemId: string, newQuantity: number) => {
     const item = basketItems.find(item => item._id === itemId);
-    
+
     if (!item) return;
-    
+
     if (newQuantity <= 0) {
       handleRemoveItem(itemId);
       return;
     }
-    
+
     if (item.availableStock !== undefined && newQuantity > item.availableStock) {
-      
-      
-      return; 
+
+
+      return;
     }
-    
+
     setBasketItems(prevItems =>
       prevItems.map(item =>
         item._id === itemId ? { ...item, quantity: newQuantity } : item
       )
     );
-    
+
     updateItemMutation.mutate(
       {
         itemId: itemId,
@@ -154,20 +156,23 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
     );
   };
 
-
+  const goCheckout = () => {
+    navigate('/invoicing-address');
+    onClose();
+  };
 
   const handleRemoveItem = (basketItemId: string) => {
     if (!basketItems.some(item => item._id === basketItemId)) {
       return;
     }
-    
+
     setBasketItems(prevItems => prevItems.filter(item => item._id !== basketItemId));
-    
+
     const itemToRemove = basketItems.find(item => item._id === basketItemId);
     if (itemToRemove) {
       setTotalPrice(prevTotal => prevTotal - (itemToRemove.price * itemToRemove.quantity));
     }
-    
+
     removeItemMutation.mutate(
       { itemId: basketItemId },
       {
@@ -177,14 +182,14 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
             console.log('[Basket] Refetch after removal:', result);
           });
         },
-        onError: (error:any) => {
+        onError: (error: any) => {
           console.error('[Basket] Removal API call failed:', error);
           console.error('[Basket] Error details:', {
             message: error.message,
             response: error.response?.data,
             status: error.response?.status
           });
-          
+
           refetch();
         }
       }
@@ -364,7 +369,7 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
                             +
                           </button>
                         </div>
-                        <div className="price">€{item.price.toFixed(2)}</div>
+                        <div className="price">₼{item.price.toFixed(2)}</div>
                       </div>
                     </div>
                     <button
@@ -393,15 +398,16 @@ const SidebarBasket: React.FC<SidebarBasketProps> = ({ isOpen, onClose }) => {
               <div className="basket-summary">
                 <div className="summary-row">
                   <span>ƏDV</span>
-                  <span>€{(totalPrice * 0.18).toFixed(2)}</span>
+                  <span>₼{(totalPrice * 0.18).toFixed(2)}</span>
                 </div>
                 <div className="summary-row total">
                   <span>Cəmi:</span>
-                  <span>€{totalPrice.toFixed(2)}</span>
+                  <span>₼{totalPrice.toFixed(2)}</span>
                 </div>
               </div>
 
-              <button className="checkout-button">Yoxlama</button>
+              <button onClick={goCheckout}
+                className="checkout-button">Yoxlama</button>
             </>
           )}
         </div>
