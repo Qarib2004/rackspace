@@ -4,7 +4,7 @@ import { Check, Dot, Minus, Plus, Trash2 } from 'lucide-react';
 import { Col, Row } from 'antd';
 import { Link } from 'react-router-dom';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import Paypay from 'assets/images/checkout/paypay';
+import Paypay from 'assets/images/checkout/Paypay';
 import MbWay from 'assets/images/checkout/MbWay';
 import DebitCard from 'assets/images/checkout/DebitCard';
 
